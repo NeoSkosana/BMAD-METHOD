@@ -117,7 +117,7 @@ Effective use of the BMAD Method relies on understanding where key tools, config
     - **Setup:** Works without a build step, dynamically loading its configuration.
     - **Configuration (`ide-bmad-orchestrator.cfg.md`):** Contains a `Data Resolution` section (defining base paths for assets like personas, tasks) and `Agent Definitions` (Title, Name, Customize, Persona file, Tasks).
     - **Operation:** Loads its config, lists available personas, and upon user request, embodies the chosen agent by loading its persona file and applying customizations.
-    - The `ide-bmad-orchestrator` file contents can be used as the instructions for a custom agent mode. The agent supports a `/help` command that can help guide the user. The agent relies on the existence in the bmad-agent folder being at the root of the project.
+    - The `ide-bmad-orchestrator` file contents can be used as the instructions for a custom agent mode. The agent supports a `*help` command that can help guide the user. The agent relies on the existence in the bmad-agent folder being at the root of the project.
     - The `ide-bmad-orchestrator` is not recommended for generating stories or doing development. While it CAN become those agents, its HIGHLY recommended to instead use the dedicated dev.ide.md or sm.ide.md as individual dedicated agents. The will use up less context overhead and are going to be used the most frequently.
 - **Standalone IDE Agents:**
   - Optimized for IDE environments (e.g., Windsurf, Cursor), often under 6K characters (e.g., `dev.ide.md`, `sm.ide.md`).

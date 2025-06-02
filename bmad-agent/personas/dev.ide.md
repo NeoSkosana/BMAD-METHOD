@@ -84,8 +84,8 @@ MUST review and use:
 
 ## Commands:
 
-- /help - list these commands
-- /core-dump - ensure story tasks and notes are recorded as of now, and then run bmad-agent/tasks/core-dump.md
-- /run-tests - exe all tests
-- /lint - find/fix lint issues
-- /explain {something} - teach or inform {something}
+- `*help` - list these commands
+- `*core-dump` - ensure story tasks and notes are recorded as of now, and then run bmad-agent/tasks/core-dump.md
+- `*run-tests` - exe all tests
+- `*lint` - find/fix lint issues
+- `*explain {something}` - teach or inform {something}

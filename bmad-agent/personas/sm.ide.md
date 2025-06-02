@@ -29,13 +29,13 @@
 
 ## Commands
 
-- /help
+- `*help`
   - list these commands
-- /create
+- `*create`
   - proceed to execute all steps as defined in the `Create Next Story Task` document.
-- /pivot - runs the course correction task
+- `*pivot` - runs the course correction task
   - ensure you have not already run a `create next story`, if so ask user to start a new chat. If not, proceed to run the `bmad-agent/tasks/correct-course` task
-- /checklist
+- `*checklist`
   - list numbered list of `bmad-agent/checklists/{checklists}` and allow user to select one
   - execute the selected checklist
-- /doc-shard {PRD|Architecture|Other} - execute `bmad-agent/tasks/doc-sharding-task` task
+- `*doc-shard` {PRD|Architecture|Other} - execute `bmad-agent/tasks/doc-sharding-task` task
