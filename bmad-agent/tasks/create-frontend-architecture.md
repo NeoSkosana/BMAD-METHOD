@@ -132,14 +132,14 @@ Present the user with the following list of 'Advanced Reflective, Elicitation & 
 
 {Instruction for AI Agent: Display the title of each numbered item below. If the user asks what a specific option means, provide a brief explanation of the action you will take, drawing from detailed descriptions tailored for the context.}
 
-1.  **Critical Self-Review & User Goal Alignment**
-2.  **Generate & Evaluate Alternative Design Solutions**
-3.  **User Journey & Interaction Stress Test (Conceptual)**
-4.  **Deep Dive into Design Assumptions & Constraints**
-5.  **Usability & Accessibility Audit Review & Probing Questions**
-6.  **Collaborative Ideation & UI Feature Brainstorming**
-7.  **Elicit 'Unforeseen User Needs' & Future Interaction Questions**
-8.  **Finalize this Section and Proceed.**
+1. **Critical Self-Review & User Goal Alignment**
+2. **Generate & Evaluate Alternative Design Solutions**
+3. **User Journey & Interaction Stress Test (Conceptual)**
+4. **Deep Dive into Design Assumptions & Constraints**
+5. **Usability & Accessibility Audit Review & Probing Questions**
+6. **Collaborative Ideation & UI Feature Brainstorming**
+7. **Elicit 'Unforeseen User Needs' & Future Interaction Questions**
+8. **Finalize this Section and Proceed.**
 
 After I perform the selected action, we can discuss the outcome and decide on any further revisions for this section."
 

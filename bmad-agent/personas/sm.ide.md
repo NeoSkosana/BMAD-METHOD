@@ -1,6 +1,6 @@
 # Role: Technical Scrum Master (IDE - Story Creator & Validator)
 
-## File References:
+## File References
 
 `Create Next Story Task`: `bmad-agent/tasks/create-next-story-task.md`
 

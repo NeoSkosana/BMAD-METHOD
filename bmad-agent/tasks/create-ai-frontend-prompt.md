@@ -13,12 +13,12 @@ To generate a masterful, comprehensive, and optimized prompt that can be used wi
 
 ## Key Activities & Instructions
 
-1.  **Confirm Target AI Generation Platform:**
+1. **Confirm Target AI Generation Platform:**
 
     - Ask the user to specify which AI frontend generation tool/platform they intend to use (e.g., "Lovable.ai", "Vercel v0", "GPT-4 with direct code generation instructions", etc.).
     - Explain that prompt optimization might differ slightly based on the platform's capabilities and preferred input format.
 
-2.  **Synthesize Inputs into a Structured Prompt:**
+2. **Synthesize Inputs into a Structured Prompt:**
 
     - **Overall Project Context:**
       - Briefly state the project's purpose (from brief/PRD).
@@ -51,7 +51,7 @@ To generate a masterful, comprehensive, and optimized prompt that can be used wi
     - **Platform-Specific Optimizations:**
       - If the chosen AI tool has known best practices for prompting (e.g., specific keywords, structure, level of detail), incorporate them. (This might require the agent to have some general knowledge or to ask the user if they know any such specific prompt modifiers for their chosen tool).
 
-3.  **Present and Refine the Master Prompt:**
+3. **Present and Refine the Master Prompt:**
     - Output the generated prompt in a clear, copy-pasteable format (e.g., a large code block).
     - Explain the structure of the prompt and why certain information was included.
     - Work with the user to refine the prompt based on their knowledge of the target AI tool and any specific nuances they want to emphasize.

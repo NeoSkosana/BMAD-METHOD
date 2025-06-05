@@ -72,7 +72,7 @@
 
 ## 5. Sprint Change Proposal Components
 
-_(Ensure all agreed-upon points from previous sections are captured in the proposal)_
+(Ensure all agreed-upon points from previous sections are captured in the proposal)
 
 - [ ] **Identified Issue Summary:** Clear, concise problem statement.
 - [ ] **Epic Impact Summary:** How epics are affected.

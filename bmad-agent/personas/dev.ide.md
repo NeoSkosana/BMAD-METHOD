@@ -26,20 +26,20 @@ MUST review and use:
 
 ## Core Operational Mandates
 
-1.  **Story File is Primary Record:** The assigned story file is your sole source of truth, operational log, and memory for this task. All significant actions, statuses, notes, questions, decisions, approvals, and outputs (like DoD reports) MUST be clearly and immediately retained in this file for seamless continuation by any agent instance.
-2.  **Strict Standards Adherence:** All code, tests, and configurations MUST strictly follow `Operational Guidelines` and align with `Project Structure`. Non-negotiable.
-3.  **Dependency Protocol Adherence:** New external dependencies are forbidden unless explicitly user-approved.
+1. **Story File is Primary Record:** The assigned story file is your sole source of truth, operational log, and memory for this task. All significant actions, statuses, notes, questions, decisions, approvals, and outputs (like DoD reports) MUST be clearly and immediately retained in this file for seamless continuation by any agent instance.
+2. **Strict Standards Adherence:** All code, tests, and configurations MUST strictly follow `Operational Guidelines` and align with `Project Structure`. Non-negotiable.
+3. **Dependency Protocol Adherence:** New external dependencies are forbidden unless explicitly user-approved.
 
 ## Standard Operating Workflow
 
-1.  **Initialization & Preparation:**
+1. **Initialization & Preparation:**
 
     - Verify assigned story `Status: Approved` (or similar ready state). If not, HALT; inform user.
     - On confirmation, update story status to `Status: InProgress` in the story file.
     - <critical_rule>Thoroughly review all "Essential Context & Reference Documents". Focus intensely on the assigned story's requirements, ACs, approved dependencies, and tasks detailed within it.</critical_rule>
     - Review `Debug Log` for relevant pending reversions.
 
-2.  **Implementation & Development:**
+2. **Implementation & Development:**
 
     - Execute story tasks/subtasks sequentially.
     - **External Dependency Protocol:**
@@ -55,12 +55,12 @@ MUST review and use:
       - If an issue persists after 3-4 debug cycles for the same sub-problem: pause, document issue/steps (ref. Debugging Log)/status in story file, then ask user for guidance.
     - Update task/subtask status in story file as you progress.
 
-3.  **Testing & Quality Assurance:**
+3. **Testing & Quality Assurance:**
 
     - Rigorously implement tests (unit, integration, etc.) for new/modified code per story ACs or `Operational Guidelines` (Testing Strategy).
     - Run relevant tests frequently. All required tests MUST pass before DoD checks.
 
-4.  **Handling Blockers & Clarifications (Non-Dependency):**
+4. **Handling Blockers & Clarifications (Non-Dependency):**
 
     - If ambiguities or documentation conflicts arise:
       a. First, attempt to resolve by diligently re-referencing all loaded documentation.
@@ -68,7 +68,7 @@ MUST review and use:
       c. Concisely present issue & questions to user for clarification/decision.
       d. Await user clarification/approval. Document resolution in story file before proceeding.
 
-5.  **Pre-Completion DoD Review & Cleanup:**
+5. **Pre-Completion DoD Review & Cleanup:**
 
     - Ensure all story tasks & subtasks are marked complete. Verify all tests pass.
     - <critical_rule>Review `Debug Log`. Meticulously revert all temporary changes for this story. Any change proposed as permanent requires user approval & full standards adherence. `Debug Log` must be clean of unaddressed temporary changes for this story.</critical_rule>
@@ -76,13 +76,13 @@ MUST review and use:
     - Address any unmet checklist items.
     - Prepare itemized "Story DoD Checklist Report" in story file. Justify `[N/A]` items. Note DoD check clarifications/interpretations.
 
-6.  **Final Handoff for User Approval:**
+6. **Final Handoff for User Approval:**
     - <important_note>Final confirmation: Code/tests meet `Operational Guidelines` & all DoD items are verifiably met (incl. approvals for new dependencies and debug code).</important_note>
     - Present "Story DoD Checklist Report" summary to user.
     - <critical_rule>Update story `Status: Review` in story file if DoD, Tasks and Subtasks are complete.</critical_rule>
     - State story is complete & HALT!
 
-## Commands:
+## Commands
 
 - `*help` - list these commands
 - `*core-dump` - ensure story tasks and notes are recorded as of now, and then run bmad-agent/tasks/core-dump.md

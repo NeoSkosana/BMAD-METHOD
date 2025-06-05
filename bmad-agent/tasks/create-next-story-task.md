@@ -33,7 +33,7 @@ To identify the next logical story based on project progress and epic definition
   - Verify its `Status` is 'Done' (or equivalent).
   - If not 'Done', present an alert to the user:
 
-    ```
+    ```plaintext
     ALERT: Found incomplete story:
     File: {lastEpicNum}.{lastStoryNum}.story.md
     Status: [current status]

@@ -46,11 +46,11 @@ After discussing initial PRD sections (like Problem, Goals, User Personas) and b
 
     When doing so, first check if a `docs/technical-preferences.md` file exists or has been provided. If it does, inform the user you will consult it to help guide these technical decisions, while still confirming all choices with them. Ask targeted questions such as:
 
-1.  "What are your preliminary thoughts on the primary programming languages and frameworks for the backend and frontend (if applicable)? (I will cross-reference any preferences you've noted in `technical-preferences`.)"
-2.  "Which database system are you considering? (Checking preferences...)"
-3.  "Are there any specific cloud services, key libraries, or deployment platforms we should plan for at this stage? (Checking preferences...)"
-4.  "How do you envision the high-level folder structure or main modules of the application? Could you describe the key components and their responsibilities? (I'll consider any structural preferences noted.)"
-5.  "Will this be a monorepo or are you thinking of separate repositories for different parts of the application?"
+1. "What are your preliminary thoughts on the primary programming languages and frameworks for the backend and frontend (if applicable)? (I will cross-reference any preferences you've noted in `technical-preferences`.)"
+2. "Which database system are you considering? (Checking preferences...)"
+3. "Are there any specific cloud services, key libraries, or deployment platforms we should plan for at this stage? (Checking preferences...)"
+4. "How do you envision the high-level folder structure or main modules of the application? Could you describe the key components and their responsibilities? (I'll consider any structural preferences noted.)"
+5. "Will this be a monorepo or are you thinking of separate repositories for different parts of the application?"
     This section should be collaboratively filled and updated as needed if subsequent epic/story discussions reveal new requirements or constraints.
 
 </important_note\>
@@ -113,7 +113,7 @@ Produce the PRD with PM Prompt per the `prd-tmpl` utilizing the following guidan
 
 - If the product described in this PRD includes a user interface:
 
-  1.  **Include Design Architect Prompt in PRD:** You will add a dedicated section in the PRD document you are producing, specifically at the location marked `(END Checklist START Design Architect UI/UX Specification Mode Prompt)` (as per the `prd-tmpl` structure). This section will contain a prompt for the **Design Architect** agent.
+  1. **Include Design Architect Prompt in PRD:** You will add a dedicated section in the PRD document you are producing, specifically at the location marked `(END Checklist START Design Architect UI/UX Specification Mode Prompt)` (as per the `prd-tmpl` structure). This section will contain a prompt for the **Design Architect** agent.
 
       - The prompt should clearly state that the Design Architect is to operate in its **'UI/UX Specification Mode'**.
 
@@ -138,7 +138,7 @@ Produce the PRD with PM Prompt per the `prd-tmpl` utilizing the following guidan
         Please guide the user through this process to enrich the PRD with detailed UI/UX specifications.
         ```
 
-  2.  **Recommend User Workflow:** After finalizing this PRD (with the included prompt for the Design Architect), strongly recommend to the user the following sequence:
+  2. **Recommend User Workflow:** After finalizing this PRD (with the included prompt for the Design Architect), strongly recommend to the user the following sequence:
       a. First, engage the **Design Architect** agent (using the prompt you've embedded in the PRD) to operate in **'UI/UX Specification Mode'**. Explain that this step is crucial for detailing the user interface and experience, and the output (e.g., a populated `front-end-spec-tmpl` and potentially updated PRD sections) will be vital.
       b. Second, _after_ the Design Architect has completed its UI/UX specification work, the user should then proceed to engage the **Architect** agent (using the 'Initial Architect Prompt' also contained in this PRD). The PRD, now enriched with UI/UX details, will provide a more complete basis for technical architecture design.
 
@@ -215,14 +215,14 @@ Present the user with the following list of 'Advanced Reflective, Elicitation & 
 
 {Instruction for AI Agent: Display the title of each numbered item below. If the user asks what a specific option means, provide a brief explanation of the action you will take, drawing from detailed descriptions tailored for the context.}
 
-1.  **Critical Self-Review & User Goal Alignment**
-2.  **Generate & Evaluate Alternative Design Solutions**
-3.  **User Journey & Interaction Stress Test (Conceptual)**
-4.  **Deep Dive into Design Assumptions & Constraints**
-5.  **Usability & Accessibility Audit Review & Probing Questions**
-6.  **Collaborative Ideation & UI Feature Brainstorming**
-7.  **Elicit 'Unforeseen User Needs' & Future Interaction Questions**
-8.  **Finalize this Section and Proceed.**
+1. **Critical Self-Review & User Goal Alignment**
+2. **Generate & Evaluate Alternative Design Solutions**
+3. **User Journey & Interaction Stress Test (Conceptual)**
+4. **Deep Dive into Design Assumptions & Constraints**
+5. **Usability & Accessibility Audit Review & Probing Questions**
+6. **Collaborative Ideation & UI Feature Brainstorming**
+7. **Elicit 'Unforeseen User Needs' & Future Interaction Questions**
+8. **Finalize this Section and Proceed.**
 
 After I perform the selected action, we can discuss the outcome and decide on any further revisions for this section."
 

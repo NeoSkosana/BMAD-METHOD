@@ -8,7 +8,7 @@
 
 ## Instructions
 
-1.  **Input Analysis & Dialogue Establishment:**
+1. **Input Analysis & Dialogue Establishment:**
 
     - Ensure you have all necessary inputs: PRD document (specifically checking for the 'Technical Assumptions' and 'Initial Architect Prompt' sections for the decided repository and service architecture), project brief, any deep research reports, and optionally a `technical-preferences.md`. Request any missing critical documents.
     - Thoroughly review all inputs.
@@ -21,7 +21,7 @@
       - Request the user to select their preferred mode (e.g., "Please let me know if you'd prefer A or B.").
       - Once the user chooses, confirm the selected mode (e.g., "Okay, we will proceed in Incremental mode."). This chosen mode will govern how subsequent steps in this task are executed.
 
-2.  **Resolve Ambiguities & Gather Missing Information:**
+2. **Resolve Ambiguities & Gather Missing Information:**
 
     - If key information is missing or requirements are unclear after initial review, formulate specific, targeted questions.
     - **External API Details:** If the project involves integration with external APIs, especially those that are less common or where you lack high confidence in your training data regarding their specific request/response schemas, and if a "Deep Research" phase was not conducted for these APIs:
@@ -33,7 +33,7 @@
     - Present questions to the user (batched logically if multiple) and await their input.
     - Document all decisions and clarifications received before proceeding.
 
-3.  **Iterative Technology Selection & Design (Interactive, if not YOLO mode):**
+3. **Iterative Technology Selection & Design (Interactive, if not YOLO mode):**
 
     - For each major architectural component or decision point (e.g., frontend framework, backend language/framework, database system, cloud provider, key services, communication patterns):
       - If multiple viable options exist based on requirements or research, present 2-3 choices, briefly outlining their pros, cons, and relevance to the project. Consider any preferences stated in `technical-preferences.md` when formulating these options and your recommendation.
@@ -42,7 +42,7 @@
       - Document the confirmed choice and its rationale within the architecture document.
     - **Starter Templates:** If applicable and requested, research and recommend suitable starter templates or assess existing codebases. Explain alignment with project goals and seek user confirmation.
 
-4.  **Create Technical Artifacts (Incrementally, unless YOLO mode, guided by `architecture-tmpl`):**
+4. **Create Technical Artifacts (Incrementally, unless YOLO mode, guided by `architecture-tmpl`):**
 
     - For each artifact or section of the main Architecture Document:
 
@@ -57,7 +57,7 @@
         - [Offer Advanced Self-Refinement & Elicitation Options](#offer-advanced-self-refinement--elicitation-options)
         - **Seek Approval:** Obtain explicit user approval for the section before moving to the next, or for the entire artifact if drafted holistically (in YOLO mode).
 
-5.  **Identify Missing Technical Stories / Refine Epics (Interactive):**
+5. **Identify Missing Technical Stories / Refine Epics (Interactive):**
 
     - Based on the designed architecture, identify any necessary technical stories/tasks that are not yet captured in the PRD or epics (e.g., "Set up CI/CD pipeline for frontend deployment," "Implement authentication module using JWT," "Create base Docker images for backend services," "Configure initial database schema based on data models").
     - Explain the importance of these technical stories for enabling the functional requirements and successful project execution.
@@ -65,7 +65,7 @@
     - Review existing epics/stories from the PRD and suggest technical considerations or acceptance criteria refinements to ensure they are implementable based on the chosen architecture. For example, specifying API endpoints to be called, data formats, or critical library versions.
     - After collaboration, prepare a concise summary detailing all proposed additions, updates, or modifications to epics and user stories. If no changes are identified, explicitly state this.
 
-6.  **Validate Architecture Against Checklist & Finalize Output:**
+6. **Validate Architecture Against Checklist & Finalize Output:**
     - Once the main architecture document components have been drafted and reviewed with the user, perform a comprehensive review using the `architect-checklist`.
     - Go through each item in the checklist to ensure the architecture document is comprehensive, addresses all key architectural concerns (e.g., security, scalability, maintainability, testability (including confirmation that coding standards and the testing strategy clearly define unit test location and naming conventions), developer experience), and that proposed solutions are robust.
     - For each checklist item, confirm its status (e.g., \[x] Completed, \[ ] N/A, \[!] Needs Attention).
@@ -110,14 +110,14 @@ Present the user with the following list of 'Advanced Reflective, Elicitation & 
 
 {Instruction for AI Agent: Display the title of each numbered item below. If the user asks what a specific option means, provide a brief explanation of the action you will take, drawing from detailed descriptions tailored for the context.}
 
-1.  **Critical Self-Review & User Goal Alignment**
-2.  **Generate & Evaluate Alternative Design Solutions**
-3.  **User Journey & Interaction Stress Test (Conceptual)**
-4.  **Deep Dive into Design Assumptions & Constraints**
-5.  **Usability & Accessibility Audit Review & Probing Questions**
-6.  **Collaborative Ideation & UI Feature Brainstorming**
-7.  **Elicit 'Unforeseen User Needs' & Future Interaction Questions**
-8.  **Finalize this Section and Proceed.**
+1. **Critical Self-Review & User Goal Alignment**
+2. **Generate & Evaluate Alternative Design Solutions**
+3. **User Journey & Interaction Stress Test (Conceptual)**
+4. **Deep Dive into Design Assumptions & Constraints**
+5. **Usability & Accessibility Audit Review & Probing Questions**
+6. **Collaborative Ideation & UI Feature Brainstorming**
+7. **Elicit 'Unforeseen User Needs' & Future Interaction Questions**
+8. **Finalize this Section and Proceed.**
 
 After I perform the selected action, we can discuss the outcome and decide on any further revisions for this section."
 

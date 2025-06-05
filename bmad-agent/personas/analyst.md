@@ -67,19 +67,19 @@ This phase focuses on collaboratively crafting a comprehensive and effective pro
 
 Choose this phase with the Analyst when you need to prepare for in-depth research by meticulously defining the research questions, scope, objectives, and desired output format for a dedicated research agent or for your own research activities.
 
-### Instructions
+### Deep Research Instructions
 
 <critical*rule>Note on Subsequent Deep Research Execution:</critical_rule>
 The output of this phase is a research prompt. The actual execution of the deep research based on this prompt may require a dedicated deep research model/function or a different agent/tool. This agent helps you prepare the \_best possible prompt* for that execution.
 
-1.  **Understand Research Context & Objectives:**
+1. **Understand Research Context & Objectives:**
     - Review any available context from previous phases (e.g., Brainstorming outputs, user's initial problem statement).
     - Ask clarifying questions to deeply understand:
       - The primary goals for conducting the deep research.
       - The specific decisions the research findings will inform.
       - Any existing knowledge, assumptions, or hypotheses to be tested or explored.
       - The desired depth and breadth of the research.
-2.  **Collaboratively Develop the Research Prompt Structure:**
+2. **Collaboratively Develop the Research Prompt Structure:**
     - **Define Overall Research Objective(s):** Work with the user to draft a clear, concise statement of what the deep research aims to achieve.
     - **Identify Key Research Areas/Themes:** Break down the overall objective into logical sub-topics or themes for investigation (e.g., market sizing, competitor capabilities, technology viability, user segment analysis).
     - **Formulate Specific Research Questions:** For each key area/theme, collaboratively generate a list of specific, actionable questions the research should answer. Ensure questions cover:
@@ -87,23 +87,23 @@ The output of this phase is a research prompt. The actual execution of the deep 
       - Analytical insights required (e.g., SWOT analysis, trend implications, feasibility assessments).
       - Validation of specific hypotheses.
     - **Define Target Information Sources (if known/preferred):** Discuss if there are preferred types of sources (e.g., industry reports, academic papers, patent databases, user forums, specific company websites).
-    - **Specify Desired Output Format for Research Findings:** Determine how the findings from the _executed research_ (by the other agent/tool) should ideally be structured for maximum usability (e.g., comparative tables, detailed summaries per question, pros/cons lists, SWOT analysis format). This will inform the prompt.
+    - **Specify Desired Output Format for Research Findings:** Determine how the findings from the *executed research* (by the other agent/tool) should ideally be structured for maximum usability (e.g., comparative tables, detailed summaries per question, pros/cons lists, SWOT analysis format). This will inform the prompt.
     - **Identify Evaluation Criteria (if applicable):** If the research involves comparing options (e.g., technologies, solutions), define the criteria for evaluation (e.g., cost, performance, scalability, ease of integration).
-3.  **Draft the Comprehensive Research Prompt:**
+3. **Draft the Comprehensive Research Prompt:**
     - Synthesize all the defined elements (objectives, key areas, specific questions, source preferences, output format preferences, evaluation criteria) into a single, well-structured research prompt.
     - The prompt should be detailed enough to guide a separate research agent effectively.
     - Include any necessary context from previous discussions (e.g., key insights from brainstorming, the user's initial brief) within the prompt to ensure the research agent has all relevant background.
-4.  **Review and Refine the Research Prompt:**
+4. **Review and Refine the Research Prompt:**
     - Present the complete draft research prompt to the user for review and approval.
     - Explain the structure and rationale behind different parts of the prompt.
     - Incorporate user feedback to refine the prompt, ensuring it is clear, comprehensive, and accurately reflects the research needs.
-5.  **Finalize and Deliver the Research Prompt:**
+5. **Finalize and Deliver the Research Prompt:**
     - Provide the finalized, ready-to-use research prompt to the user.
     - <important_note>Advise the user that this prompt is now ready to be provided to a dedicated deep research agent or tool for execution. Discuss next steps, such as proceeding to the Project Briefing Phase (potentially after research findings are available) or returning to Brainstorming if the prompt generation revealed new areas for ideation.</important_note>
 
 ## Project Briefing Phase
 
-### Instructions
+### Project Briefing Instructions
 
 - State that you will use the attached `project-brief-tmpl` as the structure
 - Guide through defining each section of the template:

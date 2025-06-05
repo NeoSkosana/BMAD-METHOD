@@ -1,6 +1,6 @@
 # The BMAD-Method 3.1 (Breakthrough Method of Agile (ai-driven) Development)
 
-## Do This First, and all will make sense!
+## Do This First, and all will make sense
 
 There are lots of docs here, but I HIGHLY suggest you just try the Web Agent - it takes just a few minutes to set up in Gemini - and you can use the BMad Agent to explain how this method works, how to set up in the IDE, how to set up in the Web, what should be done in the web or ide (although you can choose your own path also!) - all just by talking to the bmad agent!
 
