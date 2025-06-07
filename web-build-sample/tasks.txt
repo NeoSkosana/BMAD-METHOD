@@ -1,3 +1,85 @@
+==================== START: advanced-elicitation ====================
+# Advanced Elicitation Task
+
+## Purpose
+
+- Provide optional reflective and brainstorming actions to enhance content quality
+- Enable deeper exploration of ideas through structured elicitation techniques
+- Support iterative refinement through multiple analytical perspectives
+
+## Task Instructions
+
+### 1. Ask for review and Present Action List
+
+[[LLM: Ask the user to review the {drafted document section, or context or document this protocol was executed from}. In the SAME message, inform them that they can suggest additions, removals, or modifications, OR they can select an action by number from the 'Advanced Reflective, Elicitation & Brainstorming Actions'. Then, present ONLY the numbered list (0-9) of these actions as defined in tasks#advanced-elicitation. Conclude by stating that selecting 9 will proceed to the next section. Await user selection. If an elicitation action (0-8) is chosen, execute it and then re-offer this combined review/elicitation choice. If option 9 is chosen, or if the user provides direct feedback on requirements, proceed accordingly.]]
+
+**Present the numbered list (0-9) with this exact format:**
+
+```
+**Advanced Reflective, Elicitation & Brainstorming Actions**
+Choose an action (0-9 - 9 to bypass - HELP for explanation of these options):
+
+0. Expand or Contract for Audience
+1. Explain Reasoning (CoT Step-by-Step)
+2. Critique and Refine
+3. Analyze Logical Flow and Dependencies
+4. Assess Alignment with Overall Goals
+5. Identify Potential Risks and Unforeseen Issues
+6. Challenge from Critical Perspective (Self or Other Persona)
+7. Explore Diverse Alternatives (ToT-Inspired)
+8. Hindsight is 20/20: The 'If Only...' Reflection
+9. Proceed / No Further Actions
+```
+
+### 2. Processing Guidelines
+
+**Do NOT show:**
+
+- The full protocol text with `[[LLM: ...]]` instructions
+- Detailed explanations of each option unless executing or the user asks, when giving the definition you can modify to tie its relevance
+- Any internal template markup
+
+**After user selection from the list:**
+
+- Execute the chosen action according to the protocol instructions below
+- Ask if they want to select another action or proceed with option 9 once complete
+- Continue until user selects option 9 or indicates completion
+
+## Action Definitions
+
+0. Expand or Contract for Audience
+   [[LLM: Ask the user whether they want to 'expand' on the content (add more detail, elaborate) or 'contract' it (simplify, clarify, make more concise). Also, ask if there's a specific target audience they have in mind. Once clarified, perform the expansion or contraction from your current role's perspective, tailored to the specified audience if provided.]]
+
+1. Explain Reasoning (CoT Step-by-Step)
+   [[LLM: Explain the step-by-step thinking process, characteristic of your role, that you used to arrive at the current proposal for this content.]]
+
+2. Critique and Refine
+   [[LLM: From your current role's perspective, review your last output or the current section for flaws, inconsistencies, or areas for improvement, and then suggest a refined version reflecting your expertise.]]
+
+3. Analyze Logical Flow and Dependencies
+   [[LLM: From your role's standpoint, examine the content's structure for logical progression, internal consistency, and any relevant dependencies. Confirm if elements are presented in an effective order.]]
+
+4. Assess Alignment with Overall Goals
+   [[LLM: Evaluate how well the current content contributes to the stated overall goals of the document, interpreting this from your specific role's perspective and identifying any misalignments you perceive.]]
+
+5. Identify Potential Risks and Unforeseen Issues
+   [[LLM: Based on your role's expertise, brainstorm potential risks, overlooked edge cases, or unintended consequences related to the current content or proposal.]]
+
+6. Challenge from Critical Perspective (Self or Other Persona)
+   [[LLM: Adopt a critical perspective on the current content. If the user specifies another role or persona (e.g., 'as a customer', 'as [Another Persona Name]'), critique the content or play devil's advocate from that specified viewpoint. If no other role is specified, play devil's advocate from your own current persona's viewpoint, arguing against the proposal or current content and highlighting weaknesses or counterarguments specific to your concerns. This can also randomly include YAGNI when appropriate, such as when trimming the scope of an MVP, the perspective might challenge the need for something to cut MVP scope.]]
+
+7. Explore Diverse Alternatives (ToT-Inspired)
+   [[LLM: From your role's perspective, first broadly brainstorm a range of diverse approaches or solutions to the current topic. Then, from this wider exploration, select and present 2 distinct alternatives, detailing the pros, cons, and potential implications you foresee for each.]]
+
+8. Hindsight is 20/20: The 'If Only...' Reflection
+   [[LLM: In your current persona, imagine it's a retrospective for a project based on the current content. What's the one 'if only we had known/done X...' that your role would humorously or dramatically highlight, along with the imagined consequences?]]
+
+9. Proceed / No Further Actions
+   [[LLM: Acknowledge the user's choice to finalize the current work, accept the AI's last output as is, or move on to the next step without selecting another action from this list. Prepare to proceed accordingly.]]
+
+==================== END: advanced-elicitation ====================
+
+
 ==================== START: checklist-mappings ====================
 architect-checklist:
   checklist_file: docs/checklists/architect-checklist.md
@@ -5,6 +87,13 @@ architect-checklist:
     - architecture.md
   default_locations:
     - docs/architecture.md
+
+platform-engineer-checklist:
+  checklist_file: docs/checklists/infrastructure-checklist.md
+  required_docs:
+    - platform-architecture.md
+  default_locations:
+    - docs/platform-architecture.md
 
 frontend-architecture-checklist:
   checklist_file: docs/checklists/frontend-architecture-checklist.md
@@ -46,6 +135,7 @@ story-dod-checklist:
     - story.md
   default_locations:
     - docs/stories/*.md
+
 
 ==================== END: checklist-mappings ====================
 
@@ -363,12 +453,12 @@ To generate a masterful, comprehensive, and optimized prompt that can be used wi
 
 ## Key Activities & Instructions
 
-1.  **Confirm Target AI Generation Platform:**
+1. **Confirm Target AI Generation Platform:**
 
     - Ask the user to specify which AI frontend generation tool/platform they intend to use (e.g., "Lovable.ai", "Vercel v0", "GPT-4 with direct code generation instructions", etc.).
     - Explain that prompt optimization might differ slightly based on the platform's capabilities and preferred input format.
 
-2.  **Synthesize Inputs into a Structured Prompt:**
+2. **Synthesize Inputs into a Structured Prompt:**
 
     - **Overall Project Context:**
       - Briefly state the project's purpose (from brief/PRD).
@@ -401,7 +491,7 @@ To generate a masterful, comprehensive, and optimized prompt that can be used wi
     - **Platform-Specific Optimizations:**
       - If the chosen AI tool has known best practices for prompting (e.g., specific keywords, structure, level of detail), incorporate them. (This might require the agent to have some general knowledge or to ask the user if they know any such specific prompt modifiers for their chosen tool).
 
-3.  **Present and Refine the Master Prompt:**
+3. **Present and Refine the Master Prompt:**
     - Output the generated prompt in a clear, copy-pasteable format (e.g., a large code block).
     - Explain the structure of the prompt and why certain information was included.
     - Work with the user to refine the prompt based on their knowledge of the target AI tool and any specific nuances they want to emphasize.
@@ -421,7 +511,7 @@ To generate a masterful, comprehensive, and optimized prompt that can be used wi
 
 ## Instructions
 
-1.  **Input Analysis & Dialogue Establishment:**
+1. **Input Analysis & Dialogue Establishment:**
 
     - Ensure you have all necessary inputs: PRD document (specifically checking for the 'Technical Assumptions' and 'Initial Architect Prompt' sections for the decided repository and service architecture), project brief, any deep research reports, and optionally a `technical-preferences.md`. Request any missing critical documents.
     - Thoroughly review all inputs.
@@ -434,7 +524,7 @@ To generate a masterful, comprehensive, and optimized prompt that can be used wi
       - Request the user to select their preferred mode (e.g., "Please let me know if you'd prefer A or B.").
       - Once the user chooses, confirm the selected mode (e.g., "Okay, we will proceed in Incremental mode."). This chosen mode will govern how subsequent steps in this task are executed.
 
-2.  **Resolve Ambiguities & Gather Missing Information:**
+2. **Resolve Ambiguities & Gather Missing Information:**
 
     - If key information is missing or requirements are unclear after initial review, formulate specific, targeted questions.
     - **External API Details:** If the project involves integration with external APIs, especially those that are less common or where you lack high confidence in your training data regarding their specific request/response schemas, and if a "Deep Research" phase was not conducted for these APIs:
@@ -446,7 +536,7 @@ To generate a masterful, comprehensive, and optimized prompt that can be used wi
     - Present questions to the user (batched logically if multiple) and await their input.
     - Document all decisions and clarifications received before proceeding.
 
-3.  **Iterative Technology Selection & Design (Interactive, if not YOLO mode):**
+3. **Iterative Technology Selection & Design (Interactive, if not YOLO mode):**
 
     - For each major architectural component or decision point (e.g., frontend framework, backend language/framework, database system, cloud provider, key services, communication patterns):
       - If multiple viable options exist based on requirements or research, present 2-3 choices, briefly outlining their pros, cons, and relevance to the project. Consider any preferences stated in `technical-preferences.md` when formulating these options and your recommendation.
@@ -455,7 +545,7 @@ To generate a masterful, comprehensive, and optimized prompt that can be used wi
       - Document the confirmed choice and its rationale within the architecture document.
     - **Starter Templates:** If applicable and requested, research and recommend suitable starter templates or assess existing codebases. Explain alignment with project goals and seek user confirmation.
 
-4.  **Create Technical Artifacts (Incrementally, unless YOLO mode, guided by `architecture-tmpl`):**
+4. **Create Technical Artifacts (Incrementally, unless YOLO mode, guided by `architecture-tmpl`):**
 
     - For each artifact or section of the main Architecture Document:
 
@@ -470,7 +560,7 @@ To generate a masterful, comprehensive, and optimized prompt that can be used wi
         - [Offer Advanced Self-Refinement & Elicitation Options](#offer-advanced-self-refinement--elicitation-options)
         - **Seek Approval:** Obtain explicit user approval for the section before moving to the next, or for the entire artifact if drafted holistically (in YOLO mode).
 
-5.  **Identify Missing Technical Stories / Refine Epics (Interactive):**
+5. **Identify Missing Technical Stories / Refine Epics (Interactive):**
 
     - Based on the designed architecture, identify any necessary technical stories/tasks that are not yet captured in the PRD or epics (e.g., "Set up CI/CD pipeline for frontend deployment," "Implement authentication module using JWT," "Create base Docker images for backend services," "Configure initial database schema based on data models").
     - Explain the importance of these technical stories for enabling the functional requirements and successful project execution.
@@ -478,7 +568,7 @@ To generate a masterful, comprehensive, and optimized prompt that can be used wi
     - Review existing epics/stories from the PRD and suggest technical considerations or acceptance criteria refinements to ensure they are implementable based on the chosen architecture. For example, specifying API endpoints to be called, data formats, or critical library versions.
     - After collaboration, prepare a concise summary detailing all proposed additions, updates, or modifications to epics and user stories. If no changes are identified, explicitly state this.
 
-6.  **Validate Architecture Against Checklist & Finalize Output:**
+6. **Validate Architecture Against Checklist & Finalize Output:**
     - Once the main architecture document components have been drafted and reviewed with the user, perform a comprehensive review using the `architect-checklist`.
     - Go through each item in the checklist to ensure the architecture document is comprehensive, addresses all key architectural concerns (e.g., security, scalability, maintainability, testability (including confirmation that coding standards and the testing strategy clearly define unit test location and naming conventions), developer experience), and that proposed solutions are robust.
     - For each checklist item, confirm its status (e.g., \[x] Completed, \[ ] N/A, \[!] Needs Attention).
@@ -523,14 +613,14 @@ Present the user with the following list of 'Advanced Reflective, Elicitation & 
 
 {Instruction for AI Agent: Display the title of each numbered item below. If the user asks what a specific option means, provide a brief explanation of the action you will take, drawing from detailed descriptions tailored for the context.}
 
-1.  **Critical Self-Review & User Goal Alignment**
-2.  **Generate & Evaluate Alternative Design Solutions**
-3.  **User Journey & Interaction Stress Test (Conceptual)**
-4.  **Deep Dive into Design Assumptions & Constraints**
-5.  **Usability & Accessibility Audit Review & Probing Questions**
-6.  **Collaborative Ideation & UI Feature Brainstorming**
-7.  **Elicit 'Unforeseen User Needs' & Future Interaction Questions**
-8.  **Finalize this Section and Proceed.**
+1. **Critical Self-Review & User Goal Alignment**
+2. **Generate & Evaluate Alternative Design Solutions**
+3. **User Journey & Interaction Stress Test (Conceptual)**
+4. **Deep Dive into Design Assumptions & Constraints**
+5. **Usability & Accessibility Audit Review & Probing Questions**
+6. **Collaborative Ideation & UI Feature Brainstorming**
+7. **Elicit 'Unforeseen User Needs' & Future Interaction Questions**
+8. **Finalize this Section and Proceed.**
 
 After I perform the selected action, we can discuss the outcome and decide on any further revisions for this section."
 
@@ -540,7 +630,7 @@ REPEAT by Asking the user if they would like to perform another Reflective, Elic
 
 
 ==================== START: create-deep-research-prompt ====================
-## Deep Research Phase
+# Deep Research Phase
 
 Leveraging advanced analytical capabilities, the Deep Research Phase with the PM is designed to provide targeted, strategic insights crucial for product definition. Unlike the broader exploratory research an Analyst might undertake, the PM utilizes deep research to:
 
@@ -551,13 +641,13 @@ Leveraging advanced analytical capabilities, the Deep Research Phase with the PM
 
 Choose this phase with the PM when you need to strategically validate a product direction, fill specific knowledge gaps critical for defining _what_ to build, or ensure a strong, evidence-backed foundation for your PRD, especially if initial Analyst research was not performed or requires deeper, product-focused investigation.
 
-### Purpose
+## Purpose
 
 - To gather foundational information, validate concepts, understand market needs, or analyze competitors when a comprehensive Project Brief from an Analyst is unavailable or insufficient.
 - To ensure the PM has a solid, data-informed basis for defining a valuable and viable product before committing to PRD specifics.
 - To de-risk product decisions by grounding them in targeted research, especially if the user is engaging the PM directly without prior Analyst work or if the initial brief lacks necessary depth.
 
-### Instructions
+## Instructions
 
 <critical_rule>Note on Deep Research Execution:</critical_rule>
 To perform deep research effectively, please be aware:
@@ -566,7 +656,7 @@ To perform deep research effectively, please be aware:
 - Alternatively, ensure you have activated or switched to a model/environment that has integrated deep research capabilities.
   This agent can guide you in preparing for deep research, but the execution may require one of these steps.
 
-1.  **Assess Inputs & Identify Gaps:**
+1. **Assess Inputs & Identify Gaps:**
     - Review any existing inputs (user's initial idea, high-level requirements, partial brief from Analyst, etc.).
     - Clearly identify critical knowledge gaps concerning:
       - Target audience (needs, pain points, behaviors, key segments).
@@ -574,29 +664,127 @@ To perform deep research effectively, please be aware:
       - Competitive analysis (key direct/indirect competitors, their offerings, strengths, weaknesses, market positioning, potential differentiators for this product).
       - Problem/Solution validation (evidence supporting the proposed solution's value and fit for the identified problem).
       - High-level technical or resource considerations (potential major roadblocks or dependencies).
-2.  **Formulate Research Plan:**
+2. **Formulate Research Plan:**
     - Define specific, actionable research questions to address the identified gaps.
     - Propose targeted research activities (e.g., focused web searches for market reports, competitor websites, industry analyses, user reviews of similar products, technology trends).
     - <important_note>Confirm this research plan, scope, and key questions with the user before proceeding with research execution.</important_note>
-3.  **Execute Research:**
+3. **Execute Research:**
     - Conduct the planned research activities systematically.
     - Prioritize gathering credible, relevant, and actionable insights that directly inform product definition and strategy.
-4.  **Synthesize & Present Findings:**
+4. **Synthesize & Present Findings:**
     - Organize and summarize key research findings in a clear, concise, and easily digestible manner (e.g., bullet points, brief summaries per research question).
     - Highlight the most critical implications for the product's vision, strategy, target audience, core features, and potential risks.
     - Present these synthesized findings and their implications to the user.
-5.  **Discussing and Utilizing Research Output:**
+5. **Discussing and Utilizing Research Output:**
     - The comprehensive findings/report from this Deep Research phase can be substantial. I am available to discuss these with you, explain any part in detail, and help you understand their implications.
     - **Options for Utilizing These Findings for PRD Generation:**
-      1.  **Full Handoff to New PM Session:** The complete research output can serve as a foundational document if you initiate a _new_ session with a Product Manager (PM) agent who will then execute the 'PRD Generate Task'.
-      2.  **Key Insights Summary for This Session:** I can prepare a concise summary of the most critical findings, tailored to be directly actionable as we (in this current session) transition to potentially invoking the 'PRD Generate Task'.
+      1. **Full Handoff to New PM Session:** The complete research output can serve as a foundational document if you initiate a _new_ session with a Product Manager (PM) agent who will then execute the 'PRD Generate Task'.
+      2. **Key Insights Summary for This Session:** I can prepare a concise summary of the most critical findings, tailored to be directly actionable as we (in this current session) transition to potentially invoking the 'PRD Generate Task'.
     - <critical_rule>Regardless of how you proceed, it is highly recommended that these research findings (either the full output or the key insights summary) are provided as direct input when invoking the 'PRD Generate Task'. This ensures the PRD is built upon a solid, evidence-based foundation.</critical_rule>
-6.  **Confirm Readiness for PRD Generation:**
+6. **Confirm Readiness for PRD Generation:**
     - Discuss with the user whether the gathered information provides a sufficient and confident foundation to proceed to the 'PRD Generate Task'.
     - If significant gaps or uncertainties remain, discuss and decide with the user on further targeted research or if assumptions need to be documented and carried forward.
     - Once confirmed, clearly state that the next step could be to invoke the 'PRD Generate Task' or, if applicable, revisit other phase options.
 
 ==================== END: create-deep-research-prompt ====================
+
+
+==================== START: create-doc-from-template ====================
+# Create Document from Template Task
+
+## Purpose
+
+- Generate documents from any specified template following embedded instructions
+- Support multiple document types through template-driven approach
+- Enable any persona to create consistent, well-structured documents
+
+## Instructions
+
+### 1. Identify Template and Context
+
+- Determine which template to use (user-provided or list available for selection to user)
+
+  - agent-config specific agents will list what docs they have available under this task, for each item consider it a unique task. So if the user had for example:
+
+    @{example}
+
+  - tasks:
+
+  - [Create Document](tasks#create-doc-from-template):
+
+    - [Prd](templates#prd-tmpl)
+
+    - [Architecture](templates#architecture-tmpl)
+
+    @{/example}
+
+    you would list `Create Document PRD` and `Create Document Architecture` as tasks the agent could perform.
+
+- Gather all relevant inputs, or ask for them, or else rely on user providing necessary details to complete the document
+- Understand the document purpose and target audience
+
+### 2. Determine Interaction Mode
+
+Confirm with the user their preferred interaction style:
+
+- **Incremental:** Work through chunks of the document.
+- **YOLO Mode:** Draft complete document making reasonable assumptions in one shot. (Can be entered also after starting incremental by just typing /yolo)
+
+### 3. Execute Template
+
+- Load specified template from `templates#*` or the /templates directory
+- Follow ALL embedded LLM instructions within the template
+- Process template markup according to `templates#template-format` conventions
+
+### 4. Template Processing Rules
+
+**CRITICAL: Never display template markup, LLM instructions, or examples to users**
+
+- Replace all {{placeholders}} with actual content
+- Execute all [[LLM: instructions]] internally
+- Process <<REPEAT>> sections as needed
+- Evaluate ^^CONDITION^^ blocks and include only if applicable
+- Use @{examples} for guidance but never output them
+
+### 5. Content Generation
+
+- **Incremental Mode**: Present each major section for review before proceeding
+- **YOLO Mode**: Generate all sections, then review complete document with user
+- Apply any elicitation protocols specified in template
+- Incorporate user feedback and iterate as needed
+
+### 6. Validation
+
+If template specifies a checklist:
+
+- Run the appropriate checklist against completed document
+- Document completion status for each item
+- Address any deficiencies found
+- Present validation summary to user
+
+### 7. Final Presentation
+
+- Present clean, formatted content only
+- Ensure all sections are complete
+- DO NOT truncate or summarize content
+- Begin directly with document content (no preamble)
+- Include any handoff prompts specified in template
+
+## Key Resources
+
+- **Template Format:** `templates#template-format`
+- **Available Templates:** All files in `templates#` directory
+- **Checklists:** As specified by template or persona
+- **User Preferences:** `data#technical-preferences`
+
+## Important Notes
+
+- This task is template and persona agnostic
+- All specific instructions are embedded in templates
+- Focus on faithful template execution and clean output
+- Template markup is for AI processing only - never expose to users
+
+==================== END: create-doc-from-template ====================
 
 
 ==================== START: create-frontend-architecture ====================
@@ -734,20 +922,172 @@ Present the user with the following list of 'Advanced Reflective, Elicitation & 
 
 {Instruction for AI Agent: Display the title of each numbered item below. If the user asks what a specific option means, provide a brief explanation of the action you will take, drawing from detailed descriptions tailored for the context.}
 
-1.  **Critical Self-Review & User Goal Alignment**
-2.  **Generate & Evaluate Alternative Design Solutions**
-3.  **User Journey & Interaction Stress Test (Conceptual)**
-4.  **Deep Dive into Design Assumptions & Constraints**
-5.  **Usability & Accessibility Audit Review & Probing Questions**
-6.  **Collaborative Ideation & UI Feature Brainstorming**
-7.  **Elicit 'Unforeseen User Needs' & Future Interaction Questions**
-8.  **Finalize this Section and Proceed.**
+1. **Critical Self-Review & User Goal Alignment**
+2. **Generate & Evaluate Alternative Design Solutions**
+3. **User Journey & Interaction Stress Test (Conceptual)**
+4. **Deep Dive into Design Assumptions & Constraints**
+5. **Usability & Accessibility Audit Review & Probing Questions**
+6. **Collaborative Ideation & UI Feature Brainstorming**
+7. **Elicit 'Unforeseen User Needs' & Future Interaction Questions**
+8. **Finalize this Section and Proceed.**
 
 After I perform the selected action, we can discuss the outcome and decide on any further revisions for this section."
 
 REPEAT by Asking the user if they would like to perform another Reflective, Elicitation & Brainstorming Action UNIT the user indicates it is time to proceed ot the next section (or selects #8)
 
 ==================== END: create-frontend-architecture ====================
+
+
+==================== START: create-infrastructure-architecture ====================
+# Infrastructure Architecture Creation Task
+
+## Purpose
+
+To design a comprehensive infrastructure architecture that defines all aspects of the technical infrastructure strategy, from cloud platform selection to deployment patterns. This architecture will serve as the definitive blueprint for the DevOps/Platform Engineering team to implement, ensuring consistency, security, and operational excellence across all infrastructure components.
+
+## Inputs
+
+- Product Requirements Document (PRD)
+- Main System Architecture Document
+- Technology Stack Document (`docs/tech-stack.md`)
+- Infrastructure Guidelines (`docs/infrastructure/guidelines.md`)
+- Any existing infrastructure documentation
+
+## Key Activities & Instructions
+
+### 1. Confirm Interaction Mode
+
+- Ask the user: "How would you like to proceed with creating the infrastructure architecture? We can work:
+  A. **Incrementally (Default & Recommended):** We'll go through each architectural decision and document section step-by-step. I'll present drafts, and we'll seek your feedback before moving to the next part. This is best for complex infrastructure designs.
+  B. **"YOLO" Mode:** I can produce a comprehensive initial draft of the infrastructure architecture for you to review more broadly first. We can then iterate on specific sections based on your feedback."
+- Request the user to select their preferred mode and proceed accordingly.
+
+### 2. Gather Infrastructure Requirements
+
+- Review the product requirements document to understand business needs and scale requirements
+- Analyze the main system architecture to identify infrastructure dependencies
+- Document non-functional requirements (performance, scalability, reliability, security)
+- Identify compliance and regulatory requirements affecting infrastructure
+- Map application architecture patterns to infrastructure needs
+- <critical_rule>Cross-reference with PRD Technical Assumptions to ensure alignment with repository and service architecture decisions</critical_rule>
+
+### 3. Design Infrastructure Architecture Strategy
+
+- **If "Incremental Mode" was selected:**
+  - For each major infrastructure domain:
+    - **a. Present Domain Purpose:** Explain what this infrastructure domain provides and its strategic importance
+    - **b. Present Strategic Options:** Provide 2-3 viable approaches with architectural pros and cons
+    - **c. Make Strategic Recommendation:** Recommend the best approach with clear architectural rationale
+    - **d. Incorporate Feedback:** Discuss with user and iterate based on feedback
+    - **e. [Offer Advanced Self-Refinement & Elicitation Options](#offer-advanced-self-refinement--elicitation-options)**
+    - **f. Document Architectural Decision:** Record the final strategic choice with justification
+
+- **If "YOLO Mode" was selected:**
+  - Design strategic approaches for all major infrastructure domains
+  - Document architectural decisions and rationales
+  - Present comprehensive infrastructure strategy for review
+  - Iterate based on feedback
+
+### 4. Document Infrastructure Architecture Blueprint
+
+- Populate all sections of the infrastructure architecture template:
+  - **Cloud Strategy & Platform Selection** - Multi-cloud vs single cloud, platform rationale
+  - **Network Architecture Patterns** - VPC design, connectivity strategies, security zones
+  - **Compute Architecture Strategy** - Container vs serverless vs VM strategies, scaling patterns
+  - **Data Architecture & Storage Strategy** - Database selection, data tier strategies, backup approaches
+  - **Security Architecture Framework** - Zero-trust patterns, identity strategies, encryption approaches
+  - **Observability Architecture** - Monitoring strategies, logging patterns, alerting frameworks
+  - **CI/CD Architecture Patterns** - Pipeline strategies, deployment patterns, environment promotion
+  - **Disaster Recovery Architecture** - RTO/RPO strategies, failover patterns, business continuity
+  - **Cost Optimization Framework** - Resource optimization strategies, cost allocation patterns
+  - **Environment Strategy** - Dev/staging/prod patterns, environment isolation approaches
+  - **Infrastructure Evolution Strategy** - Technology migration paths, scaling roadmaps
+  - **Cross-team Collaboration Model** - Integration with development teams, handoff protocols
+
+### 5. Implementation Feasibility Review & Collaboration
+
+- **Architect → DevOps/Platform Feedback Loop:**
+  - Present architectural blueprint summary to DevOps/Platform Engineering Agent for feasibility review
+  - Request specific feedback on:
+    - **Operational Complexity:** Are the proposed patterns implementable with current tooling and expertise?
+    - **Resource Constraints:** Do infrastructure requirements align with available resources and budgets?
+    - **Security Implementation:** Are security patterns achievable with current security toolchain?
+    - **Operational Overhead:** Will the proposed architecture create excessive operational burden?
+    - **Technology Constraints:** Are selected technologies compatible with existing infrastructure?
+  - Document all feasibility feedback and concerns raised by DevOps/Platform Engineering Agent
+  - Iterate on architectural decisions based on operational constraints and feedback
+  - <critical_rule>Address all critical feasibility concerns before proceeding to final architecture documentation</critical_rule>
+
+### 6. Create Infrastructure Architecture Diagrams
+
+- Develop high-level infrastructure strategy diagrams using Mermaid
+- Create network topology architecture diagrams
+- Document data flow and integration architecture diagrams
+- Illustrate deployment pipeline architecture patterns
+- Visualize environment relationship and promotion strategies
+- Design security architecture and trust boundary diagrams
+
+### 7. Define Implementation Handoff Strategy
+
+- Create clear specifications for DevOps/Platform Engineering implementation
+- Define architectural constraints and non-negotiable requirements
+- Specify technology selections with version requirements where critical
+- Document architectural patterns that must be followed during implementation
+- Create implementation validation criteria
+- Prepare architectural decision records (ADRs) for key infrastructure choices
+
+### 8. BMAD Integration Architecture
+
+- Design infrastructure architecture to support other BMAD agents:
+  - **Development Environment Architecture** - Local development patterns, testing infrastructure
+  - **Deployment Architecture** - How applications from Frontend/Backend agents will be deployed
+  - **Integration Architecture** - How infrastructure supports cross-service communication
+  - Document infrastructure requirements for each BMAD agent workflow
+
+### 9. Architecture Review and Finalization
+
+- Review architecture against system architecture for alignment
+- Validate infrastructure architecture supports all application requirements
+- Ensure architectural decisions are implementable within project constraints
+- Address any architectural gaps or inconsistencies
+- Prepare comprehensive architecture handoff documentation for implementation team
+
+## Output
+
+A comprehensive infrastructure architecture document that provides:
+
+1. **Strategic Infrastructure Blueprint** - High-level architecture strategy and patterns
+2. **Technology Selection Rationale** - Justified technology choices and architectural decisions
+3. **Implementation Specifications** - Clear guidance for DevOps/Platform Engineering implementation
+4. **Architectural Constraints** - Non-negotiable requirements and patterns
+5. **Integration Architecture** - How infrastructure supports application architecture
+6. **BMAD Workflow Support** - Infrastructure architecture supporting all agent workflows
+7. **Feasibility Validation** - Documented operational feedback and constraint resolution
+
+**Output file**: `docs/infrastructure-architecture.md`
+
+## Offer Advanced Self-Refinement & Elicitation Options
+
+Present the user with the following list of 'Advanced Reflective, Elicitation & Brainstorming Actions'. Explain that these are optional steps to help ensure quality, explore alternatives, and deepen the understanding of the current section before finalizing it and moving on. The user can select an action by number, or choose to skip this and proceed to finalize the section.
+
+"To ensure the quality of the current section: **[Specific Section Name]** and to ensure its robustness, explore alternatives, and consider all angles, I can perform any of the following actions. Please choose a number (8 to finalize and proceed):
+
+**Advanced Reflective, Elicitation & Brainstorming Actions I Can Take:**
+
+1. **Alternative Architecture Strategy Evaluation**
+2. **Scalability & Performance Architecture Stress Test (Theoretical)**
+3. **Security Architecture & Compliance Deep Dive**
+4. **Cost Architecture Analysis & Optimization Strategy Review**
+5. **Operational Excellence & Reliability Architecture Assessment**
+6. **Cross-Functional Integration & BMAD Workflow Analysis**
+7. **Future Technology & Migration Architecture Path Exploration**
+8. **Finalize this Section and Proceed.**
+
+After I perform the selected action, we can discuss the outcome and decide on any further revisions for this section."
+
+REPEAT by Asking the user if they would like to perform another Reflective, Elicitation & Brainstorming Action UNTIL the user indicates it is time to proceed to the next section (or selects #8)
+
+==================== END: create-infrastructure-architecture ====================
 
 
 ==================== START: create-next-story-task ====================
@@ -786,7 +1126,7 @@ To identify the next logical story based on project progress and epic definition
   - Verify its `Status` is 'Done' (or equivalent).
   - If not 'Done', present an alert to the user:
 
-    ```
+    ```plaintext
     ALERT: Found incomplete story:
     File: {lastEpicNum}.{lastStoryNum}.story.md
     Status: [current status]
@@ -855,236 +1195,333 @@ To identify the next logical story based on project progress and epic definition
 ==================== END: create-next-story-task ====================
 
 
+==================== START: create-platform-infrastructure ====================
+# Platform Infrastructure Implementation Task
+
+## Purpose
+
+To implement a comprehensive platform infrastructure stack based on the Infrastructure Architecture Document, including foundation infrastructure, container orchestration, GitOps workflows, service mesh, and developer experience platforms. This integrated approach ensures all platform components work synergistically to provide a complete, secure, and operationally excellent platform foundation.
+
+## Inputs
+
+- **Infrastructure Architecture Document** (`docs/infrastructure-architecture.md` - from Architect Agent)
+- Infrastructure Change Request (`docs/infrastructure/{ticketNumber}.change.md`)
+- Infrastructure Guidelines (`docs/infrastructure/guidelines.md`)
+- Technology Stack Document (`docs/tech-stack.md`)
+- `infrastructure-checklist.md` (for validation)
+
+## Key Activities & Instructions
+
+### 1. Confirm Interaction Mode
+
+- Ask the user: "How would you like to proceed with platform infrastructure implementation? We can work:
+  A. **Incrementally (Default & Recommended):** We'll implement each platform layer step-by-step (Foundation → Container Platform → GitOps → Service Mesh → Developer Experience), validating integration at each stage. This ensures thorough testing and operational readiness.
+  B. **"YOLO" Mode:** I'll implement the complete platform stack in logical groups, with validation at major integration milestones. This is faster but requires comprehensive end-to-end testing."
+- Request the user to select their preferred mode and proceed accordingly.
+
+### 2. Architecture Review & Implementation Planning
+
+- Review Infrastructure Architecture Document for complete platform specifications
+- Validate platform requirements against application architecture and business needs
+- Create integrated implementation roadmap with proper dependency sequencing
+- Plan resource allocation, security policies, and operational procedures across all platform layers
+- Document rollback procedures and risk mitigation strategies for the entire platform
+- <critical_rule>Verify the infrastructure change request is approved before beginning implementation. If not, HALT and inform the user.</critical_rule>
+
+### 3. Joint Implementation Planning Session
+
+- **Architect ↔ DevOps/Platform Collaborative Planning:**
+  - **Architecture Alignment Review:**
+    - Confirm understanding of architectural decisions and rationale with Architect Agent
+    - Validate interpretation of infrastructure architecture document
+    - Clarify any ambiguous or unclear architectural specifications
+    - Document agreed-upon implementation approach for each architectural component
+  - **Implementation Strategy Collaboration:**
+    - **Technology Implementation Planning:** Collaborate on specific technology versions, configurations, and deployment patterns
+    - **Security Implementation Planning:** Align on security control implementation approach and validation methods
+    - **Integration Planning:** Plan component integration sequence and validation checkpoints
+    - **Operational Considerations:** Discuss operational patterns, monitoring strategies, and maintenance approaches
+    - **Resource Planning:** Confirm resource allocation, sizing, and optimization strategies
+  - **Risk & Constraint Discussion:**
+    - Identify potential implementation risks and mitigation strategies
+    - Document operational constraints that may impact architectural implementation
+    - Plan contingency approaches for high-risk implementation areas
+    - Establish escalation triggers for implementation issues requiring architectural input
+  - **Implementation Validation Planning:**
+    - Define validation criteria for each platform component and integration point
+    - Plan testing strategies and acceptance criteria with Architect input
+    - Establish quality gates and review checkpoints throughout implementation
+    - Document success metrics and performance benchmarks
+  - **Documentation & Knowledge Transfer Planning:**
+    - Plan documentation approach and knowledge transfer requirements
+    - Define operational runbooks and troubleshooting guide requirements
+    - Establish ongoing collaboration points for implementation support
+- <critical_rule>Complete joint planning session before beginning platform implementation. Document all planning outcomes and agreements.</critical_rule>
+
+### 4. Foundation Infrastructure Implementation
+
+- **If "Incremental Mode" was selected:**
+  - **a. Foundation Infrastructure Setup:**
+    - Present foundation infrastructure scope and its role in the platform stack
+    - Implement core cloud resources, networking, storage, and security foundations
+    - Configure basic monitoring, logging, and operational tooling
+    - Validate foundation readiness for platform components
+    - [Offer Advanced Self-Refinement & Elicitation Options](#offer-advanced-self-refinement--elicitation-options)
+
+- **If "YOLO Mode" was selected:**
+  - Implement complete foundation infrastructure per architecture specifications
+  - Prepare foundation for all platform components simultaneously
+
+### 5. Container Platform Implementation
+
+- **If "Incremental Mode" was selected:**
+  - **b. Container Orchestration Platform:**
+    - Present container platform scope and integration with foundation infrastructure
+    - Install and configure container orchestration platform (Kubernetes/AKS/EKS/GKE)
+    - Implement RBAC, security policies, and resource management
+    - Configure networking, storage classes, and operational tooling
+    - Validate container platform functionality and readiness for applications
+    - [Offer Advanced Self-Refinement & Elicitation Options](#offer-advanced-self-refinement--elicitation-options)
+
+- **If "YOLO Mode" was selected:**
+  - Deploy complete container platform integrated with foundation infrastructure
+
+### 6. GitOps Workflows Implementation
+
+- **If "Incremental Mode" was selected:**
+  - **c. GitOps Configuration Management:**
+    - Present GitOps scope and integration with container platform
+    - Implement GitOps operators and configuration management systems
+    - Configure repository structures, sync policies, and environment promotion
+    - Set up policy enforcement and drift detection
+    - Validate GitOps workflows and configuration management
+    - [Offer Advanced Self-Refinement & Elicitation Options](#offer-advanced-self-refinement--elicitation-options)
+
+- **If "YOLO Mode" was selected:**
+  - Deploy complete GitOps stack integrated with container and foundation platforms
+
+### 7. Service Mesh Implementation
+
+- **If "Incremental Mode" was selected:**
+  - **d. Service Communication Platform:**
+    - Present service mesh scope and integration with existing platform layers
+    - Install and configure service mesh control and data planes
+    - Implement traffic management, security policies, and observability
+    - Configure service discovery, load balancing, and communication policies
+    - Validate service mesh functionality and inter-service communication
+    - [Offer Advanced Self-Refinement & Elicitation Options](#offer-advanced-self-refinement--elicitation-options)
+
+- **If "YOLO Mode" was selected:**
+  - Deploy complete service mesh integrated with all platform components
+
+### 8. Developer Experience Platform Implementation
+
+- **If "Incremental Mode" was selected:**
+  - **e. Developer Experience Platform:**
+    - Present developer platform scope and integration with complete platform stack
+    - Implement developer portals, self-service capabilities, and golden path templates
+    - Configure platform APIs, automation workflows, and productivity tooling
+    - Set up developer onboarding and documentation systems
+    - Validate developer experience and workflow integration
+    - [Offer Advanced Self-Refinement & Elicitation Options](#offer-advanced-self-refinement--elicitation-options)
+
+- **If "YOLO Mode" was selected:**
+  - Deploy complete developer experience platform integrated with all infrastructure
+
+### 9. Platform Integration & Security Hardening
+
+- Implement end-to-end security policies across all platform layers
+- Configure integrated monitoring and observability for the complete platform stack
+- Set up platform-wide backup, disaster recovery, and business continuity procedures
+- Implement cost optimization and resource management across all platform components
+- Configure platform-wide compliance monitoring and audit logging
+- Validate complete platform security posture and operational readiness
+
+### 10. Platform Operations & Automation
+
+- Set up comprehensive platform monitoring, alerting, and operational dashboards
+- Implement automated platform maintenance, updates, and lifecycle management
+- Configure platform health checks, performance optimization, and capacity planning
+- Set up incident response procedures and operational runbooks for the complete platform
+- Implement platform SLA monitoring and service level management
+- Validate operational excellence and platform reliability
+
+### 11. BMAD Workflow Integration
+
+- Verify complete platform supports all BMAD agent workflows:
+  - **Frontend/Backend Development** - Test complete application development and deployment workflows
+  - **Infrastructure Development** - Validate infrastructure-as-code development and deployment
+  - **Cross-Agent Collaboration** - Ensure seamless collaboration between all agent types
+  - **CI/CD Integration** - Test complete continuous integration and deployment pipelines
+  - **Monitoring & Observability** - Verify complete application and infrastructure monitoring
+- Document comprehensive integration verification results and workflow optimizations
+
+### 12. Platform Validation & Knowledge Transfer
+
+- Execute comprehensive platform testing with realistic workloads and scenarios
+- Validate against all sections of infrastructure checklist for complete platform
+- Perform security scanning, compliance verification, and performance testing
+- Test complete platform disaster recovery and resilience procedures
+- Complete comprehensive knowledge transfer to operations and development teams
+- Document complete platform configuration, operational procedures, and troubleshooting guides
+- <critical_rule>Update infrastructure change request status to reflect completion</critical_rule>
+
+### 13. Implementation Review & Architect Collaboration
+
+- **Post-Implementation Collaboration with Architect:**
+  - **Implementation Validation Review:**
+    - Present implementation outcomes against architectural specifications
+    - Document any deviations from original architecture and rationale
+    - Validate that implemented platform meets architectural intent and requirements
+  - **Lessons Learned & Architecture Feedback:**
+    - Provide feedback to Architect Agent on implementation experience
+    - Document implementation challenges and successful patterns
+    - Recommend architectural improvements for future implementations
+    - Share operational insights that could influence future architectural decisions
+  - **Knowledge Transfer & Documentation Review:**
+    - Review operational documentation with Architect for completeness and accuracy
+    - Ensure architectural decisions are properly documented in operational guides
+    - Plan ongoing collaboration for platform evolution and maintenance
+- Document collaboration outcomes and recommendations for future architecture-implementation cycles
+
+### 14. Platform Handover & Continuous Improvement
+
+- Establish platform monitoring and continuous improvement processes
+- Set up feedback loops with development teams and platform users
+- Plan platform evolution roadmap and technology upgrade strategies
+- Implement platform metrics and KPI tracking for operational excellence
+- Create platform governance and change management procedures
+- Establish platform support and maintenance responsibilities
+
+## Output
+
+Fully operational and integrated platform infrastructure with:
+
+1. **Complete Foundation Infrastructure** - Cloud resources, networking, storage, and security foundations
+2. **Production-Ready Container Platform** - Orchestration with proper security, monitoring, and resource management
+3. **Operational GitOps Workflows** - Version-controlled operations with automated sync and policy enforcement
+4. **Service Mesh Communication Platform** - Advanced service communication with security and observability
+5. **Developer Experience Platform** - Self-service capabilities with productivity tooling and golden paths
+6. **Integrated Platform Operations** - Comprehensive monitoring, automation, and operational excellence
+7. **BMAD Workflow Support** - Verified integration supporting all agent development and deployment patterns
+8. **Platform Documentation** - Complete operational guides, troubleshooting resources, and developer documentation
+9. **Joint Planning Documentation** - Collaborative planning outcomes and architectural alignment records
+10. **Implementation Review Results** - Post-implementation validation and architect collaboration outcomes
+
+## Offer Advanced Self-Refinement & Elicitation Options
+
+Present the user with the following list of 'Advanced Reflective, Elicitation & Brainstorming Actions'. Explain that these are optional steps to help ensure quality, explore alternatives, and deepen the understanding of the current platform layer before finalizing it and moving to the next. The user can select an action by number, or choose to skip this and proceed.
+
+"To ensure the quality of the current platform layer: **[Specific Platform Layer Name]** and to ensure its robustness, explore alternatives, and consider all angles, I can perform any of the following actions. Please choose a number (8 to finalize and proceed):
+
+**Advanced Reflective, Elicitation & Brainstorming Actions I Can Take:**
+
+1. **Platform Layer Security Hardening & Integration Review**
+2. **Performance Optimization & Resource Efficiency Analysis**
+3. **Operational Excellence & Automation Enhancement**
+4. **Platform Integration & Dependency Validation**
+5. **Developer Experience & Workflow Optimization**
+6. **Disaster Recovery & Platform Resilience Testing (Theoretical)**
+7. **BMAD Agent Workflow Integration & Cross-Platform Testing**
+8. **Finalize this Platform Layer and Proceed.**
+
+After I perform the selected action, we can discuss the outcome and decide on any further improvements for this platform layer."
+
+REPEAT by Asking the user if they would like to perform another Reflective, Elicitation & Brainstorming Action UNTIL the user indicates it is time to proceed to the next platform layer (or selects #8)
+
+==================== END: create-platform-infrastructure ====================
+
+
 ==================== START: create-prd ====================
 # PRD Generate Task
 
 ## Purpose
 
-- Transform inputs into core product definition documents conforming to the `prd-tmpl` template.
-- Define clear MVP scope focused on essential functionality.
-- Provide foundation for Architect and eventually AI dev agents.
-
-Remember as you follow the upcoming instructions:
-
-- Your documents form the foundation for the entire development process.
-- Output will be directly used by the Architect to create an architecture document and solution designs to make definitive technical decisions.
-- Your epics/stories will ultimately be transformed into development tasks.
-- While you focus on the "what" not "how", be precise enough to support a logical sequential order of operations that once later further details can logically be followed where a story will complete what is needed.
+- Transform inputs into core product definition documents conforming to a PRD template
+- Define clear MVP scope focused on essential functionality
+- Provide foundation for Architect and Design Architect to help create technical artifacts which will in turn later draft further details for very junior engineers or simple dev ai agents.
 
 ## Instructions
 
-### 1. Define Project Workflow Context
+### 1. Review Inputs
 
-- Before PRD generation, ask the user to choose their intended workflow:
+Review all provided inputs including project brief, research documents, prd template and user ideas to guide PRD generation.
 
-  A. **Outcome Focused (Default):** (Agent defines outcome-focused User Stories, leaving detailed technical "how" for Architect/Scrum Master. Capture nuances as "Notes for Architect/Scrum Master in the Prompt for Architect.")
+### 2. Determine Interaction Mode
 
-  B. **Very Technical (Not Recommended):** (Agent adopts a "solution-aware" stance, providing more detailed, implementation-aware Acceptance Criteria to bridge to development, potentially with no architect involved at all, instead filling in all of the technical details. \<important_note\>When this workflow is selected, you are also responsible for collaboratively defining and documenting key technical foundations—such as technology stack choices and proposed application structure—directly within a new, dedicated section of the PRD template titled '[OPTIONAL: For Simplified PM-to-Development Workflow Only] Core Technical Decisions & Application Structure'.\</important_note\>)
+Confirm with the user their preferred interaction style:
 
-- Explain this choice sets a default detail level, which can be fine-tuned later per story/epic.
+- **Incremental:** Work through sections one at a time via chat messages as defined in the template.
 
-### 2. Determine Interaction Mode (for PRD Structure & Detail)
+- **YOLO Mode:** Draft the complete PRD making assumptions as necessary. Present full document at once, noting which sections required assumptions.
 
-- Confirm with the user their preferred interaction style for creating the PRD if unknown - INCREMENTAL or YOLO?:
-  - **Incrementally (Default):** Address PRD sections sequentially, seeking feedback on each. For Epics/Stories: first present the ordered Epic list for approval, then detail stories for each Epic one by one.
-  - **"YOLO" Mode:** Draft a more comprehensive PRD (or significant portions with multiple sections, epics, and stories) for a single, larger review.
+### 3. Execute Template
 
-### 3. Review inputs provided
+- Use the `prd-tmpl` template (or user-specified alternative template)
+- Follow all embedded LLM instructions within the template
+- Template contains section-specific guidance and examples
 
-Review the inputs provided so far, such as a project brief, any research, and user input and ideas.
+### 4. Template Processing Notes
 
-### 4. Process PRD Sections
+- **Incremental Mode**: Present each section for review before proceeding
+- **YOLO Mode**: Generate all sections, then review with user
 
-Inform the user we will work through the PRD sections in order 1 at a time (if not YOLO) - the template contains your instructions for each section. After presenting the section to the user, also [Offer Advanced Self-Refinement & Elicitation Options](#offer-advanced-self-refinement--elicitation-options)
+Process all template elements according to `templates#template-format` conventions.
 
-<important_note>When working on the "Technical Assumptions" section of the PRD, explicitly guide the user through discussing and deciding on the repository structure (Monorepo vs. Polyrepo) and the high-level service architecture (e.g., Monolith, Microservices, Serverless functions within a Monorepo). Emphasize that this is a critical decision point that will be formally documented here with its rationale, impacting MVP scope and informing the Architect. Ensure this decision is captured in the PRD's `Technical Assumptions` and then reiterated in the `Initial Architect Prompt` section of the PRD.</important_note>
+**CRITICAL: Never display or output template markup formatting, LLM instructions or examples - they MUST be used by you the agent only, AND NEVER shown to users in chat or document output**
 
-<important_note>Specifically for "Simplified PM-to-Development Workflow":
-After discussing initial PRD sections (like Problem, Goals, User Personas) and before or in parallel with defining detailed Epics and Stories, you must introduce and populate the "[OPTIONAL: For Simplified PM-to-Development Workflow Only] Core Technical Decisions & Application Structure" section of the PRD.
+**Content Presentation Guidelines:**
 
-    When doing so, first check if a `docs/technical-preferences.md` file exists or has been provided. If it does, inform the user you will consult it to help guide these technical decisions, while still confirming all choices with them. Ask targeted questions such as:
+- Present only the final, clean content to users
+- Replace template variables with actual project-specific content
+- Process all conditional logic internally - show only relevant sections
+- For Canvas mode: Update the document with clean, formatted content only
 
-1.  "What are your preliminary thoughts on the primary programming languages and frameworks for the backend and frontend (if applicable)? (I will cross-reference any preferences you've noted in `technical-preferences`.)"
-2.  "Which database system are you considering? (Checking preferences...)"
-3.  "Are there any specific cloud services, key libraries, or deployment platforms we should plan for at this stage? (Checking preferences...)"
-4.  "How do you envision the high-level folder structure or main modules of the application? Could you describe the key components and their responsibilities? (I'll consider any structural preferences noted.)"
-5.  "Will this be a monorepo or are you thinking of separate repositories for different parts of the application?"
-    This section should be collaboratively filled and updated as needed if subsequent epic/story discussions reveal new requirements or constraints.
+### 7. Prepare Handoffs
 
-</important_note\>
+Based on PRD content, prepare appropriate next-step prompts:
 
-<important_note>
+**If UI Component Exists:**
 
-For the Epic and Story Section (if in Incremental mode for these), prepare in memory what you think the initial epic and story list so we can work through this incrementally, use all of the information you have learned that has been provided thus far to follow the guidelines in the section below [Guiding Principles for Epic and User Story Generation](https://www.google.com/search?q=%23guiding-principles-for-epic-and-user-story-generation).
+1. Add Design Architect prompt in designated template section
+2. Recommend: User engages Design Architect first for UI/UX Specification
+3. Then proceed to Architect with enriched PRD
 
-</important_note>
+**If No UI Component:**
 
-#### 4A. Epic Presentation and Drafting Strategy
+- Add Architect prompt in designated template section
+- Recommend proceeding directly to Architect
 
-You will first present the user with the epic titles and descriptions, so that the user can determine if it is correct and what is expected, or if there is a major epic missing.
+### 8. Validate with Checklist
 
-#### 4B. Story Generation and Review within Epics (Incremental Mode)
+- Run the `pm-checklist` against completed PRD
+- Document completion status for each checklist item
+- Present summary by section, address any deficiencies
+- Generate final checklist report with findings and resolutions
 
-**Once the Epic List is approved, THEN for each Epic, you will proceed as follows:**
+### 9. Final Presentation
 
-i. **Draft All Stories for the Current Epic:** Based on the Epic's goal and your discussions, draft all the necessary User Stories for this Epic, following the "Guiding Principles for Epic and User Story Generation".
-ii. **Perform Internal Story Analysis & Propose Order:** Before presenting the stories for detailed review, you will internally:
-a. **Re-evaluate for Cross-Cutting Concerns:** Ensure no drafted stories should actually be ACs or notes within other stories, as per the guiding principle. Make necessary adjustments.
-b. **Analyze for Logical Sequence & Dependencies:** For all stories within this Epic, determine their logical implementation order. Identify any direct prerequisite stories (e.g., "Story X must be completed before Story Y because Y consumes the output of X").
-c. **Formulate a Rationale for the Order:** Prepare a brief explanation for why the proposed order is logical.
-iii. **Present Proposed Story Set & Order for the Epic:** Present to the user:
-a. The complete list of (potentially revised) User Stories for the Epic.
-b. The proposed sequence for these stories.
-c. Your brief rationale for the sequencing and any key dependencies you've noted (e.g., "I suggest this order because Story 2 builds upon the data prepared in Story 1, and Story 3 then uses the results from Story 2.").
-iv. **Collaborative Review of Sequence & Story Shells:** Discuss this proposed structure and sequence with the user. Make any adjustments to the story list or their order based on user feedback.
-v. Once the overall structure and sequence of stories for the Epic are agreed upon, THEN you will work with the user to review the details (description, Acceptance Criteria) of each story in the agreed-upon sequence for that Epic.
-vi. [Offer Advanced Self-Refinement & Elicitation Options](#offer-advanced-self-refinement--elicitation-options)
+**General Guidelines:**
 
-#### 4C. Present Complete Draft
+- Present complete documents in clean, full format
+- DO NOT truncate unchanged information
+- Begin directly with content (no introductory text needed)
+- Ensure all template sections are properly filled
+- **NEVER show template markup, instructions, or processing directives to users**
 
-Present the user with the complete full draft once all sections are completed (or as per YOLO mode interaction).
+## Key Resources
 
-#### 4D. UI Component Handoff Note
+- **Default Template:** `templates#prd-tmpl`
+- **Validation:** `checklists#pm-checklist`
+- **User Preferences:** `data#technical-preferences`
+- **Elicitation Protocol:** `tasks#advanced-elicitation`
 
-If there is a UI component to this PRD, you can inform the user that the Design Architect should take this final output.
+## Important Notes
 
-### 5\. Checklist Assessment
-
-- Use the `pm-checklist` to consider each item in the checklist is met (or n/a) against the PRD.
-- Document completion status for each item.
-- Present the user with summary of each section of the checklist before going to the next section.
-- Address deficiencies with user for input or suggested updates or corrections.
-- Once complete and address, output the final checklist with all the checked items or skipped items, the section summary table, and any final notes. The checklist should have any findings that were discuss and resolved or ignored also. This will be a nice artifact for the user to keep.
-
-### 6\. Produce the PRD
-
-Produce the PRD with PM Prompt per the `prd-tmpl` utilizing the following guidance:
-
-**General Presentation & Content:**
-
-- Present Project Briefs (drafts or final) in a clean, full format.
-- Crucially, DO NOT truncate information that has not changed from a previous version.
-- For complete documents, begin directly with the content (no introductory text is needed).
-
-<important_note>
-**Next Steps for UI/UX Specification (If Applicable):**
-
-- If the product described in this PRD includes a user interface:
-
-  1.  **Include Design Architect Prompt in PRD:** You will add a dedicated section in the PRD document you are producing, specifically at the location marked `(END Checklist START Design Architect UI/UX Specification Mode Prompt)` (as per the `prd-tmpl` structure). This section will contain a prompt for the **Design Architect** agent.
-
-      - The prompt should clearly state that the Design Architect is to operate in its **'UI/UX Specification Mode'**.
-
-      - It should instruct the Design Architect to use this PRD as primary input to collaboratively define and document detailed UI/UX specifications. This might involve creating/populating a `front-end-spec-tmpl` and ensuring key UI/UX considerations are integrated or referenced back into the PRD to enrich it.
-
-      - Example prompt text to insert:
-
-        ```markdown
-        ## Prompt for Design Architect (UI/UX Specification Mode)
-
-        **Objective:** Elaborate on the UI/UX aspects of the product defined in this PRD.
-        **Mode:** UI/UX Specification Mode
-        **Input:** This completed PRD document.
-        **Key Tasks:**
-
-        1. Review the product goals, user stories, and any UI-related notes herein.
-        2. Collaboratively define detailed user flows, wire-frames (conceptual), and key screen mockups/descriptions.
-        3. Specify usability requirements and accessibility considerations.
-        4. Populate or create the `front-end-spec-tmpl` document.
-        5. Ensure that this PRD is updated or clearly references the detailed UI/UX specifications derived from your work, so that it provides a comprehensive foundation for subsequent architecture and development phases.
-
-        Please guide the user through this process to enrich the PRD with detailed UI/UX specifications.
-        ```
-
-  2.  **Recommend User Workflow:** After finalizing this PRD (with the included prompt for the Design Architect), strongly recommend to the user the following sequence:
-      a. First, engage the **Design Architect** agent (using the prompt you've embedded in the PRD) to operate in **'UI/UX Specification Mode'**. Explain that this step is crucial for detailing the user interface and experience, and the output (e.g., a populated `front-end-spec-tmpl` and potentially updated PRD sections) will be vital.
-      b. Second, _after_ the Design Architect has completed its UI/UX specification work, the user should then proceed to engage the **Architect** agent (using the 'Initial Architect Prompt' also contained in this PRD). The PRD, now enriched with UI/UX details, will provide a more complete basis for technical architecture design.
-
-- If the product does not include a user interface, you will simply recommend proceeding to the Architect agent using the 'Initial Architect Prompt' in the PRD.
-  </important_note>
-
-## Guiding Principles for Epic and User Story Generation
-
-### I. Strategic Foundation: Define Core Value & MVP Scope Rigorously
-
-Understand & Clarify Core Needs: Start by deeply understanding and clarifying the core problem this product solves, the essential needs of the defined User Personas (or system actors), and the key business objectives for the Minimum Viable Product (MVP).
-Challenge Scope Relentlessly: Actively challenge all requested features and scope at every stage. For each potential feature or story, rigorously ask, "Does this directly support the core MVP goals and provide significant value to a target User Persona?" Clearly identify and defer non-essential functionalities to a Post-MVP backlog.
-
-### II. Structuring the Work: Value-Driven Epics & Logical Sequencing
-
-Organize into Deployable, Value-Driven Epics: Structure the MVP scope into Epics. Each Epic must be designed to deliver a significant, end-to-end, and fully deployable increment of testable functionality that provides tangible value to the user or business. Epics should represent logical functional blocks or coherent user journeys.
-
-Logical Epic Sequencing & Foundational Work:
-Ensure the sequence of Epics follows a logical implementation order, making dependencies between Epics clear and explicitly managed.
-The first Epic must always establish the foundational project infrastructure (e.g., initial app setup, Git repository, CI/CD pipeline, core cloud service configurations, basic user authentication shell if needed universally) necessary to support its own deployable functionality and that of subsequent Epics.
-Ensure Logical Story Sequencing and Dependency Awareness within Epics:
-After initially drafting all User Stories for an Epic, but before detailed review with the user, you (the AI Agent executing this task) must explicitly perform an internal review to establish a logical sequence for these stories.
-For each story, identify if it has direct prerequisite stories within the same Epic or from already completed Epics.
-Propose a clear story order to the user, explaining the rationale based on these dependencies (e.g., "Story X needs to be done before Story Y because..."). Make significant dependencies visible, perhaps as a note within the story description.
-
-### III. Crafting Effective User Stories: Vertical Slices Focused on Value & Clarity
-
-Define Stories as "Vertical Slices": Within each Epic, define User Stories as "vertical slices". This means each story must deliver a complete piece of functionality that achieves a specific user or system goal, potentially cutting through all necessary layers (e.g., UI, API, business logic, database).
-Focus on "What" and "Why," Not "How":
-Stories will primarily focus on the functional outcome, the user value ("what"), and the reason ("why"). Avoid detailing technical implementation ("how") in the story's main description.
-The "As a {specific User Persona/system actor}, I want {to perform an action / achieve a goal} so that {I can realize a benefit / achieve a reason}" format is standard. Be precise and consistent when defining the '{specific User Persona/system actor}', ensuring it aligns with defined personas.
-Ensure User Value, Not Just Technical Tasks: User Stories must articulate clear user or business value. Avoid creating stories that are purely technical tasks (e.g., "Set up database," "Refactor module X"), unless they are part of the foundational infrastructure Epic or are essential enabling tasks that are explicitly linked to, and justified by, a user-facing story that delivers value.
-Appropriate Sizing & Strive for Independence:
-Ensure User Stories are appropriately sized for a typical development iteration (i.e., can be completed by the team in one sprint/iteration).
-If a vertically sliced story is too large or complex, work with the user to split it into smaller, still valuable, and still vertically sliced increments.
-Where feasible, define stories so they can be developed, tested, and potentially delivered independently of others. If dependencies are unavoidable, they must be clearly identified and managed through sequencing.
-
-### IV. Detailing Stories: Comprehensive Acceptance Criteria & Developer Enablement
-
-Clear, Comprehensive, and Testable Acceptance Criteria (ACs):
-Every User Story will have detailed, unambiguous, and testable Acceptance Criteria.
-ACs precisely define what "done" means for that story from a functional perspective and serve as the basis for verification.
-Where a specific Non-Functional Requirement (NFR) from the PRD (e.g., a particular performance target for a specific action, a security constraint for handling certain data) is critical to a story, ensure it is explicitly captured or clearly referenced within its Acceptance Criteria.
-Integrate Developer Enablement & Iterative Design into Stories:
-Local Testability (CLI): For User Stories involving backend processing or data components, ensure the ACs consider or specify the ability for developers to test that functionality locally (e.g., via CLI commands, local service instances).
-Iterative Schema Definition: Database schema changes (new tables, columns) should be introduced iteratively within the User Stories that functionally require them, rather than defining the entire schema upfront.
-Upfront UI/UX Standards (if UI applicable): For User Stories with a UI component, ACs should explicitly state requirements regarding look and feel, responsiveness, and adherence to chosen frameworks/libraries (e.g., Tailwind CSS, shadcn/ui) from the start.
-
-### V. Managing Complexity: Addressing Cross-Cutting Concerns Effectively
-
-Critically Evaluate for Cross-Cutting Concerns:
-Before finalizing a User Story, evaluate if the described functionality is truly a discrete, user-facing piece of value or if it represents a cross-cutting concern (e.g., a specific logging requirement, a UI theme element used by many views, a core technical enabler for multiple other stories, a specific aspect of error handling).
-If a piece of functionality is identified as a cross-cutting concern:
-a. Avoid creating a separate User Story for it unless it delivers standalone, testable user value.
-b. Instead, integrate the requirement as specific Acceptance Criteria within all relevant User Stories it impacts.
-c. Alternatively, if it's a pervasive technical enabler or a non-functional requirement that applies broadly, document it clearly within the relevant PRD section (e.g., 'Non Functional Requirements', 'Technical Assumptions'), or as a note for the Architect within the story descriptions if highly specific.
-
-Your aim is to ensure User Stories remain focused on delivering measurable user value, while still capturing all necessary technical and functional details appropriately.
-
-### VI. Ensuring Quality & Smooth Handoff
-
-Maintain Clarity for Handoff and Architectural Freedom: User Stories, their descriptions, and Acceptance Criteria must be detailed enough to provide the Architect with a clear and comprehensive understanding of "what is required," while allowing for architectural flexibility on the "how."
-Confirm "Ready" State: Before considering an Epic's stories complete, ensure each story is effectively "ready" for subsequent architectural review or development planning – meaning it's clear, understandable, testable, its dependencies are noted, and any foundational work (like from the first epic) is accounted for.
-
-## Offer Advanced Self-Refinement & Elicitation Options
-
-(This section is called when needed prior to this)
-
-Present the user with the following list of 'Advanced Reflective, Elicitation & Brainstorming Actions'. Explain that these are optional steps to help ensure quality, explore alternatives, and deepen the understanding of the current section before finalizing it and moving on. The user can select an action by number, or choose to skip this and proceed to finalize the section.
-
-"To ensure the quality of the current section: **[Specific Section Name]** and to ensure its robustness, explore alternatives, and consider all angles, I can perform any of the following actions. Please choose a number (8 to finalize and proceed):
-
-**Advanced Reflective, Elicitation & Brainstorming Actions I Can Take:**
-
-{Instruction for AI Agent: Display the title of each numbered item below. If the user asks what a specific option means, provide a brief explanation of the action you will take, drawing from detailed descriptions tailored for the context.}
-
-1.  **Critical Self-Review & User Goal Alignment**
-2.  **Generate & Evaluate Alternative Design Solutions**
-3.  **User Journey & Interaction Stress Test (Conceptual)**
-4.  **Deep Dive into Design Assumptions & Constraints**
-5.  **Usability & Accessibility Audit Review & Probing Questions**
-6.  **Collaborative Ideation & UI Feature Brainstorming**
-7.  **Elicit 'Unforeseen User Needs' & Future Interaction Questions**
-8.  **Finalize this Section and Proceed.**
-
-After I perform the selected action, we can discuss the outcome and decide on any further revisions for this section."
-
-REPEAT by Asking the user if they would like to perform another Reflective, Elicitation & Brainstorming Action UNIT the user indicates it is time to proceed ot the next section (or selects #8)
+- This task is template-agnostic - users may specify custom templates
+- All detailed instructions are embedded in templates, not this task file
+- Focus on orchestration and workflow
+- **Template markup is for AI processing only - users should never see output indicators from templates#template-format**
 
 ==================== END: create-prd ====================
 
@@ -1365,5 +1802,327 @@ Please provide:
 Would you like to proceed with library indexing? Please provide the required input above.
 
 ==================== END: library-indexing-task ====================
+
+
+==================== START: review-infrastructure ====================
+# Infrastructure Review Task
+
+## Purpose
+
+To conduct a thorough review of existing infrastructure to identify improvement opportunities, security concerns, and alignment with best practices. This task helps maintain infrastructure health, optimize costs, and ensure continued alignment with organizational requirements.
+
+## Inputs
+
+- Current infrastructure documentation
+- Monitoring and logging data
+- Recent incident reports
+- Cost and performance metrics
+- `infrastructure-checklist.md` (primary review framework)
+
+## Key Activities & Instructions
+
+### 1. Confirm Interaction Mode
+
+- Ask the user: "How would you like to proceed with the infrastructure review? We can work:
+  A. **Incrementally (Default & Recommended):** We'll work through each section of the checklist methodically, documenting findings for each item before moving to the next section. This provides a thorough review.
+  B. **"YOLO" Mode:** I can perform a rapid assessment of all infrastructure components and present a comprehensive findings report. This is faster but may miss nuanced details."
+- Request the user to select their preferred mode and proceed accordingly.
+
+### 2. Prepare for Review
+
+- Gather and organize current infrastructure documentation
+- Access monitoring and logging systems for operational data
+- Review recent incident reports for recurring issues
+- Collect cost and performance metrics
+- <critical_rule>Establish review scope and boundaries with the user before proceeding</critical_rule>
+
+### 3. Conduct Systematic Review
+
+- **If "Incremental Mode" was selected:**
+  - For each section of the infrastructure checklist:
+    - **a. Present Section Focus:** Explain what aspects of infrastructure this section reviews
+    - **b. Work Through Items:** Examine each checklist item against current infrastructure
+    - **c. Document Current State:** Record how current implementation addresses or fails to address each item
+    - **d. Identify Gaps:** Document improvement opportunities with specific recommendations
+    - **e. [Offer Advanced Self-Refinement & Elicitation Options](#offer-advanced-self-refinement--elicitation-options)**
+    - **f. Section Summary:** Provide an assessment summary before moving to the next section
+
+- **If "YOLO Mode" was selected:**
+  - Rapidly assess all infrastructure components
+  - Document key findings and improvement opportunities
+  - Present a comprehensive review report
+  - <important_note>After presenting the full review in YOLO mode, you MAY still offer the 'Advanced Reflective & Elicitation Options' menu for deeper investigation of specific areas with issues.</important_note>
+
+### 4. Generate Findings Report
+
+- Summarize review findings by category (Security, Performance, Cost, Reliability, etc.)
+- Prioritize identified issues (Critical, High, Medium, Low)
+- Document recommendations with estimated effort and impact
+- Create an improvement roadmap with suggested timelines
+- Highlight cost optimization opportunities
+
+### 5. BMAD Integration Assessment
+
+- Evaluate how current infrastructure supports other BMAD agents:
+  - **Development Support:** Assess how infrastructure enables Frontend Dev (Mira), Backend Dev (Enrique), and Full Stack Dev workflows
+  - **Product Alignment:** Verify infrastructure supports PRD requirements from Product Owner (Oli)
+  - **Architecture Compliance:** Check if implementation follows Architect (Alphonse) decisions
+  - Document any gaps in BMAD integration
+
+### 6. Architectural Escalation Assessment
+
+- **DevOps/Platform → Architect Escalation Review:**
+  - Evaluate review findings for issues requiring architectural intervention:
+    - **Technical Debt Escalation:**
+      - Identify infrastructure technical debt that impacts system architecture
+      - Document technical debt items that require architectural redesign vs. operational fixes
+      - Assess cumulative technical debt impact on system maintainability and scalability
+    - **Performance/Security Issue Escalation:**
+      - Identify performance bottlenecks that require architectural solutions (not just operational tuning)
+      - Document security vulnerabilities that need architectural security pattern changes
+      - Assess capacity and scalability issues requiring architectural scaling strategy revision
+    - **Technology Evolution Escalation:**
+      - Identify outdated technologies that need architectural migration planning
+      - Document new technology opportunities that could improve system architecture
+      - Assess technology compatibility issues requiring architectural integration strategy changes
+  - **Escalation Decision Matrix:**
+    - **Critical Architectural Issues:** Require immediate Architect Agent involvement for system redesign
+    - **Significant Architectural Concerns:** Recommend Architect Agent review for potential architecture evolution
+    - **Operational Issues:** Can be addressed through operational improvements without architectural changes
+    - **Unclear/Ambiguous Issues:** When escalation level is uncertain, consult with user for guidance and decision
+  - Document escalation recommendations with clear justification and impact assessment
+  - <critical_rule>If escalation classification is unclear or ambiguous, HALT and ask user for guidance on appropriate escalation level and approach</critical_rule>
+
+### 7. Present and Plan
+
+- Prepare an executive summary of key findings
+- Create detailed technical documentation for implementation teams
+- Develop an action plan for critical and high-priority items
+- **Prepare Architectural Escalation Report** (if applicable):
+  - Document all findings requiring Architect Agent attention
+  - Provide specific recommendations for architectural changes or reviews
+  - Include impact assessment and priority levels for architectural work
+  - Prepare escalation summary for Architect Agent collaboration
+- Schedule follow-up reviews for specific areas
+- <important_note>Present findings in a way that enables clear decision-making on next steps and escalation needs.</important_note>
+
+### 8. Execute Escalation Protocol
+
+- **If Critical Architectural Issues Identified:**
+  - **Immediate Escalation to Architect Agent:**
+    - Present architectural escalation report with critical findings
+    - Request architectural review and potential redesign for identified issues
+    - Collaborate with Architect Agent on priority and timeline for architectural changes
+    - Document escalation outcomes and planned architectural work
+- **If Significant Architectural Concerns Identified:**
+  - **Scheduled Architectural Review:**
+    - Prepare detailed technical findings for Architect Agent review
+    - Request architectural assessment of identified concerns
+    - Schedule collaborative planning session for potential architectural evolution
+    - Document architectural recommendations and planned follow-up
+- **If Only Operational Issues Identified:**
+  - Proceed with operational improvement planning without architectural escalation
+  - Monitor for future architectural implications of operational changes
+- **If Unclear/Ambiguous Escalation Needed:**
+  - **User Consultation Required:**
+    - Present unclear findings and escalation options to user
+    - Request user guidance on appropriate escalation level and approach
+    - Document user decision and rationale for escalation approach
+    - Proceed with user-directed escalation path
+- <critical_rule>All critical architectural escalations must be documented and acknowledged by Architect Agent before proceeding with implementation</critical_rule>
+
+## Output
+
+A comprehensive infrastructure review report that includes:
+
+1. **Current state assessment** for each infrastructure component
+2. **Prioritized findings** with severity ratings
+3. **Detailed recommendations** with effort/impact estimates
+4. **Cost optimization opportunities**
+5. **BMAD integration assessment**
+6. **Architectural escalation assessment** with clear escalation recommendations
+7. **Action plan** for critical improvements and architectural work
+8. **Escalation documentation** for Architect Agent collaboration (if applicable)
+
+## Offer Advanced Self-Refinement & Elicitation Options
+
+Present the user with the following list of 'Advanced Reflective, Elicitation & Brainstorming Actions'. Explain that these are optional steps to help ensure quality, explore alternatives, and deepen the understanding of the current section before finalizing it and moving on. The user can select an action by number, or choose to skip this and proceed to finalize the section.
+
+"To ensure the quality of the current section: **[Specific Section Name]** and to ensure its robustness, explore alternatives, and consider all angles, I can perform any of the following actions. Please choose a number (8 to finalize and proceed):
+
+**Advanced Reflective, Elicitation & Brainstorming Actions I Can Take:**
+
+1. **Root Cause Analysis & Pattern Recognition**
+2. **Industry Best Practice Comparison**
+3. **Future Scalability & Growth Impact Assessment**
+4. **Security Vulnerability & Threat Model Analysis**
+5. **Operational Efficiency & Automation Opportunities**
+6. **Cost Structure Analysis & Optimization Strategy**
+7. **Compliance & Governance Gap Assessment**
+8. **Finalize this Section and Proceed.**
+
+After I perform the selected action, we can discuss the outcome and decide on any further revisions for this section."
+
+REPEAT by Asking the user if they would like to perform another Reflective, Elicitation & Brainstorming Action UNTIL the user indicates it is time to proceed to the next section (or selects #8)
+
+==================== END: review-infrastructure ====================
+
+
+==================== START: validate-infrastructure ====================
+# Infrastructure Validation Task
+
+## Purpose
+
+To comprehensively validate platform infrastructure changes against security, reliability, operational, and compliance requirements before deployment. This task ensures all platform infrastructure meets organizational standards, follows best practices, and properly integrates with the broader BMAD ecosystem.
+
+## Inputs
+
+- Infrastructure Change Request (`docs/infrastructure/{ticketNumber}.change.md`)
+- **Infrastructure Architecture Document** (`docs/infrastructure-architecture.md` - from Architect Agent)
+- Infrastructure Guidelines (`docs/infrastructure/guidelines.md`)
+- Technology Stack Document (`docs/tech-stack.md`)
+- `infrastructure-checklist.md` (primary validation framework - 16 comprehensive sections)
+
+## Key Activities & Instructions
+
+### 1. Confirm Interaction Mode
+
+- Ask the user: "How would you like to proceed with platform infrastructure validation? We can work:
+  A. **Incrementally (Default & Recommended):** We'll work through each section of the checklist step-by-step, documenting compliance or gaps for each item before moving to the next section. This is best for thorough validation and detailed documentation of the complete platform stack.
+  B. **"YOLO" Mode:** I can perform a rapid assessment of all checklist items and present a comprehensive validation report for review. This is faster but may miss nuanced details that would be caught in the incremental approach."
+- Request the user to select their preferred mode (e.g., "Please let me know if you'd prefer A or B.").
+- Once the user chooses, confirm the selected mode and proceed accordingly.
+
+### 2. Initialize Platform Validation
+
+- Review the infrastructure change documentation to understand platform implementation scope and purpose
+- Analyze the infrastructure architecture document for platform design patterns and compliance requirements
+- Examine infrastructure guidelines for organizational standards across all platform components
+- Prepare the validation environment and tools for comprehensive platform testing
+- <critical_rule>Verify the infrastructure change request is approved for validation. If not, HALT and inform the user.</critical_rule>
+
+### 3. Architecture Design Review Gate
+
+- **DevOps/Platform → Architect Design Review:**
+  - Conduct systematic review of infrastructure architecture document for implementability
+  - Evaluate architectural decisions against operational constraints and capabilities:
+    - **Implementation Complexity:** Assess if proposed architecture can be implemented with available tools and expertise
+    - **Operational Feasibility:** Validate that operational patterns are achievable within current organizational maturity
+    - **Resource Availability:** Confirm required infrastructure resources are available and within budget constraints
+    - **Technology Compatibility:** Verify selected technologies integrate properly with existing infrastructure
+    - **Security Implementation:** Validate that security patterns can be implemented with current security toolchain
+    - **Maintenance Overhead:** Assess ongoing operational burden and maintenance requirements
+  - Document design review findings and recommendations:
+    - **Approved Aspects:** Document architectural decisions that are implementable as designed
+    - **Implementation Concerns:** Identify architectural decisions that may face implementation challenges
+    - **Required Modifications:** Recommend specific changes needed to make architecture implementable
+    - **Alternative Approaches:** Suggest alternative implementation patterns where needed
+  - **Collaboration Decision Point:**
+    - If **critical implementation blockers** identified: HALT validation and escalate to Architect Agent for architectural revision
+    - If **minor concerns** identified: Document concerns and proceed with validation, noting required implementation adjustments
+    - If **architecture approved**: Proceed with comprehensive platform validation
+  - <critical_rule>All critical design review issues must be resolved before proceeding to detailed validation</critical_rule>
+
+### 4. Execute Comprehensive Platform Validation Process
+
+- **If "Incremental Mode" was selected:**
+  - For each section of the infrastructure checklist (Sections 1-16):
+    - **a. Present Section Purpose:** Explain what this section validates and why it's important for platform operations
+    - **b. Work Through Items:** Present each checklist item, guide the user through validation, and document compliance or gaps
+    - **c. Evidence Collection:** For each compliant item, document how compliance was verified
+    - **d. Gap Documentation:** For each non-compliant item, document specific issues and proposed remediation
+    - **e. Platform Integration Testing:** For platform engineering sections (13-16), validate integration between platform components
+    - **f. [Offer Advanced Self-Refinement & Elicitation Options](#offer-advanced-self-refinement--elicitation-options)**
+    - **g. Section Summary:** Provide a compliance percentage and highlight critical findings before moving to the next section
+
+- **If "YOLO Mode" was selected:**
+  - Work through all checklist sections rapidly (foundation infrastructure sections 1-12 + platform engineering sections 13-16)
+  - Document compliance status for each item across all platform components
+  - Identify and document critical non-compliance issues affecting platform operations
+  - Present a comprehensive validation report for all sections
+  - <important_note>After presenting the full validation report in YOLO mode, you MAY still offer the 'Advanced Reflective & Elicitation Options' menu for deeper investigation of specific sections with issues.</important_note>
+
+### 5. Generate Comprehensive Platform Validation Report
+
+- Summarize validation findings by section across all 16 checklist areas
+- Calculate and present overall compliance percentage for complete platform stack
+- Clearly document all non-compliant items with remediation plans prioritized by platform impact
+- Highlight critical security or operational risks affecting platform reliability
+- Include design review findings and architectural implementation recommendations
+- Provide validation signoff recommendation based on complete platform assessment
+- Document platform component integration validation results
+
+### 6. BMAD Integration Assessment
+
+- Review how platform infrastructure changes support other BMAD agents:
+  - **Development Agent Alignment:** Verify platform infrastructure supports Frontend Dev, Backend Dev, and Full Stack Dev requirements including:
+    - Container platform development environment provisioning
+    - GitOps workflows for application deployment
+    - Service mesh integration for development testing
+    - Developer experience platform self-service capabilities
+  - **Product Alignment:** Ensure platform infrastructure implements PRD requirements from Product Owner including:
+    - Scalability and performance requirements through container platform
+    - Deployment automation through GitOps workflows
+    - Service reliability through service mesh implementation
+  - **Architecture Alignment:** Validate that platform implementation aligns with architecture decisions including:
+    - Technology selections implemented correctly across all platform components
+    - Security architecture implemented in container platform, service mesh, and GitOps
+    - Integration patterns properly implemented between platform components
+  - Document all integration points and potential impacts on other agents' workflows
+
+### 7. Next Steps Recommendation
+
+- If validation successful:
+  - Prepare platform deployment recommendation with component dependencies
+  - Outline monitoring requirements for complete platform stack
+  - Suggest knowledge transfer activities for platform operations
+  - Document platform readiness certification
+- If validation failed:
+  - Prioritize remediation actions by platform component and integration impact
+  - Recommend blockers vs. non-blockers for platform deployment
+  - Schedule follow-up validation with focus on failed platform components
+  - Document platform risks and mitigation strategies
+- If design review identified architectural issues:
+  - **Escalate to Architect Agent** for architectural revision and re-design
+  - Document specific architectural changes required for implementability
+  - Schedule follow-up design review after architectural modifications
+- Update documentation with validation results across all platform components
+- <important_note>Always ensure the Infrastructure Change Request status is updated to reflect the platform validation outcome.</important_note>
+
+## Output
+
+A comprehensive platform validation report documenting:
+
+1. **Architecture Design Review Results** - Implementability assessment and architectural recommendations
+2. **Compliance percentage by checklist section** (all 16 sections including platform engineering)
+3. **Detailed findings for each non-compliant item** across foundation and platform components
+4. **Platform integration validation results** documenting component interoperability
+5. **Remediation recommendations with priority levels** based on platform impact
+6. **BMAD integration assessment results** for complete platform stack
+7. **Clear signoff recommendation** for platform deployment readiness or architectural revision requirements
+8. **Next steps for implementation or remediation** prioritized by platform dependencies
+
+## Offer Advanced Self-Refinement & Elicitation Options
+
+Present the user with the following list of 'Advanced Reflective, Elicitation & Brainstorming Actions'. Explain that these are optional steps to help ensure quality, explore alternatives, and deepen the understanding of the current section before finalizing it and moving on. The user can select an action by number, or choose to skip this and proceed to finalize the section.
+
+"To ensure the quality of the current section: **[Specific Section Name]** and to ensure its robustness, explore alternatives, and consider all angles, I can perform any of the following actions. Please choose a number (8 to finalize and proceed):
+
+**Advanced Reflective, Elicitation & Brainstorming Actions I Can Take:**
+
+1. **Critical Security Assessment & Risk Analysis**
+2. **Platform Integration & Component Compatibility Evaluation**
+3. **Cross-Environment Consistency Review**
+4. **Technical Debt & Maintainability Analysis**
+5. **Compliance & Regulatory Alignment Deep Dive**
+6. **Cost Optimization & Resource Efficiency Analysis**
+7. **Operational Resilience & Platform Failure Mode Testing (Theoretical)**
+8. **Finalize this Section and Proceed.**
+
+After I perform the selected action, we can discuss the outcome and decide on any further revisions for this section."
+
+REPEAT by Asking the user if they would like to perform another Reflective, Elicitation & Brainstorming Action UNTIL the user indicates it is time to proceed to the next section (or selects #8)
+
+==================== END: validate-infrastructure ====================
 
 

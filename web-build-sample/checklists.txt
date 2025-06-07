@@ -257,7 +257,7 @@ This checklist serves as a comprehensive framework for the Architect to validate
 - [ ] Validation and error checking approaches are defined
 - [ ] Self-healing mechanisms are incorporated where possible
 - [ ] Testing patterns are clearly defined
-- [ ] Debugging guidance is provided 
+- [ ] Debugging guidance is provided
 
 ==================== END: architect-checklist ====================
 
@@ -337,7 +337,7 @@ This checklist serves as a comprehensive framework for the Architect to validate
 
 ## 5. Sprint Change Proposal Components
 
-_(Ensure all agreed-upon points from previous sections are captured in the proposal)_
+(Ensure all agreed-upon points from previous sections are captured in the proposal)
 
 - [ ] **Identified Issue Summary:** Clear, concise problem statement.
 - [ ] **Epic Impact Summary:** How epics are affected.
@@ -363,6 +363,7 @@ _(Ensure all agreed-upon points from previous sections are captured in the propo
 # Frontend Architecture Document Review Checklist
 
 ## Purpose
+
 This checklist is for the Design Architect to use after completing the "Frontend Architecture Mode" and populating the `front-end-architecture-tmpl.txt` (or `.md`) document. It ensures all sections are comprehensively covered and meet quality standards before finalization.
 
 ---
@@ -396,10 +397,12 @@ This checklist is for the Design Architect to use after completing the "Frontend
 ## IV. Component Breakdown & Implementation Details
 
 ### Component Naming & Organization
+
 - [ ] Are conventions for naming components (e.g., PascalCase) described?
 - [ ] Is the organization of components on the filesystem clearly explained (reiterating from directory structure if needed)?
 
 ### Template for Component Specification
+
 - [ ] Is the "Template for Component Specification" itself complete and well-defined?
   - [ ] Does it include fields for: Purpose, Source File(s), Visual Reference?
   - [ ] Does it include a table structure for Props (Name, Type, Required, Default, Description)?
@@ -412,6 +415,7 @@ This checklist is for the Design Architect to use after completing the "Frontend
 - [ ] Is there a clear statement that this template should be used for most feature-specific components?
 
 ### Foundational/Shared Components (if any specified upfront)
+
 - [ ] If any foundational/shared UI components are specified, do they follow the "Template for Component Specification"?
 - [ ] Is the rationale for specifying these components upfront clear?
 
@@ -508,9 +512,498 @@ This checklist is for the Design Architect to use after completing the "Frontend
 - [ ] Have all placeholders (e.g., `{Project Name}`, `{e.g., ...}`) been filled in or removed where appropriate?
 - [ ] Has the document been reviewed for clarity, consistency, and completeness by the Design Architect?
 - [ ] Are all linked documents (Main Architecture, UI/UX Spec) finalized or stable enough for this document to rely on?
-- [ ] Is the document ready to be shared with the development team? 
+- [ ] Is the document ready to be shared with the development team?
 
 ==================== END: frontend-architecture-checklist ====================
+
+
+==================== START: infrastructure-checklist ====================
+# Infrastructure Change Validation Checklist
+
+This checklist serves as a comprehensive framework for validating infrastructure changes before deployment to production. The DevOps/Platform Engineer should systematically work through each item, ensuring the infrastructure is secure, compliant, resilient, and properly implemented according to organizational standards.
+
+## 1. SECURITY & COMPLIANCE
+
+### 1.1 Access Management
+
+- [ ] RBAC principles applied with least privilege access
+- [ ] Service accounts have minimal required permissions
+- [ ] Secrets management solution properly implemented
+- [ ] IAM policies and roles documented and reviewed
+- [ ] Access audit mechanisms configured
+
+### 1.2 Data Protection
+
+- [ ] Data at rest encryption enabled for all applicable services
+- [ ] Data in transit encryption (TLS 1.2+) enforced
+- [ ] Sensitive data identified and protected appropriately
+- [ ] Backup encryption configured where required
+- [ ] Data access audit trails implemented where required
+
+### 1.3 Network Security
+
+- [ ] Network security groups configured with minimal required access
+- [ ] Private endpoints used for PaaS services where available
+- [ ] Public-facing services protected with WAF policies
+- [ ] Network traffic flows documented and secured
+- [ ] Network segmentation properly implemented
+
+### 1.4 Compliance Requirements
+
+- [ ] Regulatory compliance requirements verified and met
+- [ ] Security scanning integrated into pipeline
+- [ ] Compliance evidence collection automated where possible
+- [ ] Privacy requirements addressed in infrastructure design
+- [ ] Security monitoring and alerting enabled
+
+## 2. INFRASTRUCTURE AS CODE
+
+### 2.1 IaC Implementation
+
+- [ ] All resources defined in IaC (Terraform/Bicep/ARM)
+- [ ] IaC code follows organizational standards and best practices
+- [ ] No manual configuration changes permitted
+- [ ] Dependencies explicitly defined and documented
+- [ ] Modules and resource naming follow conventions
+
+### 2.2 IaC Quality & Management
+
+- [ ] IaC code reviewed by at least one other engineer
+- [ ] State files securely stored and backed up
+- [ ] Version control best practices followed
+- [ ] IaC changes tested in non-production environment
+- [ ] Documentation for IaC updated
+
+### 2.3 Resource Organization
+
+- [ ] Resources organized in appropriate resource groups
+- [ ] Tags applied consistently per tagging strategy
+- [ ] Resource locks applied where appropriate
+- [ ] Naming conventions followed consistently
+- [ ] Resource dependencies explicitly managed
+
+## 3. RESILIENCE & AVAILABILITY
+
+### 3.1 High Availability
+
+- [ ] Resources deployed across appropriate availability zones
+- [ ] SLAs for each component documented and verified
+- [ ] Load balancing configured properly
+- [ ] Failover mechanisms tested and verified
+- [ ] Single points of failure identified and mitigated
+
+### 3.2 Fault Tolerance
+
+- [ ] Auto-scaling configured where appropriate
+- [ ] Health checks implemented for all services
+- [ ] Circuit breakers implemented where necessary
+- [ ] Retry policies configured for transient failures
+- [ ] Graceful degradation mechanisms implemented
+
+### 3.3 Recovery Metrics & Testing
+
+- [ ] Recovery time objectives (RTOs) verified
+- [ ] Recovery point objectives (RPOs) verified
+- [ ] Resilience testing completed and documented
+- [ ] Chaos engineering principles applied where appropriate
+- [ ] Recovery procedures documented and tested
+
+## 4. BACKUP & DISASTER RECOVERY
+
+### 4.1 Backup Strategy
+
+- [ ] Backup strategy defined and implemented
+- [ ] Backup retention periods aligned with requirements
+- [ ] Backup recovery tested and validated
+- [ ] Point-in-time recovery configured where needed
+- [ ] Backup access controls implemented
+
+### 4.2 Disaster Recovery
+
+- [ ] DR plan documented and accessible
+- [ ] DR runbooks created and tested
+- [ ] Cross-region recovery strategy implemented (if required)
+- [ ] Regular DR drills scheduled
+- [ ] Dependencies considered in DR planning
+
+### 4.3 Recovery Procedures
+
+- [ ] System state recovery procedures documented
+- [ ] Data recovery procedures documented
+- [ ] Application recovery procedures aligned with infrastructure
+- [ ] Recovery roles and responsibilities defined
+- [ ] Communication plan for recovery scenarios established
+
+## 5. MONITORING & OBSERVABILITY
+
+### 5.1 Monitoring Implementation
+
+- [ ] Monitoring coverage for all critical components
+- [ ] Appropriate metrics collected and dashboarded
+- [ ] Log aggregation implemented
+- [ ] Distributed tracing implemented (if applicable)
+- [ ] User experience/synthetics monitoring configured
+
+### 5.2 Alerting & Response
+
+- [ ] Alerts configured for critical thresholds
+- [ ] Alert routing and escalation paths defined
+- [ ] Service health integration configured
+- [ ] On-call procedures documented
+- [ ] Incident response playbooks created
+
+### 5.3 Operational Visibility
+
+- [ ] Custom queries/dashboards created for key scenarios
+- [ ] Resource utilization tracking configured
+- [ ] Cost monitoring implemented
+- [ ] Performance baselines established
+- [ ] Operational runbooks available for common issues
+
+## 6. PERFORMANCE & OPTIMIZATION
+
+### 6.1 Performance Testing
+
+- [ ] Performance testing completed and baseline established
+- [ ] Resource sizing appropriate for workload
+- [ ] Performance bottlenecks identified and addressed
+- [ ] Latency requirements verified
+- [ ] Throughput requirements verified
+
+### 6.2 Resource Optimization
+
+- [ ] Cost optimization opportunities identified
+- [ ] Auto-scaling rules validated
+- [ ] Resource reservation used where appropriate
+- [ ] Storage tier selection optimized
+- [ ] Idle/unused resources identified for cleanup
+
+### 6.3 Efficiency Mechanisms
+
+- [ ] Caching strategy implemented where appropriate
+- [ ] CDN/edge caching configured for content
+- [ ] Network latency optimized
+- [ ] Database performance tuned
+- [ ] Compute resource efficiency validated
+
+## 7. OPERATIONS & GOVERNANCE
+
+### 7.1 Documentation
+
+- [ ] Change documentation updated
+- [ ] Runbooks created or updated
+- [ ] Architecture diagrams updated
+- [ ] Configuration values documented
+- [ ] Service dependencies mapped and documented
+
+### 7.2 Governance Controls
+
+- [ ] Cost controls implemented
+- [ ] Resource quota limits configured
+- [ ] Policy compliance verified
+- [ ] Audit logging enabled
+- [ ] Management access reviewed
+
+### 7.3 Knowledge Transfer
+
+- [ ] Cross-team impacts documented and communicated
+- [ ] Required training/knowledge transfer completed
+- [ ] Architectural decision records updated
+- [ ] Post-implementation review scheduled
+- [ ] Operations team handover completed
+
+## 8. CI/CD & DEPLOYMENT
+
+### 8.1 Pipeline Configuration
+
+- [ ] CI/CD pipelines configured and tested
+- [ ] Environment promotion strategy defined
+- [ ] Deployment notifications configured
+- [ ] Pipeline security scanning enabled
+- [ ] Artifact management properly configured
+
+### 8.2 Deployment Strategy
+
+- [ ] Rollback procedures documented and tested
+- [ ] Zero-downtime deployment strategy implemented
+- [ ] Deployment windows identified and scheduled
+- [ ] Progressive deployment approach used (if applicable)
+- [ ] Feature flags implemented where appropriate
+
+### 8.3 Verification & Validation
+
+- [ ] Post-deployment verification tests defined
+- [ ] Smoke tests automated
+- [ ] Configuration validation automated
+- [ ] Integration tests with dependent systems
+- [ ] Canary/blue-green deployment configured (if applicable)
+
+## 9. NETWORKING & CONNECTIVITY
+
+### 9.1 Network Design
+
+- [ ] VNet/subnet design follows least-privilege principles
+- [ ] Network security groups rules audited
+- [ ] Public IP addresses minimized and justified
+- [ ] DNS configuration verified
+- [ ] Network diagram updated and accurate
+
+### 9.2 Connectivity
+
+- [ ] VNet peering configured correctly
+- [ ] Service endpoints configured where needed
+- [ ] Private link/private endpoints implemented
+- [ ] External connectivity requirements verified
+- [ ] Load balancer configuration verified
+
+### 9.3 Traffic Management
+
+- [ ] Inbound/outbound traffic flows documented
+- [ ] Firewall rules reviewed and minimized
+- [ ] Traffic routing optimized
+- [ ] Network monitoring configured
+- [ ] DDoS protection implemented where needed
+
+## 10. COMPLIANCE & DOCUMENTATION
+
+### 10.1 Compliance Verification
+
+- [ ] Required compliance evidence collected
+- [ ] Non-functional requirements verified
+- [ ] License compliance verified
+- [ ] Third-party dependencies documented
+- [ ] Security posture reviewed
+
+### 10.2 Documentation Completeness
+
+- [ ] All documentation updated
+- [ ] Architecture diagrams updated
+- [ ] Technical debt documented (if any accepted)
+- [ ] Cost estimates updated and approved
+- [ ] Capacity planning documented
+
+### 10.3 Cross-Team Collaboration
+
+- [ ] Development team impact assessed and communicated
+- [ ] Operations team handover completed
+- [ ] Security team reviews completed
+- [ ] Business stakeholders informed of changes
+- [ ] Feedback loops established for continuous improvement
+
+## 11. BMAD WORKFLOW INTEGRATION
+
+### 11.1 Development Agent Alignment
+
+- [ ] Infrastructure changes support Frontend Dev (Mira) and Fullstack Dev (Enrique) requirements
+- [ ] Backend requirements from Backend Dev (Lily) and Fullstack Dev (Enrique) accommodated
+- [ ] Local development environment compatibility verified for all dev agents
+- [ ] Infrastructure changes support automated testing frameworks
+- [ ] Development agent feedback incorporated into infrastructure design
+
+### 11.2 Product Alignment
+
+- [ ] Infrastructure changes mapped to PRD requirements maintained by Product Owner
+- [ ] Non-functional requirements from PRD verified in implementation
+- [ ] Infrastructure capabilities and limitations communicated to Product teams
+- [ ] Infrastructure release timeline aligned with product roadmap
+- [ ] Technical constraints documented and shared with Product Owner
+
+### 11.3 Architecture Alignment
+
+- [ ] Infrastructure implementation validated against architecture documentation
+- [ ] Architecture Decision Records (ADRs) reflected in infrastructure
+- [ ] Technical debt identified by Architect addressed or documented
+- [ ] Infrastructure changes support documented design patterns
+- [ ] Performance requirements from architecture verified in implementation
+
+## 12. ARCHITECTURE DOCUMENTATION VALIDATION
+
+### 12.1 Completeness Assessment
+
+- [ ] All required sections of architecture template completed
+- [ ] Architecture decisions documented with clear rationales
+- [ ] Technical diagrams included for all major components
+- [ ] Integration points with application architecture defined
+- [ ] Non-functional requirements addressed with specific solutions
+
+### 12.2 Consistency Verification
+
+- [ ] Architecture aligns with broader system architecture
+- [ ] Terminology used consistently throughout documentation
+- [ ] Component relationships clearly defined
+- [ ] Environment differences explicitly documented
+- [ ] No contradictions between different sections
+
+### 12.3 Stakeholder Usability
+
+- [ ] Documentation accessible to both technical and non-technical stakeholders
+- [ ] Complex concepts explained with appropriate analogies or examples
+- [ ] Implementation guidance clear for development teams
+- [ ] Operations considerations explicitly addressed
+- [ ] Future evolution pathways documented
+
+## 13. CONTAINER PLATFORM VALIDATION
+
+### 13.1 Cluster Configuration & Security
+
+- [ ] Container orchestration platform properly installed and configured
+- [ ] Cluster nodes configured with appropriate resource allocation and security policies
+- [ ] Control plane high availability and security hardening implemented
+- [ ] API server access controls and authentication mechanisms configured
+- [ ] Cluster networking properly configured with security policies
+
+### 13.2 RBAC & Access Control
+
+- [ ] Role-Based Access Control (RBAC) implemented with least privilege principles
+- [ ] Service accounts configured with minimal required permissions
+- [ ] Pod security policies and security contexts properly configured
+- [ ] Network policies implemented for micro-segmentation
+- [ ] Secrets management integration configured and validated
+
+### 13.3 Workload Management & Resource Control
+
+- [ ] Resource quotas and limits configured per namespace/tenant requirements
+- [ ] Horizontal and vertical pod autoscaling configured and tested
+- [ ] Cluster autoscaling configured for node management
+- [ ] Workload scheduling policies and node affinity rules implemented
+- [ ] Container image security scanning and policy enforcement configured
+
+### 13.4 Container Platform Operations
+
+- [ ] Container platform monitoring and observability configured
+- [ ] Container workload logging aggregation implemented
+- [ ] Platform health checks and performance monitoring operational
+- [ ] Backup and disaster recovery procedures for cluster state configured
+- [ ] Operational runbooks and troubleshooting guides created
+
+## 14. GITOPS WORKFLOWS VALIDATION
+
+### 14.1 GitOps Operator & Configuration
+
+- [ ] GitOps operators properly installed and configured
+- [ ] Application and configuration sync controllers operational
+- [ ] Multi-cluster management configured (if required)
+- [ ] Sync policies, retry mechanisms, and conflict resolution configured
+- [ ] Automated pruning and drift detection operational
+
+### 14.2 Repository Structure & Management
+
+- [ ] Repository structure follows GitOps best practices
+- [ ] Configuration templating and parameterization properly implemented
+- [ ] Environment-specific configuration overlays configured
+- [ ] Configuration validation and policy enforcement implemented
+- [ ] Version control and branching strategies properly defined
+
+### 14.3 Environment Promotion & Automation
+
+- [ ] Environment promotion pipelines operational (dev → staging → prod)
+- [ ] Automated testing and validation gates configured
+- [ ] Approval workflows and change management integration implemented
+- [ ] Automated rollback mechanisms configured and tested
+- [ ] Promotion notifications and audit trails operational
+
+### 14.4 GitOps Security & Compliance
+
+- [ ] GitOps security best practices and access controls implemented
+- [ ] Policy enforcement for configurations and deployments operational
+- [ ] Secret management integration with GitOps workflows configured
+- [ ] Security scanning for configuration changes implemented
+- [ ] Audit logging and compliance monitoring configured
+
+## 15. SERVICE MESH VALIDATION
+
+### 15.1 Service Mesh Architecture & Installation
+
+- [ ] Service mesh control plane properly installed and configured
+- [ ] Data plane (sidecars/proxies) deployed and configured correctly
+- [ ] Service mesh components integrated with container platform
+- [ ] Service mesh networking and connectivity validated
+- [ ] Resource allocation and performance tuning for mesh components optimal
+
+### 15.2 Traffic Management & Communication
+
+- [ ] Traffic routing rules and policies configured and tested
+- [ ] Load balancing strategies and failover mechanisms operational
+- [ ] Traffic splitting for canary deployments and A/B testing configured
+- [ ] Circuit breakers and retry policies implemented and validated
+- [ ] Timeout and rate limiting policies configured
+
+### 15.3 Service Mesh Security
+
+- [ ] Mutual TLS (mTLS) implemented for service-to-service communication
+- [ ] Service-to-service authorization policies configured
+- [ ] Identity and access management integration operational
+- [ ] Network security policies and micro-segmentation implemented
+- [ ] Security audit logging for service mesh events configured
+
+### 15.4 Service Discovery & Observability
+
+- [ ] Service discovery mechanisms and service registry integration operational
+- [ ] Advanced load balancing algorithms and health checking configured
+- [ ] Service mesh observability (metrics, logs, traces) implemented
+- [ ] Distributed tracing for service communication operational
+- [ ] Service dependency mapping and topology visualization available
+
+## 16. DEVELOPER EXPERIENCE PLATFORM VALIDATION
+
+### 16.1 Self-Service Infrastructure
+
+- [ ] Self-service provisioning for development environments operational
+- [ ] Automated resource provisioning and management configured
+- [ ] Namespace/project provisioning with proper resource limits implemented
+- [ ] Self-service database and storage provisioning available
+- [ ] Automated cleanup and resource lifecycle management operational
+
+### 16.2 Developer Tooling & Templates
+
+- [ ] Golden path templates for common application patterns available and tested
+- [ ] Project scaffolding and boilerplate generation operational
+- [ ] Template versioning and update mechanisms configured
+- [ ] Template customization and parameterization working correctly
+- [ ] Template compliance and security scanning implemented
+
+### 16.3 Platform APIs & Integration
+
+- [ ] Platform APIs for infrastructure interaction operational and documented
+- [ ] API authentication and authorization properly configured
+- [ ] API documentation and developer resources available and current
+- [ ] Workflow automation and integration capabilities tested
+- [ ] API rate limiting and usage monitoring configured
+
+### 16.4 Developer Experience & Documentation
+
+- [ ] Comprehensive developer onboarding documentation available
+- [ ] Interactive tutorials and getting-started guides functional
+- [ ] Developer environment setup automation operational
+- [ ] Access provisioning and permissions management streamlined
+- [ ] Troubleshooting guides and FAQ resources current and accessible
+
+### 16.5 Productivity & Analytics
+
+- [ ] Development tool integrations (IDEs, CLI tools) operational
+- [ ] Developer productivity dashboards and metrics implemented
+- [ ] Development workflow optimization tools available
+- [ ] Platform usage monitoring and analytics configured
+- [ ] User feedback collection and analysis mechanisms operational
+
+---
+
+### Prerequisites Verified
+
+- [ ] All checklist sections reviewed (1-16)
+- [ ] No outstanding critical or high-severity issues
+- [ ] All infrastructure changes tested in non-production environment
+- [ ] Rollback plan documented and tested
+- [ ] Required approvals obtained
+- [ ] Infrastructure changes verified against architectural decisions documented by Architect agent
+- [ ] Development environment impacts identified and mitigated
+- [ ] Infrastructure changes mapped to relevant user stories and epics
+- [ ] Release coordination planned with development teams
+- [ ] Local development environment compatibility verified
+- [ ] Platform component integration validated
+- [ ] Cross-platform functionality tested and verified
+
+==================== END: infrastructure-checklist ====================
 
 
 ==================== START: pm-checklist ====================
@@ -521,6 +1014,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 ## 1. PROBLEM DEFINITION & CONTEXT
 
 ### 1.1 Problem Statement
+
 - [ ] Clear articulation of the problem being solved
 - [ ] Identification of who experiences the problem
 - [ ] Explanation of why solving this problem matters
@@ -528,6 +1022,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 - [ ] Differentiation from existing solutions
 
 ### 1.2 Business Goals & Success Metrics
+
 - [ ] Specific, measurable business objectives defined
 - [ ] Clear success metrics and KPIs established
 - [ ] Metrics are tied to user and business value
@@ -535,6 +1030,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 - [ ] Timeframe for achieving goals specified
 
 ### 1.3 User Research & Insights
+
 - [ ] Target user personas clearly defined
 - [ ] User needs and pain points documented
 - [ ] User research findings summarized (if available)
@@ -544,6 +1040,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 ## 2. MVP SCOPE DEFINITION
 
 ### 2.1 Core Functionality
+
 - [ ] Essential features clearly distinguished from nice-to-haves
 - [ ] Features directly address defined problem statement
 - [ ] Each Epic ties back to specific user needs
@@ -551,6 +1048,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 - [ ] Minimum requirements for success defined
 
 ### 2.2 Scope Boundaries
+
 - [ ] Clear articulation of what is OUT of scope
 - [ ] Future enhancements section included
 - [ ] Rationale for scope decisions documented
@@ -558,6 +1056,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 - [ ] Scope has been reviewed and refined multiple times
 
 ### 2.3 MVP Validation Approach
+
 - [ ] Method for testing MVP success defined
 - [ ] Initial user feedback mechanisms planned
 - [ ] Criteria for moving beyond MVP specified
@@ -567,6 +1066,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 ## 3. USER EXPERIENCE REQUIREMENTS
 
 ### 3.1 User Journeys & Flows
+
 - [ ] Primary user flows documented
 - [ ] Entry and exit points for each flow identified
 - [ ] Decision points and branches mapped
@@ -574,6 +1074,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 - [ ] Edge cases considered
 
 ### 3.2 Usability Requirements
+
 - [ ] Accessibility considerations documented
 - [ ] Platform/device compatibility specified
 - [ ] Performance expectations from user perspective defined
@@ -581,6 +1082,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 - [ ] User feedback mechanisms identified
 
 ### 3.3 UI Requirements
+
 - [ ] Information architecture outlined
 - [ ] Critical UI components identified
 - [ ] Visual design guidelines referenced (if applicable)
@@ -590,6 +1092,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 ## 4. FUNCTIONAL REQUIREMENTS
 
 ### 4.1 Feature Completeness
+
 - [ ] All required features for MVP documented
 - [ ] Features have clear, user-focused descriptions
 - [ ] Feature priority/criticality indicated
@@ -597,6 +1100,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 - [ ] Dependencies between features identified
 
 ### 4.2 Requirements Quality
+
 - [ ] Requirements are specific and unambiguous
 - [ ] Requirements focus on WHAT not HOW
 - [ ] Requirements use consistent terminology
@@ -604,6 +1108,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 - [ ] Technical jargon minimized or explained
 
 ### 4.3 User Stories & Acceptance Criteria
+
 - [ ] Stories follow consistent format
 - [ ] Acceptance criteria are testable
 - [ ] Stories are sized appropriately (not too large)
@@ -614,6 +1119,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 ## 5. NON-FUNCTIONAL REQUIREMENTS
 
 ### 5.1 Performance Requirements
+
 - [ ] Response time expectations defined
 - [ ] Throughput/capacity requirements specified
 - [ ] Scalability needs documented
@@ -621,6 +1127,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 - [ ] Load handling expectations set
 
 ### 5.2 Security & Compliance
+
 - [ ] Data protection requirements specified
 - [ ] Authentication/authorization needs defined
 - [ ] Compliance requirements documented
@@ -628,6 +1135,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 - [ ] Privacy considerations addressed
 
 ### 5.3 Reliability & Resilience
+
 - [ ] Availability requirements defined
 - [ ] Backup and recovery needs documented
 - [ ] Fault tolerance expectations set
@@ -635,6 +1143,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 - [ ] Maintenance and support considerations included
 
 ### 5.4 Technical Constraints
+
 - [ ] Platform/technology constraints documented
 - [ ] Integration requirements outlined
 - [ ] Third-party service dependencies identified
@@ -644,6 +1153,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 ## 6. EPIC & STORY STRUCTURE
 
 ### 6.1 Epic Definition
+
 - [ ] Epics represent cohesive units of functionality
 - [ ] Epics focus on user/business value delivery
 - [ ] Epic goals clearly articulated
@@ -651,6 +1161,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 - [ ] Epic sequence and dependencies identified
 
 ### 6.2 Story Breakdown
+
 - [ ] Stories are broken down to appropriate size
 - [ ] Stories have clear, independent value
 - [ ] Stories include appropriate acceptance criteria
@@ -658,6 +1169,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 - [ ] Stories aligned with epic goals
 
 ### 6.3 First Epic Completeness
+
 - [ ] First epic includes all necessary setup steps
 - [ ] Project scaffolding and initialization addressed
 - [ ] Core infrastructure setup included
@@ -667,6 +1179,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 ## 7. TECHNICAL GUIDANCE
 
 ### 7.1 Architecture Guidance
+
 - [ ] Initial architecture direction provided
 - [ ] Technical constraints clearly communicated
 - [ ] Integration points identified
@@ -675,6 +1188,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 - [ ] Known areas of high complexity or technical risk flagged for architectural deep-dive
 
 ### 7.2 Technical Decision Framework
+
 - [ ] Decision criteria for technical choices provided
 - [ ] Trade-offs articulated for key decisions
 - [ ] Rationale for selecting primary approach over considered alternatives documented (for key design/feature choices)
@@ -683,6 +1197,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 - [ ] Guidance on technical debt approach provided
 
 ### 7.3 Implementation Considerations
+
 - [ ] Development approach guidance provided
 - [ ] Testing requirements articulated
 - [ ] Deployment expectations set
@@ -692,6 +1207,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 ## 8. CROSS-FUNCTIONAL REQUIREMENTS
 
 ### 8.1 Data Requirements
+
 - [ ] Data entities and relationships identified
 - [ ] Data storage requirements specified
 - [ ] Data quality requirements defined
@@ -700,6 +1216,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 - [ ] Schema changes planned iteratively, tied to stories requiring them
 
 ### 8.2 Integration Requirements
+
 - [ ] External system integrations identified
 - [ ] API requirements documented
 - [ ] Authentication for integrations specified
@@ -707,6 +1224,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 - [ ] Integration testing requirements outlined
 
 ### 8.3 Operational Requirements
+
 - [ ] Deployment frequency expectations set
 - [ ] Environment requirements defined
 - [ ] Monitoring and alerting needs identified
@@ -716,6 +1234,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 ## 9. CLARITY & COMMUNICATION
 
 ### 9.1 Documentation Quality
+
 - [ ] Documents use clear, consistent language
 - [ ] Documents are well-structured and organized
 - [ ] Technical terms are defined where necessary
@@ -723,6 +1242,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 - [ ] Documentation is versioned appropriately
 
 ### 9.2 Stakeholder Alignment
+
 - [ ] Key stakeholders identified
 - [ ] Stakeholder input incorporated
 - [ ] Potential areas of disagreement addressed
@@ -732,6 +1252,7 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 ## PRD & EPIC VALIDATION SUMMARY
 
 ### Category Statuses
+
 | Category | Status | Critical Issues |
 |----------|--------|----------------|
 | 1. Problem Definition & Context | PASS/FAIL/PARTIAL | |
@@ -745,14 +1266,17 @@ This checklist serves as a comprehensive framework to ensure the Product Require
 | 9. Clarity & Communication | PASS/FAIL/PARTIAL | |
 
 ### Critical Deficiencies
+
 - List all critical issues that must be addressed before handoff to Architect
 
 ### Recommendations
+
 - Provide specific recommendations for addressing each deficiency
 
 ### Final Decision
+
 - **READY FOR ARCHITECT**: The PRD and epics are comprehensive, properly structured, and ready for architectural design.
-- **NEEDS REFINEMENT**: The requirements documentation requires additional work to address the identified deficiencies. 
+- **NEEDS REFINEMENT**: The requirements documentation requires additional work to address the identified deficiencies.
 
 ==================== END: pm-checklist ====================
 
@@ -765,6 +1289,7 @@ This checklist serves as a comprehensive framework for the Product Owner to vali
 ## 1. PROJECT SETUP & INITIALIZATION
 
 ### 1.1 Project Scaffolding
+
 - [ ] Epic 1 includes explicit steps for project creation/initialization
 - [ ] If using a starter template, steps for cloning/setup are included
 - [ ] If building from scratch, all necessary scaffolding steps are defined
@@ -772,6 +1297,7 @@ This checklist serves as a comprehensive framework for the Product Owner to vali
 - [ ] Repository setup and initial commit processes are defined (if applicable)
 
 ### 1.2 Development Environment
+
 - [ ] Local development environment setup is clearly defined
 - [ ] Required tools and versions are specified (Node.js, Python, etc.)
 - [ ] Steps for installing dependencies are included
@@ -779,6 +1305,7 @@ This checklist serves as a comprehensive framework for the Product Owner to vali
 - [ ] Development server setup is included
 
 ### 1.3 Core Dependencies
+
 - [ ] All critical packages/libraries are installed early in the process
 - [ ] Package management (npm, pip, etc.) is properly addressed
 - [ ] Version specifications are appropriately defined
@@ -787,6 +1314,7 @@ This checklist serves as a comprehensive framework for the Product Owner to vali
 ## 2. INFRASTRUCTURE & DEPLOYMENT SEQUENCING
 
 ### 2.1 Database & Data Store Setup
+
 - [ ] Database selection/setup occurs before any database operations
 - [ ] Schema definitions are created before data operations
 - [ ] Migration strategies are defined if applicable
@@ -794,12 +1322,14 @@ This checklist serves as a comprehensive framework for the Product Owner to vali
 - [ ] Database access patterns and security are established early
 
 ### 2.2 API & Service Configuration
+
 - [ ] API frameworks are set up before implementing endpoints
 - [ ] Service architecture is established before implementing services
 - [ ] Authentication framework is set up before protected routes
 - [ ] Middleware and common utilities are created before use
 
 ### 2.3 Deployment Pipeline
+
 - [ ] CI/CD pipeline is established before any deployment actions
 - [ ] Infrastructure as Code (IaC) is set up before use
 - [ ] Environment configurations (dev, staging, prod) are defined early
@@ -807,6 +1337,7 @@ This checklist serves as a comprehensive framework for the Product Owner to vali
 - [ ] Rollback procedures or considerations are addressed
 
 ### 2.4 Testing Infrastructure
+
 - [ ] Testing frameworks are installed before writing tests
 - [ ] Test environment setup precedes test implementation
 - [ ] Mock services or data are defined before testing
@@ -815,18 +1346,21 @@ This checklist serves as a comprehensive framework for the Product Owner to vali
 ## 3. EXTERNAL DEPENDENCIES & INTEGRATIONS
 
 ### 3.1 Third-Party Services
+
 - [ ] Account creation steps are identified for required services
 - [ ] API key acquisition processes are defined
 - [ ] Steps for securely storing credentials are included
 - [ ] Fallback or offline development options are considered
 
 ### 3.2 External APIs
+
 - [ ] Integration points with external APIs are clearly identified
 - [ ] Authentication with external services is properly sequenced
 - [ ] API limits or constraints are acknowledged
 - [ ] Backup strategies for API failures are considered
 
 ### 3.3 Infrastructure Services
+
 - [ ] Cloud resource provisioning is properly sequenced
 - [ ] DNS or domain registration needs are identified
 - [ ] Email or messaging service setup is included if needed
@@ -835,12 +1369,14 @@ This checklist serves as a comprehensive framework for the Product Owner to vali
 ## 4. USER/AGENT RESPONSIBILITY DELINEATION
 
 ### 4.1 User Actions
+
 - [ ] User responsibilities are limited to only what requires human intervention
 - [ ] Account creation on external services is properly assigned to users
 - [ ] Purchasing or payment actions are correctly assigned to users
 - [ ] Credential provision is appropriately assigned to users
 
 ### 4.2 Developer Agent Actions
+
 - [ ] All code-related tasks are assigned to developer agents
 - [ ] Automated processes are correctly identified as agent responsibilities
 - [ ] Configuration management is properly assigned
@@ -849,18 +1385,21 @@ This checklist serves as a comprehensive framework for the Product Owner to vali
 ## 5. FEATURE SEQUENCING & DEPENDENCIES
 
 ### 5.1 Functional Dependencies
+
 - [ ] Features that depend on other features are sequenced correctly
 - [ ] Shared components are built before their use
 - [ ] User flows follow a logical progression
 - [ ] Authentication features precede protected routes/features
 
 ### 5.2 Technical Dependencies
+
 - [ ] Lower-level services are built before higher-level ones
 - [ ] Libraries and utilities are created before their use
 - [ ] Data models are defined before operations on them
 - [ ] API endpoints are defined before client consumption
 
 ### 5.3 Cross-Epic Dependencies
+
 - [ ] Later epics build upon functionality from earlier epics
 - [ ] No epic requires functionality from later epics
 - [ ] Infrastructure established in early epics is utilized consistently
@@ -869,18 +1408,21 @@ This checklist serves as a comprehensive framework for the Product Owner to vali
 ## 6. MVP SCOPE ALIGNMENT
 
 ### 6.1 PRD Goals Alignment
+
 - [ ] All core goals defined in the PRD are addressed in epics/stories
 - [ ] Features directly support the defined MVP goals
 - [ ] No extraneous features beyond MVP scope are included
 - [ ] Critical features are prioritized appropriately
 
 ### 6.2 User Journey Completeness
+
 - [ ] All critical user journeys are fully implemented
 - [ ] Edge cases and error scenarios are addressed
 - [ ] User experience considerations are included
 - [ ] Accessibility requirements are incorporated if specified
 
 ### 6.3 Technical Requirements Satisfaction
+
 - [ ] All technical constraints from the PRD are addressed
 - [ ] Non-functional requirements are incorporated
 - [ ] Architecture decisions align with specified constraints
@@ -889,18 +1431,21 @@ This checklist serves as a comprehensive framework for the Product Owner to vali
 ## 7. RISK MANAGEMENT & PRACTICALITY
 
 ### 7.1 Technical Risk Mitigation
+
 - [ ] Complex or unfamiliar technologies have appropriate learning/prototyping stories
 - [ ] High-risk components have explicit validation steps
 - [ ] Fallback strategies exist for risky integrations
 - [ ] Performance concerns have explicit testing/validation
 
 ### 7.2 External Dependency Risks
+
 - [ ] Risks with third-party services are acknowledged and mitigated
 - [ ] API limits or constraints are addressed
 - [ ] Backup strategies exist for critical external services
 - [ ] Cost implications of external services are considered
 
 ### 7.3 Timeline Practicality
+
 - [ ] Story complexity and sequencing suggest a realistic timeline
 - [ ] Dependencies on external factors are minimized or managed
 - [ ] Parallel work is enabled where possible
@@ -909,12 +1454,14 @@ This checklist serves as a comprehensive framework for the Product Owner to vali
 ## 8. DOCUMENTATION & HANDOFF
 
 ### 8.1 Developer Documentation
+
 - [ ] API documentation is created alongside implementation
 - [ ] Setup instructions are comprehensive
 - [ ] Architecture decisions are documented
 - [ ] Patterns and conventions are documented
 
 ### 8.2 User Documentation
+
 - [ ] User guides or help documentation is included if required
 - [ ] Error messages and user feedback are considered
 - [ ] Onboarding flows are fully specified
@@ -923,12 +1470,14 @@ This checklist serves as a comprehensive framework for the Product Owner to vali
 ## 9. POST-MVP CONSIDERATIONS
 
 ### 9.1 Future Enhancements
+
 - [ ] Clear separation between MVP and future features
 - [ ] Architecture supports planned future enhancements
 - [ ] Technical debt considerations are documented
 - [ ] Extensibility points are identified
 
 ### 9.2 Feedback Mechanisms
+
 - [ ] Analytics or usage tracking is included if required
 - [ ] User feedback collection is considered
 - [ ] Monitoring and alerting are addressed
@@ -937,6 +1486,7 @@ This checklist serves as a comprehensive framework for the Product Owner to vali
 ## VALIDATION SUMMARY
 
 ### Category Statuses
+
 | Category | Status | Critical Issues |
 |----------|--------|----------------|
 | 1. Project Setup & Initialization | PASS/FAIL/PARTIAL | |
@@ -950,14 +1500,17 @@ This checklist serves as a comprehensive framework for the Product Owner to vali
 | 9. Post-MVP Considerations | PASS/FAIL/PARTIAL | |
 
 ### Critical Deficiencies
+
 - List all critical issues that must be addressed before approval
 
 ### Recommendations
+
 - Provide specific recommendations for addressing each deficiency
 
 ### Final Decision
+
 - **APPROVED**: The plan is comprehensive, properly sequenced, and ready for implementation.
-- **REJECTED**: The plan requires revision to address the identified deficiencies. 
+- **REJECTED**: The plan requires revision to address the identified deficiencies.
 
 ==================== END: po-master-checklist ====================
 
@@ -965,18 +1518,18 @@ This checklist serves as a comprehensive framework for the Product Owner to vali
 ==================== START: story-dod-checklist ====================
 # Story Definition of Done (DoD) Checklist
 
-## Instructions for Developer Agent:
+## Instructions for Developer Agent
 
 Before marking a story as 'Review', please go through each item in this checklist. Report the status of each item (e.g., [x] Done, [ ] Not Done, [N/A] Not Applicable) and provide brief comments if necessary.
 
-## Checklist Items:
+## Checklist Items
 
-1.  **Requirements Met:**
+1. **Requirements Met:**
 
     - [ ] All functional requirements specified in the story are implemented.
     - [ ] All acceptance criteria defined in the story are met.
 
-2.  **Coding Standards & Project Structure:**
+2. **Coding Standards & Project Structure:**
 
     - [ ] All new/modified code strictly adheres to `Operational Guidelines`.
     - [ ] All new/modified code aligns with `Project Structure` (file locations, naming, etc.).
@@ -986,23 +1539,23 @@ Before marking a story as 'Review', please go through each item in this checklis
     - [ ] No new linter errors or warnings introduced.
     - [ ] Code is well-commented where necessary (clarifying complex logic, not obvious statements).
 
-3.  **Testing:**
+3. **Testing:**
 
     - [ ] All required unit tests as per the story and `Operational Guidelines` Testing Strategy are implemented.
     - [ ] All required integration tests (if applicable) as per the story and `Operational Guidelines` Testing Strategy are implemented.
     - [ ] All tests (unit, integration, E2E if applicable) pass successfully.
     - [ ] Test coverage meets project standards (if defined).
 
-4.  **Functionality & Verification:**
+4. **Functionality & Verification:**
 
     - [ ] Functionality has been manually verified by the developer (e.g., running the app locally, checking UI, testing API endpoints).
     - [ ] Edge cases and potential error conditions considered and handled gracefully.
 
-5.  **Story Administration:**
+5. **Story Administration:**
     - [ ] All tasks within the story file are marked as complete.
     - [ ] Any clarifications or decisions made during development are documented in the story file or linked appropriately.
     - [ ] The story wrap up section has been completed with notes of changes or information relevant to the next story or overall project, the agent model that was primarily used during development, and the changelog of any changes is properly updated.
-6.  **Dependencies, Build & Configuration:**
+6. **Dependencies, Build & Configuration:**
 
     - [ ] Project builds successfully without errors.
     - [ ] Project linting passes
@@ -1011,12 +1564,12 @@ Before marking a story as 'Review', please go through each item in this checklis
     - [ ] No known security vulnerabilities introduced by newly added and approved dependencies.
     - [ ] If new environment variables or configurations were introduced by the story, they are documented and handled securely.
 
-7.  **Documentation (If Applicable):**
+7. **Documentation (If Applicable):**
     - [ ] Relevant inline code documentation (e.g., JSDoc, TSDoc, Python docstrings) for new public APIs or complex logic is complete.
     - [ ] User-facing documentation updated, if changes impact users.
     - [ ] Technical documentation (e.g., READMEs, system diagrams) updated if significant architectural changes were made.
 
-## Final Confirmation:
+## Final Confirmation
 
 - [ ] I, the Developer Agent, confirm that all applicable items above have been addressed.
 
