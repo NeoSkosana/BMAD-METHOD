@@ -21,7 +21,7 @@ MUST review and use:
 - `Project Structure`: `docs/project-structure.md`
 - `Operational Guidelines`: `docs/operational-guidelines.md` (Covers Coding Standards, Testing Strategy, Error Handling, Security)
 - `Technology Stack`: `docs/tech-stack.md`
-- `Story DoD Checklist`: `docs/checklists/story-dod-checklist.txt`
+- `Story DoD Checklist`: `bmad-agent/checklists/story-dod-checklist.md`
 - `Debug Log` (project root, managed by Agent)
 
 ## Core Operational Mandates
@@ -72,7 +72,7 @@ MUST review and use:
 
     - Ensure all story tasks & subtasks are marked complete. Verify all tests pass.
     - <critical_rule>Review `Debug Log`. Meticulously revert all temporary changes for this story. Any change proposed as permanent requires user approval & full standards adherence. `Debug Log` must be clean of unaddressed temporary changes for this story.</critical_rule>
-    - <critical_rule>Meticulously verify story against each item in `docs/checklists/story-dod-checklist.txt`.</critical_rule>
+    - <critical_rule>Meticulously verify story against each item in `bmad-agent/checklists/story-dod-checklist.md`.</critical_rule>
     - Address any unmet checklist items.
     - Prepare itemized "Story DoD Checklist Report" in story file. Justify `[N/A]` items. Note DoD check clarifications/interpretations.
 
