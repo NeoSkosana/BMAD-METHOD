@@ -1,0 +1,170 @@
+flowchart TB
+    %% Main Components
+    User(["User/Vibe CEO"])
+    
+    %% Deployment Environments
+    subgraph Environments["Deployment Environments"]
+        WebEnv["Web Environment\n(Gemini/ChatGPT)"]
+        IDEEnv["IDE Environment\n(Cursor/Windsurf)"]
+    end
+    
+    %% Orchestrator Layer
+    subgraph Orchestrators["Orchestrator Layer"]
+        WebOrch["Web Orchestrator\n(BMAD)"]
+        IDEOrch["IDE Orchestrator\n(BMAD)"]
+    end
+    
+    %% Agent Layer
+    subgraph Agents["Agent Layer"]
+        subgraph PlanningAgents["Planning & Design Agents"]
+            Analyst["Analyst\n(Mary/Larry)"]
+            PM["Product Manager\n(John/Jack)"]
+            Architect["Architect\n(Fred/Mo)"]
+            DesignArch["Design Architect\n(Jane/Millie)"]
+        end
+        
+        subgraph DeliveryAgents["Delivery & Implementation Agents"]
+            PO["Product Owner\n(Sarah/Curly)"]
+            SM["Scrum Master\n(Bob/SallySM)"]
+            Dev["Developer\n(Dana/DevFE/Dev)"]
+            DevOps["DevOps/Platform Engineer\n(Alex)"]
+        end
+    end
+    
+    %% Resource Layer
+    subgraph Resources["Resource Layer"]
+        subgraph StructuredResources["Structured Resources"]
+            Templates["Templates"]
+            Checklists["Checklists"]
+        end
+        
+        subgraph DynamicResources["Dynamic Resources"]
+            Tasks["Tasks"]
+            KnowledgeBase["Knowledge Base"]
+        end
+    end
+    
+    %% Artifact Layer
+    subgraph Artifacts["Artifact Layer"]
+        subgraph PlanningArtifacts["Planning Artifacts"]
+            ProjectBrief["Project Brief"]
+            PRD["Product Requirements\nDocument"]
+        end
+        
+        subgraph DesignArtifacts["Design Artifacts"]
+            ArchDoc["Architecture\nDocument"]
+            FrontendArch["Frontend\nArchitecture"]
+            UXUISpec["UX/UI\nSpecification"]
+            InfraArch["Infrastructure\nArchitecture"]
+        end
+        
+        subgraph ImplementationArtifacts["Implementation Artifacts"]
+            Stories["User Stories"]
+            Implementation["Implementation"]
+            Deployment["Deployment"]
+        end
+    end
+    
+    %% Workflow Phases
+    subgraph Workflow["BMAD Method Workflow"]
+        Phase0["Phase 0:\nBrainstorming &\nResearch"]
+        Phase1["Phase 1:\nProduct Definition"]
+        Phase2["Phase 2:\nArchitecture Design"]
+        Phase3["Phase 3:\nProduct Owner\nVerification"]
+        Phase4["Phase 4:\nStory Creation"]
+        Phase5["Phase 5:\nImplementation"]
+    end
+    
+    %% Build System
+    subgraph BuildSystem["Build System"]
+        BuildScript["build-web-agent.js"]
+        ConfigFile["build-web-agent.cfg.js"]
+        WebConfig["web-bmad-orchestrator-agent.cfg.md"]
+        IDEConfig["ide-bmad-orchestrator.cfg.md"]
+    end
+    
+    %% User Interactions
+    User <--> WebEnv
+    User <--> IDEEnv
+    User <--> Agents
+    
+    %% Environment Connections
+    WebEnv --> WebOrch
+    IDEEnv --> IDEOrch
+    
+    %% Orchestrator Connections
+    WebOrch --> Agents
+    IDEOrch --> Agents
+    
+    %% Build System Connections
+    BuildScript --> WebOrch
+    ConfigFile --> BuildScript
+    WebConfig --> WebOrch
+    IDEConfig --> IDEOrch
+    
+    %% Resource Connections
+    Templates --> Agents
+    Checklists --> Agents
+    Tasks --> Agents
+    KnowledgeBase --> Orchestrators
+    
+    %% Agent to Artifact Connections
+    Analyst --> ProjectBrief
+    PM --> PRD
+    Architect --> ArchDoc
+    DesignArch --> FrontendArch
+    DesignArch --> UXUISpec
+    DevOps --> InfraArch
+    PO --> Stories
+    SM --> Stories
+    Dev --> Implementation
+    DevOps --> Deployment
+    
+    %% Workflow Connections
+    Phase0 --> Phase1
+    Phase1 --> Phase2
+    Phase2 --> Phase3
+    Phase3 --> Phase4
+    Phase4 --> Phase5
+    Phase5 -.-> Phase4
+    
+    %% Agent to Workflow Connections
+    Analyst --- Phase0
+    PM --- Phase1
+    Architect --- Phase2
+    DesignArch --- Phase2
+    DevOps --- Phase2
+    PO --- Phase3
+    SM --- Phase4
+    Dev --- Phase5
+    DevOps --- Phase5
+    
+    %% Artifact to Workflow Connections
+    ProjectBrief --- Phase0
+    PRD --- Phase1
+    ArchDoc --- Phase2
+    FrontendArch --- Phase2
+    UXUISpec --- Phase2
+    InfraArch --- Phase2
+    Stories --- Phase4
+    Implementation --- Phase5
+    Deployment --- Phase5
+    
+    %% Styling
+    classDef user fill:#f9f,stroke:#333,stroke-width:2px
+    classDef environment fill:#e6f7ff,stroke:#1890ff,stroke-width:2px
+    classDef orchestrator fill:#bbf,stroke:#33f,stroke-width:2px
+    classDef agent fill:#bfb,stroke:#3f3,stroke-width:2px
+    classDef resource fill:#fbb,stroke:#f33,stroke-width:2px
+    classDef artifact fill:#ffb,stroke:#ff3,stroke-width:2px
+    classDef workflow fill:#bff,stroke:#3ff,stroke-width:2px
+    classDef build fill:#ffd,stroke:#dd3,stroke-width:2px
+    
+    class User user
+    class WebEnv,IDEEnv environment
+    class WebOrch,IDEOrch orchestrator
+    class Analyst,PM,Architect,DesignArch,PO,SM,Dev,DevOps agent
+    class Templates,Checklists,Tasks,KnowledgeBase resource
+    class ProjectBrief,PRD,ArchDoc,FrontendArch,UXUISpec,InfraArch,Stories,Implementation,Deployment artifact
+    class Phase0,Phase1,Phase2,Phase3,Phase4,Phase5 workflow
+    class BuildScript,ConfigFile,WebConfig,IDEConfig build
