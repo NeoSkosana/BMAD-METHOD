@@ -8,12 +8,16 @@ npm-debug.log*
 
 # Build output
 dist/
-build/
+build/*.txt
 
 # System files
 .DS_Store
+Thumbs.db
 
 # Environment variables
 .env
 
 CLAUDE.md
+.ai/*
+test-project-install/*
+sample-project/*
