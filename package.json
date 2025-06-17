@@ -1,6 +1,6 @@
 {
   "name": "bmad-method",
-  "version": "4.4.0",
+  "version": "4.4.2",
   "description": "Breakthrough Method of Agile AI-driven Development",
   "main": "tools/cli.js",
   "bin": {
@@ -48,7 +48,7 @@
     "url": "git+https://github.com/bmadcode/BMAD-METHOD.git"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=20.0.0"
   },
   "devDependencies": {
     "husky": "^9.1.7",
@@ -69,7 +69,7 @@
     ".roomodes": [
       "node tools/yaml-format.js"
     ],
-    ".bmad-core/**/*.yml": [
+    "bmad-core/**/*.yml": [
       "node tools/yaml-format.js"
     ],
     ".github/**/*.yml": [

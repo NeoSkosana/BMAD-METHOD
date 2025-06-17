@@ -5,7 +5,7 @@ const yaml = require('js-yaml');
 class DependencyResolver {
   constructor(rootDir) {
     this.rootDir = rootDir;
-    this.bmadCore = path.join(rootDir, '.bmad-core');
+    this.bmadCore = path.join(rootDir, 'bmad-core');
     this.cache = new Map();
   }
 

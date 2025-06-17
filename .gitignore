@@ -7,7 +7,6 @@ logs
 npm-debug.log*
 
 # Build output
-dist/
 build/*.txt
 
 # System files

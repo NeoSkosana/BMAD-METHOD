@@ -18,6 +18,8 @@ program
   .description('Build web bundles for agents and teams')
   .option('-a, --agents-only', 'Build only agent bundles')
   .option('-t, --teams-only', 'Build only team bundles')
+  .option('-e, --expansions-only', 'Build only expansion pack bundles')
+  .option('--no-expansions', 'Skip building expansion packs')
   .option('--no-clean', 'Skip cleaning output directories')
   .action(async (options) => {
     const builder = new WebBuilder({
@@ -30,34 +32,55 @@ program
         await builder.cleanOutputDirs();
       }
 
-      if (!options.teamsOnly) {
-        console.log('Building agent bundles...');
-        await builder.buildAgents();
-      }
+      if (options.expansionsOnly) {
+        console.log('Building expansion pack bundles...');
+        await builder.buildAllExpansionPacks({ clean: false });
+      } else {
+        if (!options.teamsOnly) {
+          console.log('Building agent bundles...');
+          await builder.buildAgents();
+        }
 
-      if (!options.agentsOnly) {
-        console.log('Building team bundles...');
-        await builder.buildTeams();
-      }
+        if (!options.agentsOnly) {
+          console.log('Building team bundles...');
+          await builder.buildTeams();
+        }
 
-      // Generate IDE configuration folders
-      console.log('Generating IDE configuration folders...');
-      const installDir = process.cwd();
-      
-      // Generate configurations for all supported IDEs
-      const ides = ['cursor', 'claude-code', 'windsurf', 'roo'];
-      for (const ide of ides) {
-        try {
-          console.log(`Setting up ${ide} integration...`);
-          await IdeSetup.setup(ide, installDir);
-        } catch (error) {
-          console.warn(`Warning: Failed to setup ${ide}:`, error.message);
+        if (!options.noExpansions) {
+          console.log('Building expansion pack bundles...');
+          await builder.buildAllExpansionPacks({ clean: false });
         }
       }
 
       console.log('Build completed successfully!');
     } catch (error) {
       console.error('Build failed:', error.message);
+      process.exit(1);
+    }
+  });
+
+program
+  .command('build:expansions')
+  .description('Build web bundles for all expansion packs')
+  .option('--expansion <name>', 'Build specific expansion pack only')
+  .option('--no-clean', 'Skip cleaning output directories')
+  .action(async (options) => {
+    const builder = new WebBuilder({
+      rootDir: process.cwd()
+    });
+
+    try {
+      if (options.expansion) {
+        console.log(`Building expansion pack: ${options.expansion}`);
+        await builder.buildExpansionPack(options.expansion, { clean: options.clean });
+      } else {
+        console.log('Building all expansion packs...');
+        await builder.buildAllExpansionPacks({ clean: options.clean });
+      }
+
+      console.log('Expansion pack build completed successfully!');
+    } catch (error) {
+      console.error('Expansion pack build failed:', error.message);
       process.exit(1);
     }
   });
@@ -70,6 +93,16 @@ program
     const agents = await builder.resolver.listAgents();
     console.log('Available agents:');
     agents.forEach(agent => console.log(`  - ${agent}`));
+  });
+
+program
+  .command('list:expansions')
+  .description('List all available expansion packs')
+  .action(async () => {
+    const builder = new WebBuilder({ rootDir: process.cwd() });
+    const expansions = await builder.listExpansionPacks();
+    console.log('Available expansion packs:');
+    expansions.forEach(expansion => console.log(`  - ${expansion}`));
   });
 
 program
