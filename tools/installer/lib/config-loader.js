@@ -115,6 +115,11 @@ class ConfigLoader {
     return path.join(__dirname, '..', '..', '..', 'bmad-core');
   }
 
+  getDistPath() {
+    // Get the path to dist directory relative to the installer
+    return path.join(__dirname, '..', '..', '..', 'dist');
+  }
+
   getAgentPath(agentId) {
     return path.join(this.getBmadCorePath(), 'agents', `${agentId}.md`);
   }

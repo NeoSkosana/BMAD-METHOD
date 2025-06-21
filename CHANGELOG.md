@@ -1,3 +1,134 @@
+## [4.10.3](https://github.com/bmadcode/BMAD-METHOD/compare/v4.10.2...v4.10.3) (2025-06-20)
+
+
+### Bug Fixes
+
+* bundle update ([2cf3ba1](https://github.com/bmadcode/BMAD-METHOD/commit/2cf3ba1ab8dd7e52584bef16a96e65e7d2513c4f))
+
+## [4.10.2](https://github.com/bmadcode/BMAD-METHOD/compare/v4.10.1...v4.10.2) (2025-06-20)
+
+
+### Bug Fixes
+
+* file formatting ([c78a35f](https://github.com/bmadcode/BMAD-METHOD/commit/c78a35f547459b07a15d94c827ec05921cd21571))
+
+## [4.10.1](https://github.com/bmadcode/BMAD-METHOD/compare/v4.10.0...v4.10.1) (2025-06-20)
+
+
+### Bug Fixes
+
+* SM sometimes would skip the rest of the epic stories, fixed ([1148b32](https://github.com/bmadcode/BMAD-METHOD/commit/1148b32fa97586d2f86d07a70ffbf9bb8c327261))
+
+# [4.10.0](https://github.com/bmadcode/BMAD-METHOD/compare/v4.9.2...v4.10.0) (2025-06-19)
+
+
+### Features
+
+* Core Config and doc sharding is now optional in v4 ([ff6112d](https://github.com/bmadcode/BMAD-METHOD/commit/ff6112d6c2f822ed22c75046f5a14f05e36041c2))
+
+## [4.9.2](https://github.com/bmadcode/BMAD-METHOD/compare/v4.9.1...v4.9.2) (2025-06-19)
+
+
+### Bug Fixes
+
+* bad brownfield yml ([09d2ad6](https://github.com/bmadcode/BMAD-METHOD/commit/09d2ad6aea187996d0a2e1dff27d9bf7e3e6dc06))
+
+## [4.9.1](https://github.com/bmadcode/BMAD-METHOD/compare/v4.9.0...v4.9.1) (2025-06-19)
+
+
+### Bug Fixes
+
+* dist bundles updated ([d9a989d](https://github.com/bmadcode/BMAD-METHOD/commit/d9a989dbe50da62cf598afa07a8588229c56b69c))
+
+# [4.9.0](https://github.com/bmadcode/BMAD-METHOD/compare/v4.8.0...v4.9.0) (2025-06-19)
+
+
+### Features
+
+* dev can use debug log configured in core-config.yml ([0e5aaf0](https://github.com/bmadcode/BMAD-METHOD/commit/0e5aaf07bbc6fd9f2706ea26e35f5f38fd72147a))
+
+# [4.8.0](https://github.com/bmadcode/BMAD-METHOD/compare/v4.7.0...v4.8.0) (2025-06-19)
+
+
+### Bug Fixes
+
+* installer has fast v4 update option now to keep the bmad method up to date with changes easily without breaking any customizations from the user. The SM and DEV are much more configurable to find epics stories and architectureal information when the prd and architecture are deviant from v4 templates and/or have not been sharded. so a config will give the user the option to configure the SM to use the full large documents or the sharded versions! ([aea7f3c](https://github.com/bmadcode/BMAD-METHOD/commit/aea7f3cc86e749d25ed18bed761dc2839023b3b3))
+* prevent double installation when updating v4 ([af0e767](https://github.com/bmadcode/BMAD-METHOD/commit/af0e767ecf1b91d41f114e1a5d7bf5da08de57d6))
+* resolve undefined config properties in performUpdate ([0185e01](https://github.com/bmadcode/BMAD-METHOD/commit/0185e012bb579948a4de1ea3950db4e399761619))
+* update file-manager to properly handle YAML manifest files ([724cdd0](https://github.com/bmadcode/BMAD-METHOD/commit/724cdd07a199cb12b82236ad34ca1a0c61eb43e2))
+
+
+### Features
+
+* add early v4 detection for improved update flow ([29e7bbf](https://github.com/bmadcode/BMAD-METHOD/commit/29e7bbf4c5aa7e17854061a5ee695f44324f307a))
+* add file resolution context for IDE agents ([74d9bb4](https://github.com/bmadcode/BMAD-METHOD/commit/74d9bb4b2b70a341673849a1df704f6eac70c3de))
+* update web builder to remove IDE-specific properties from agent bundles ([2f2a1e7](https://github.com/bmadcode/BMAD-METHOD/commit/2f2a1e72d6a70f8127db6ba58a563d0f289621c3))
+
+# [4.7.0](https://github.com/bmadcode/BMAD-METHOD/compare/v4.6.3...v4.7.0) (2025-06-19)
+
+
+### Features
+
+* extensive bmad-kb for web orchestrator to be much more helpful ([e663a11](https://github.com/bmadcode/BMAD-METHOD/commit/e663a1146b89e7b5078d9726649a51ae5624da46))
+
+## [4.6.3](https://github.com/bmadcode/BMAD-METHOD/compare/v4.6.2...v4.6.3) (2025-06-19)
+
+
+### Bug Fixes
+
+* SM fixed file resolution issue in v4 ([61ab116](https://github.com/bmadcode/BMAD-METHOD/commit/61ab1161e59a92d657ab663082abcaf26729fa6b))
+
+## [4.6.2](https://github.com/bmadcode/BMAD-METHOD/compare/v4.6.1...v4.6.2) (2025-06-19)
+
+
+### Bug Fixes
+
+* installer upgrade path fixed ([bd6a558](https://github.com/bmadcode/BMAD-METHOD/commit/bd6a55892906077a700f488bde175b57e846729d))
+
+## [4.6.1](https://github.com/bmadcode/BMAD-METHOD/compare/v4.6.0...v4.6.1) (2025-06-19)
+
+
+### Bug Fixes
+
+* expansion pack builder now includes proper dependencies from core as needed, and default template file name save added to template llm instructions ([9dded00](https://github.com/bmadcode/BMAD-METHOD/commit/9dded003565879901246885d60787695e0d0b7bd))
+
+# [4.6.0](https://github.com/bmadcode/BMAD-METHOD/compare/v4.5.1...v4.6.0) (2025-06-18)
+
+
+### Bug Fixes
+
+* orchestractor yml ([3727cc7](https://github.com/bmadcode/BMAD-METHOD/commit/3727cc764a7c7295932ff872e2e5be8b4c4e6859))
+
+
+### Features
+
+* removed some templates that are not ready for use ([b03aece](https://github.com/bmadcode/BMAD-METHOD/commit/b03aece79e52cfe9585225de5aff7659293d9295))
+
+## [4.5.1](https://github.com/bmadcode/BMAD-METHOD/compare/v4.5.0...v4.5.1) (2025-06-18)
+
+
+### Bug Fixes
+
+* docs had some ide specific errors ([a954c7e](https://github.com/bmadcode/BMAD-METHOD/commit/a954c7e24284a6637483a9e47fc63a8f9d7dfbad))
+
+# [4.5.0](https://github.com/bmadcode/BMAD-METHOD/compare/v4.4.2...v4.5.0) (2025-06-17)
+
+
+### Bug Fixes
+
+* installer relative path issue for npx resolved ([8b9bda5](https://github.com/bmadcode/BMAD-METHOD/commit/8b9bda5639ec882f1887f20b4610a6c2183042c6))
+* readme updated to indicate move of web-bundles ([7e9574f](https://github.com/bmadcode/BMAD-METHOD/commit/7e9574f571f41ae5003a1664d999c282dd7398be))
+* temp disable yml linting ([296c2fb](https://github.com/bmadcode/BMAD-METHOD/commit/296c2fbcbd9ac40b3c68633ba7454aacf1e31204))
+* update documentation and installer to reflect .roomodes file location in project root ([#236](https://github.com/bmadcode/BMAD-METHOD/issues/236)) ([bd7f030](https://github.com/bmadcode/BMAD-METHOD/commit/bd7f03016bfa13e39cb39aedb24db9fccbed18a7))
+
+
+### Features
+
+* bmad the creator expansion with some basic tools for modifying bmad method ([2d61df4](https://github.com/bmadcode/BMAD-METHOD/commit/2d61df419ac683f5691b6ee3fab81174f3d2cdde))
+* can now select different web bundles from what ide agents are installed ([0c41633](https://github.com/bmadcode/BMAD-METHOD/commit/0c41633b07d7dd4d7dda8d3a14d572eac0dcbb47))
+* installer offers option to install web bundles ([e934769](https://github.com/bmadcode/BMAD-METHOD/commit/e934769a5e35dba99f59b4e2e6bb49131c43a526))
+* robust installer ([1fbeed7](https://github.com/bmadcode/BMAD-METHOD/commit/1fbeed75ea446b0912277cfec376ee34f0b3d853))
+
 ## [4.4.2](https://github.com/bmadcode/BMAD-METHOD/compare/v4.4.1...v4.4.2) (2025-06-17)
 
 

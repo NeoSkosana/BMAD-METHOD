@@ -1,5 +1,7 @@
 # Market Research Report: {{Project/Product Name}}
 
+[[LLM: The default path and filename unless specified is docs/market-research.md]]
+
 [[LLM: This template guides the creation of a comprehensive market research report. Begin by understanding what market insights the user needs and why. Work through each section systematically, using the appropriate analytical frameworks based on the research objectives.]]
 
 ## Executive Summary

@@ -98,7 +98,7 @@ class V3ToV4Upgrader {
 
       // 8. Setup IDE
       if (!options.dryRun) {
-        await this.setupIDE(projectPath);
+        await this.setupIDE(projectPath, options.ides);
       }
 
       // 9. Show completion report
@@ -379,8 +379,8 @@ class V3ToV4Upgrader {
     const spinner = ora("Installing V4 structure...").start();
 
     try {
-      // Get the source .bmad-core directory
-      const sourcePath = path.join(__dirname, "..", "..", ".bmad-core");
+      // Get the source bmad-core directory (without dot prefix)
+      const sourcePath = path.join(__dirname, "..", "..", "bmad-core");
       const destPath = path.join(projectPath, ".bmad-core");
 
       // Copy .bmad-core
@@ -545,47 +545,37 @@ class V3ToV4Upgrader {
     }
   }
 
-  async setupIDE(projectPath) {
-    const { ide } = await inquirer.prompt([
-      {
-        type: "list",
-        name: "ide",
-        message: "Which IDE are you using?",
-        choices: [
-          { name: "Cursor", value: "cursor" },
-          { name: "Claude Code", value: "claude-code" },
-          { name: "Windsurf", value: "windsurf" },
-          { name: "Roo Code", value: "roo" },
-          { name: "VS Code", value: "skip" },
-          { name: "Other/Skip", value: "skip" },
-        ],
-      },
-    ]);
+  async setupIDE(projectPath, selectedIdes) {
+    // Use the IDE selections passed from the installer
+    if (!selectedIdes || selectedIdes.length === 0) {
+      console.log(chalk.dim("No IDE setup requested - skipping"));
+      return;
+    }
 
-    const selectedIde = ide === "skip" ? null : ide;
+    const ideSetup = require("../installer/lib/ide-setup");
+    const spinner = ora("Setting up IDE rules for all agents...").start();
 
-    if (selectedIde) {
-      const ideSetup = require("../installer/lib/ide-setup");
-      const spinner = ora("Setting up IDE rules for all agents...").start();
+    try {
+      const ideMessages = {
+        cursor: "Rules created in .cursor/rules/",
+        "claude-code": "Commands created in .claude/commands/",
+        windsurf: "Rules created in .windsurf/rules/",
+        roo: "Custom modes created in .roomodes",
+      };
 
-      try {
-        await ideSetup.setup(selectedIde, projectPath);
-        spinner.succeed("IDE setup complete!");
-
-        const ideMessages = {
-          cursor: "Rules created in .cursor/rules/",
-          "claude-code": "Commands created in .claude/commands/",
-          windsurf: "Rules created in .windsurf/rules/",
-          roo: "Custom modes created in .roomodes",
-        };
-
-        console.log(chalk.green(`- ${ideMessages[selectedIde]}`));
-      } catch (error) {
-        spinner.fail("IDE setup failed");
-        console.error(
-          chalk.yellow("IDE setup failed, but upgrade is complete.")
-        );
+      // Setup each selected IDE
+      for (const ide of selectedIdes) {
+        spinner.text = `Setting up ${ide}...`;
+        await ideSetup.setup(ide, projectPath);
+        console.log(chalk.green(`\n✓ ${ideMessages[ide]}`));
       }
+
+      spinner.succeed(`IDE setup complete for ${selectedIdes.length} IDE(s)!`);
+    } catch (error) {
+      spinner.fail("IDE setup failed");
+      console.error(
+        chalk.yellow("IDE setup failed, but upgrade is complete.")
+      );
     }
   }
 

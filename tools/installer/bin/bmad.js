@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const { program } = require('commander');
+const path = require('path');
 
 // Dynamic imports for ES modules
 let chalk, inquirer;
@@ -57,7 +58,9 @@ program
       if (!options.full && !options.agent && !options.team && !options.expansionOnly) {
         // Interactive mode
         const answers = await promptInstallation();
-        await installer.install(answers);
+        if (!answers._alreadyInstalled) {
+          await installer.install(answers);
+        }
       } else {
         // Direct mode
         let installType = 'full';
@@ -158,6 +161,35 @@ async function promptInstallation() {
   ]);
   answers.directory = directory;
 
+  // Check if this is an existing v4 installation
+  const installDir = path.resolve(answers.directory);
+  const state = await installer.detectInstallationState(installDir);
+  
+  if (state.type === 'v4_existing') {
+    console.log(chalk.yellow('\n🔍 Found existing BMAD v4 installation'));
+    console.log(`   Directory: ${installDir}`);
+    console.log(`   Version: ${state.manifest?.version || 'Unknown'}`);
+    console.log(`   Installed: ${state.manifest?.installed_at ? new Date(state.manifest.installed_at).toLocaleDateString() : 'Unknown'}`);
+    
+    const { shouldUpdate } = await inquirer.prompt([
+      {
+        type: 'confirm',
+        name: 'shouldUpdate',
+        message: 'Would you like to update your existing BMAD v4 installation?',
+        default: true
+      }
+    ]);
+    
+    if (shouldUpdate) {
+      // Skip other prompts and go directly to update
+      answers.installType = 'update';
+      answers._alreadyInstalled = true; // Flag to prevent double installation
+      await installer.install(answers);
+      return answers; // Return the answers object
+    }
+    // If user doesn't want to update, continue with normal flow
+  }
+
   // Ask for installation type
   const { installType } = await inquirer.prompt([
     {
@@ -210,7 +242,7 @@ async function promptInstallation() {
       {
         type: 'list',
         name: 'team',
-        message: 'Select a team to install:',
+        message: 'Select a team to install in your IDE project folder:',
         choices: teams.map(t => ({
           name: `${t.icon || '📋'} ${t.name}: ${t.description}`,
           value: t.id
@@ -288,6 +320,104 @@ async function promptInstallation() {
   
   // Use selected IDEs directly
   answers.ides = ides;
+
+  // Ask for web bundles installation
+  const { includeWebBundles } = await inquirer.prompt([
+    {
+      type: 'confirm',
+      name: 'includeWebBundles',
+      message: 'Would you like to include pre-built web bundles? (standalone files for ChatGPT, Claude, Gemini)',
+      default: true
+    }
+  ]);
+
+  if (includeWebBundles) {
+    console.log(chalk.cyan('\n📦 Web bundles are standalone files perfect for web AI platforms.'));
+    console.log(chalk.dim('   You can choose different teams/agents than your IDE installation.\n'));
+
+    const { webBundleType } = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'webBundleType',
+        message: 'What web bundles would you like to include?',
+        choices: [
+          {
+            name: 'All available bundles (agents, teams, expansion packs)',
+            value: 'all'
+          },
+          {
+            name: 'Specific teams only',
+            value: 'teams'
+          },
+          {
+            name: 'Individual agents only',
+            value: 'agents'
+          },
+          {
+            name: 'Custom selection',
+            value: 'custom'
+          }
+        ]
+      }
+    ]);
+
+    answers.webBundleType = webBundleType;
+
+    // If specific teams, let them choose which teams
+    if (webBundleType === 'teams' || webBundleType === 'custom') {
+      const teams = await installer.getAvailableTeams();
+      const { selectedTeams } = await inquirer.prompt([
+        {
+          type: 'checkbox',
+          name: 'selectedTeams',
+          message: 'Select team bundles to include:',
+          choices: teams.map(t => ({
+            name: `${t.icon || '📋'} ${t.name}: ${t.description}`,
+            value: t.id,
+            checked: webBundleType === 'teams' // Check all if teams-only mode
+          })),
+          validate: (answer) => {
+            if (answer.length < 1) {
+              return 'You must select at least one team.';
+            }
+            return true;
+          }
+        }
+      ]);
+      answers.selectedWebBundleTeams = selectedTeams;
+    }
+
+    // If custom selection, also ask about individual agents
+    if (webBundleType === 'custom') {
+      const { includeIndividualAgents } = await inquirer.prompt([
+        {
+          type: 'confirm',
+          name: 'includeIndividualAgents',
+          message: 'Also include individual agent bundles?',
+          default: true
+        }
+      ]);
+      answers.includeIndividualAgents = includeIndividualAgents;
+    }
+
+    const { webBundlesDirectory } = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'webBundlesDirectory',
+        message: 'Enter directory for web bundles:',
+        default: `${answers.directory}/web-bundles`,
+        validate: (input) => {
+          if (!input.trim()) {
+            return 'Please enter a valid directory path';
+          }
+          return true;
+        }
+      }
+    ]);
+    answers.webBundlesDirectory = webBundlesDirectory;
+  }
+
+  answers.includeWebBundles = includeWebBundles;
 
   return answers;
 }

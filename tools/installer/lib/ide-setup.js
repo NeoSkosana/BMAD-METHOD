@@ -39,20 +39,13 @@ class IdeSetup {
 
   async setupCursor(installDir, selectedAgent) {
     const cursorRulesDir = path.join(installDir, ".cursor", "rules");
-    const agents = selectedAgent
-      ? [selectedAgent]
-      : await this.getAllAgentIds(installDir);
+    const agents = selectedAgent ? [selectedAgent] : await this.getAllAgentIds(installDir);
 
     await fileManager.ensureDirectory(cursorRulesDir);
 
     for (const agentId of agents) {
       // Check if .bmad-core is a subdirectory (full install) or if agents are in root (single agent install)
-      let agentPath = path.join(
-        installDir,
-        ".bmad-core",
-        "agents",
-        `${agentId}.md`
-      );
+      let agentPath = path.join(installDir, ".bmad-core", "agents", `${agentId}.md`);
       if (!(await fileManager.pathExists(agentPath))) {
         agentPath = path.join(installDir, "agents", `${agentId}.md`);
       }
@@ -103,20 +96,13 @@ class IdeSetup {
 
   async setupClaudeCode(installDir, selectedAgent) {
     const commandsDir = path.join(installDir, ".claude", "commands");
-    const agents = selectedAgent
-      ? [selectedAgent]
-      : await this.getAllAgentIds(installDir);
+    const agents = selectedAgent ? [selectedAgent] : await this.getAllAgentIds(installDir);
 
     await fileManager.ensureDirectory(commandsDir);
 
     for (const agentId of agents) {
       // Check if .bmad-core is a subdirectory (full install) or if agents are in root (single agent install)
-      let agentPath = path.join(
-        installDir,
-        ".bmad-core",
-        "agents",
-        `${agentId}.md`
-      );
+      let agentPath = path.join(installDir, ".bmad-core", "agents", `${agentId}.md`);
       if (!(await fileManager.pathExists(agentPath))) {
         agentPath = path.join(installDir, "agents", `${agentId}.md`);
       }
@@ -136,29 +122,20 @@ class IdeSetup {
       }
     }
 
-    console.log(
-      chalk.green(`\n✓ Created Claude Code commands in ${commandsDir}`)
-    );
+    console.log(chalk.green(`\n✓ Created Claude Code commands in ${commandsDir}`));
 
     return true;
   }
 
   async setupWindsurf(installDir, selectedAgent) {
     const windsurfRulesDir = path.join(installDir, ".windsurf", "rules");
-    const agents = selectedAgent
-      ? [selectedAgent]
-      : await this.getAllAgentIds(installDir);
+    const agents = selectedAgent ? [selectedAgent] : await this.getAllAgentIds(installDir);
 
     await fileManager.ensureDirectory(windsurfRulesDir);
 
     for (const agentId of agents) {
       // Check if .bmad-core is a subdirectory (full install) or if agents are in root (single agent install)
-      let agentPath = path.join(
-        installDir,
-        ".bmad-core",
-        "agents",
-        `${agentId}.md`
-      );
+      let agentPath = path.join(installDir, ".bmad-core", "agents", `${agentId}.md`);
       if (!(await fileManager.pathExists(agentPath))) {
         agentPath = path.join(installDir, "agents", `${agentId}.md`);
       }
@@ -197,9 +174,7 @@ class IdeSetup {
       }
     }
 
-    console.log(
-      chalk.green(`\n✓ Created Windsurf rules in ${windsurfRulesDir}`)
-    );
+    console.log(chalk.green(`\n✓ Created Windsurf rules in ${windsurfRulesDir}`));
 
     return true;
   }
@@ -233,16 +208,10 @@ class IdeSetup {
   }
 
   async setupRoo(installDir, selectedAgent) {
-    const agents = selectedAgent
-      ? [selectedAgent]
-      : await this.getAllAgentIds(installDir);
+    const agents = selectedAgent ? [selectedAgent] : await this.getAllAgentIds(installDir);
 
-    // Create .roo directory first
-    const rooDir = path.join(installDir, ".roo");
-    await fileManager.ensureDirectory(rooDir);
-
-    // Check for existing .roomodes file inside .roo directory
-    const roomodesPath = path.join(rooDir, ".roomodes");
+    // Check for existing .roomodes file in project root
+    const roomodesPath = path.join(installDir, ".roomodes");
     let existingModes = [];
     let existingContent = "";
 
@@ -253,11 +222,7 @@ class IdeSetup {
       for (const match of modeMatches) {
         existingModes.push(match[1]);
       }
-      console.log(
-        chalk.yellow(
-          `Found existing .roomodes file with ${existingModes.length} modes`
-        )
-      );
+      console.log(chalk.yellow(`Found existing .roomodes file with ${existingModes.length} modes`));
     }
 
     // Create new modes content
@@ -265,55 +230,48 @@ class IdeSetup {
 
     // Define file permissions for each agent type
     const agentPermissions = {
-      'analyst': {
-        fileRegex: '\\.(md|txt)$',
-        description: 'Documentation and text files'
+      analyst: {
+        fileRegex: "\\.(md|txt)$",
+        description: "Documentation and text files",
       },
-      'pm': {
-        fileRegex: '\\.(md|txt)$',
-        description: 'Product documentation'
+      pm: {
+        fileRegex: "\\.(md|txt)$",
+        description: "Product documentation",
       },
-      'architect': {
-        fileRegex: '\\.(md|txt|yml|yaml|json)$',
-        description: 'Architecture docs and configs'
+      architect: {
+        fileRegex: "\\.(md|txt|yml|yaml|json)$",
+        description: "Architecture docs and configs",
       },
-      'dev': null, // Full edit access
-      'qa': {
-        fileRegex: '\\.(test|spec)\\.(js|ts|jsx|tsx)$|\\.md$',
-        description: 'Test files and documentation'
+      dev: null, // Full edit access
+      qa: {
+        fileRegex: "\\.(test|spec)\\.(js|ts|jsx|tsx)$|\\.md$",
+        description: "Test files and documentation",
       },
-      'ux-expert': {
-        fileRegex: '\\.(md|css|scss|html|jsx|tsx)$',
-        description: 'Design-related files'
+      "ux-expert": {
+        fileRegex: "\\.(md|css|scss|html|jsx|tsx)$",
+        description: "Design-related files",
       },
-      'po': {
-        fileRegex: '\\.(md|txt)$',
-        description: 'Story and requirement docs'
+      po: {
+        fileRegex: "\\.(md|txt)$",
+        description: "Story and requirement docs",
       },
-      'sm': {
-        fileRegex: '\\.(md|txt)$',
-        description: 'Process and planning docs'
+      sm: {
+        fileRegex: "\\.(md|txt)$",
+        description: "Process and planning docs",
       },
-      'bmad-orchestrator': null, // Full edit access
-      'bmad-master': null // Full edit access
+      "bmad-orchestrator": null, // Full edit access
+      "bmad-master": null, // Full edit access
     };
 
     for (const agentId of agents) {
       // Skip if already exists
       if (existingModes.includes(`bmad-${agentId}`)) {
-        console.log(
-          chalk.dim(`Skipping ${agentId} - already exists in .roomodes`)
-        );
+        console.log(chalk.dim(`Skipping ${agentId} - already exists in .roomodes`));
         continue;
       }
 
       // Read agent file to extract all information
-      let agentPath = path.join(
-        installDir,
-        ".bmad-core",
-        "agents",
-        `${agentId}.md`
-      );
+      let agentPath = path.join(installDir, ".bmad-core", "agents", `${agentId}.md`);
       if (!(await fileManager.pathExists(agentPath))) {
         agentPath = path.join(installDir, "agents", `${agentId}.md`);
       }
@@ -334,9 +292,7 @@ class IdeSetup {
 
           const title = titleMatch ? titleMatch[1].trim() : this.getAgentTitle(agentId);
           const icon = iconMatch ? iconMatch[1].trim() : "🤖";
-          const whenToUse = whenToUseMatch
-            ? whenToUseMatch[1].trim()
-            : `Use for ${title} tasks`;
+          const whenToUse = whenToUseMatch ? whenToUseMatch[1].trim() : `Use for ${title} tasks`;
           const roleDefinition = roleDefinitionMatch
             ? roleDefinitionMatch[1].trim()
             : `You are a ${title} specializing in ${title.toLowerCase()} tasks and responsibilities.`;
@@ -349,7 +305,7 @@ class IdeSetup {
           newModesContent += `   customInstructions: CRITICAL Read the full YML from .bmad-core/agents/${agentId}.md start activation to alter your state of being follow startup section instructions stay in this being until told to exit this mode\n`;
           newModesContent += `   groups:\n`;
           newModesContent += `    - read\n`;
-          
+
           // Add permissions based on agent type
           const permissions = agentPermissions[agentId];
           if (permissions) {
@@ -360,9 +316,7 @@ class IdeSetup {
             newModesContent += `    - edit\n`;
           }
 
-          console.log(
-            chalk.green(`✓ Added mode: bmad-${agentId} (${icon} ${title})`)
-          );
+          console.log(chalk.green(`✓ Added mode: bmad-${agentId} (${icon} ${title})`));
         }
       }
     }
@@ -379,48 +333,10 @@ class IdeSetup {
 
     // Write .roomodes file
     await fileManager.writeFile(roomodesPath, roomodesContent);
-    console.log(chalk.green("✓ Created .roo/.roomodes file"));
-
-    // Create README in .roo directory
-    const rooReadme = `# Roo Code Custom Modes for BMAD-METHOD
-
-This directory contains custom mode configurations for Roo Code to enable BMAD agent personalities.
-
-## Setup
-
-The \`.roomodes\` file defines all BMAD agents as custom modes using the proper \`customModes:\` structure. Modes are automatically available in Roo Code when you open this project.
-
-## Available Modes
-
-${agents.map((id) => `- **bmad-${id}** - ${this.getAgentTitle(id)}`).join("\n")}
-
-## Usage
-
-In Roo Code:
-1. Open the mode selector (usually in the status bar)
-2. Select any BMAD agent mode
-3. The AI will adopt that agent's personality and expertise
-
-## File Permissions
-
-Each agent has specific file access permissions:
-- **Analysts, PM, PO, SM**: Limited to documentation files (.md, .txt)
-- **Architect**: Architecture docs and configs (.md, .txt, .yml, .yaml, .json)
-- **QA**: Test files and documentation
-- **UX Expert**: Design-related files (.md, .css, .scss, .html, .jsx, .tsx)
-- **Developer, Orchestrator, Master**: Full edit access to all files
-`;
-
-    const readmePath = path.join(rooDir, "README.md");
-    await fileManager.writeFile(readmePath, rooReadme);
-    console.log(chalk.green("✓ Created .roo/README.md"));
+    console.log(chalk.green("✓ Created .roomodes file in project root"));
 
     console.log(chalk.green(`\n✓ Roo Code setup complete!`));
-    console.log(
-      chalk.dim(
-        "Custom modes will be available when you open this project in Roo Code"
-      )
-    );
+    console.log(chalk.dim("Custom modes will be available when you open this project in Roo Code"));
 
     return true;
   }

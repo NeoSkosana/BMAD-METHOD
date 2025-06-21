@@ -1,5 +1,7 @@
 # Competitive Analysis Report: {{Project/Product Name}}
 
+[[LLM: The default path and filename unless specified is docs/competitor-analysis.md]]
+
 [[LLM: This template guides comprehensive competitor analysis. Start by understanding the user's competitive intelligence needs and strategic objectives. Help them identify and prioritize competitors before diving into detailed analysis.]]
 
 ## Executive Summary

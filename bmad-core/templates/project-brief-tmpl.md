@@ -1,5 +1,7 @@
 # Project Brief: {{Project Name}}
 
+[[LLM: The default path and filename unless specified is docs/brief.md]]
+
 [[LLM: This template guides creation of a comprehensive Project Brief that serves as the foundational input for product development.
 
 Start by asking the user which mode they prefer:

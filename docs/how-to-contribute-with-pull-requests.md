@@ -24,7 +24,7 @@ A pull request (PR) is how you propose changes to a project on GitHub. Think of 
 # Replace YOUR-USERNAME with your actual GitHub username
 git clone https://github.com/YOUR-USERNAME/bmad-method.git
 cd bmad-method
-```text
+```
 
 ### 3. Create a New Branch
 
@@ -57,7 +57,7 @@ git add .
 
 # Commit with a clear message
 git commit -m "Fix typo in README.md"
-```text
+```
 
 **Good commit messages:**
 

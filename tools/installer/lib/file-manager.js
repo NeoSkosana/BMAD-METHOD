@@ -2,6 +2,7 @@ const fs = require("fs-extra");
 const path = require("path");
 const crypto = require("crypto");
 const glob = require("glob");
+const yaml = require("js-yaml");
 
 // Dynamic import for ES module
 let chalk;
@@ -106,7 +107,7 @@ class FileManager {
 
     // Write manifest
     await fs.ensureDir(path.dirname(manifestPath));
-    await fs.writeFile(manifestPath, JSON.stringify(manifest, null, 2));
+    await fs.writeFile(manifestPath, yaml.dump(manifest, { indent: 2 }));
 
     return manifest;
   }
@@ -120,7 +121,7 @@ class FileManager {
 
     try {
       const content = await fs.readFile(manifestPath, "utf8");
-      return JSON.parse(content);
+      return yaml.load(content);
     } catch (error) {
       return null;
     }

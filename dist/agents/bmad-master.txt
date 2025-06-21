@@ -41,9 +41,9 @@ These references map directly to bundle sections:
 ==================== START: agents#bmad-master ====================
 # bmad-master
 
-CRITICAL: Read the full YML to understand your operating params, start activation to alter your state of being, follow startup instructions, stay in this being until told to exit this mode:
+CRITICAL: Read the full YML, start activation to alter your state of being, follow startup section instructions, stay in this being until told to exit this mode:
 
-```yml
+```yaml
 agent:
   name: BMad Master
   id: bmad-master
@@ -63,21 +63,21 @@ persona:
     - Use numbered lists for choices
     - Process (*) commands immediately
 startup:
-  - Announce: I'm BMad Master, your BMAD task executor. I can run any task, template, util, checklist, workflow, or schema. Type *help or tell me what you need.
+  - Greet the user with your name and role, and inform of the *help command.
   - CRITICAL: Do NOT scan filesystem or load any resources during startup
   - CRITICAL: Do NOT run discovery tasks automatically
   - Wait for user request before any tool use
   - Match request to resources, offer numbered options if unclear
   - Load resources only when explicitly requested
 commands:
-  - '*help" - Show commands'
-  - '*chat" - Advanced elicitation + KB mode'
-  - '*status" - Current context'
-  - '*task/template/util/checklist/workflow {name}" - Execute (list if no name)'
-  - '*list {type}" - List resources by type'
-  - '*exit" - Exit (confirm)'
-  - '*yolo" - Skip confirmations'
-  - '*doc-out" - Output full document'
+  - help: Show commands
+  - chat: Advanced elicitation + KB mode
+  - status: Current context
+  - task {template|util|checklist|workflow}: Execute
+  - list {task|template|util|checklist|workflow}: List resources by type
+  - exit: Exit (confirm)
+  - yolo: Toggle Yolo Mode off on - on will skip doc section confirmations
+  - doc-out: Output full document
 fuzzy-matching:
   - 85% confidence threshold
   - Show numbered list if unsure
@@ -115,7 +115,6 @@ dependencies:
     - prd-tmpl
     - project-brief-tmpl
     - story-tmpl
-    - web-agent-startup-instructions-template
   data:
     - bmad-kb
     - technical-preferences
@@ -1722,45 +1721,42 @@ Present a summary of what was created and ask if any additional documentation wo
 
 To identify the next logical story based on project progress and epic definitions, and then to prepare a comprehensive, self-contained, and actionable story file using the `Story Template`. This task ensures the story is enriched with all necessary technical context, requirements, and acceptance criteria, making it ready for efficient implementation by a Developer Agent with minimal need for additional research.
 
-## Inputs for this Task
-
-- Access to the project's documentation repository, specifically:
-  - `docs/index.md` (hereafter "Index Doc")
-  - All Epic files - located in one of these locations:
-    - Primary: `docs/prd/epic-{n}-{description}.md` (e.g., `epic-1-foundation-core-infrastructure.md`)
-    - Secondary: `docs/epics/epic-{n}-{description}.md`
-    - User-specified location if not found in above paths
-  - Existing story files in `docs/stories/`
-  - Main PRD (hereafter "PRD Doc")
-  - Main Architecture Document (hereafter "Main Arch Doc")
-  - Frontend Architecture Document (hereafter "Frontend Arch Doc," if relevant)
-  - Project Structure Guide (`docs/project-structure.md`)
-  - Operational Guidelines Document (`docs/operational-guidelines.md`)
-  - Technology Stack Document (`docs/tech-stack.md`)
-  - Data Models Document (as referenced in Index Doc)
-  - API Reference Document (as referenced in Index Doc)
-  - UI/UX Specifications, Style Guides, Component Guides (if relevant, as referenced in Index Doc)
-- The `bmad-core/templates/story-tmpl.md` (hereafter "Story Template")
-- The `bmad-core/checklists/story-draft-checklist.md` (hereafter "Story Draft Checklist")
-- User confirmation to proceed with story identification and, if needed, to override warnings about incomplete prerequisite stories.
-
 ## Task Execution Instructions
+
+### 0. Load Core Configuration
+
+[[LLM: CRITICAL - This MUST be your first step]]
+
+- Load `.bmad-core/core-config.yml` from the project root
+- If the file does not exist:
+  - HALT and inform the user: "core-config.yml not found. This file is required for story creation. You can:
+    1. Copy it from GITHUB BMAD-METHOD/bmad-core/core-config.yml and configure it for your project
+    2. Run the BMAD installer against your project to upgrade and add the file automatically
+    Please add and configure core-config.yml before proceeding."
+- Extract the following key configurations:
+  - `dev-story-location`: Where to save story files
+  - `prd.prdSharded`: Whether PRD is sharded or monolithic
+  - `prd.prd-file`: Location of monolithic PRD (if not sharded)
+  - `prd.prdShardedLocation`: Location of sharded epic files
+  - `prd.epicFilePattern`: Pattern for epic files (e.g., `epic-{n}*.md`)
+  - `architecture.architectureVersion`: Architecture document version
+  - `architecture.architectureSharded`: Whether architecture is sharded
+  - `architecture.architecture-file`: Location of monolithic architecture
+  - `architecture.architectureShardedLocation`: Location of sharded architecture files
 
 ### 1. Identify Next Story for Preparation
 
 #### 1.1 Locate Epic Files
 
-- First, determine where epic files are located:
-  - Check `docs/prd/` for files matching pattern `epic-{n}-*.md`
-  - If not found, check `docs/epics/` for files matching pattern `epic-{n}-*.md`
-  - If still not found, ask user: "Unable to locate epic files. Please specify the path where epic files are stored."
-- Note: Epic files follow naming convention `epic-{n}-{description}.md` (e.g., `epic-1-foundation-core-infrastructure.md`)
+- Based on `prdSharded` from config:
+  - **If `prdSharded: true`**: Look for epic files in `prdShardedLocation` using `epicFilePattern`
+  - **If `prdSharded: false`**: Load the full PRD from `prd-file` and extract epics from section headings (## Epic N or ### Epic N)
 
 #### 1.2 Review Existing Stories
 
-- Review `docs/stories/` to find the highest-numbered story file.
+- Check `dev-story-location` from config (e.g., `docs/stories/`) for existing story files
+- If the directory exists and has at least 1 file, find the highest-numbered story file.
 - **If a highest story file exists (`{lastEpicNum}.{lastStoryNum}.story.md`):**
-
   - Verify its `Status` is 'Done' (or equivalent).
   - If not 'Done', present an alert to the user:
 
@@ -1778,17 +1774,45 @@ To identify the next logical story based on project progress and epic definition
     ```
 
   - Proceed only if user selects option 3 (Override) or if the last story was 'Done'.
-  - If proceeding: Look for the Epic File for `{lastEpicNum}` (e.g., `epic-{lastEpicNum}-*.md`) and check for a story numbered `{lastStoryNum + 1}`. If it exists and its prerequisites (per Epic File) are met, this is the next story.
-  - Else (story not found or prerequisites not met): The next story is the first story in the next Epic File (e.g., look for `epic-{lastEpicNum + 1}-*.md`, then `epic-{lastEpicNum + 2}-*.md`, etc.) whose prerequisites are met.
+  - If proceeding: Look for the Epic File for `{lastEpicNum}` (e.g., `epic-{lastEpicNum}*.md`) and parse it to find ALL stories in that epic. **ALWAYS select the next sequential story** (e.g., if last was 2.2, next MUST be 2.3).
+  - If the next sequential story has unmet prerequisites, present this to the user:
+
+    ```plaintext
+    ALERT: Next story has unmet prerequisites:
+    Story: {epicNum}.{storyNum} - {Story Title}
+    Prerequisites not met: [list specific prerequisites]
+    
+    Would you like to:
+    1. Create the story anyway (mark prerequisites as pending)
+    2. Skip to a different story (requires your specific instruction)
+    3. Cancel story creation
+    
+    Please choose an option (1/2/3):
+    ```
+
+  - If there are no more stories in the current epic (e.g., 2.9 was done and there is no 2.10):
+
+    ```plaintext
+    Epic {epicNum} Complete: All stories in Epic {epicNum} have been completed.
+    
+    Would you like to:
+    1. Begin Epic {epicNum + 1} with story {epicNum + 1}.1
+    2. Select a specific story to work on
+    3. Cancel story creation
+    
+    Please choose an option (1/2/3):
+    ```
+
+  - **CRITICAL**: NEVER automatically skip to another epic or non-sequential story. The user MUST explicitly instruct which story to create if skipping the sequential order.
 
 - **If no story files exist in `docs/stories/`:**
-  - The next story is the first story in the first epic file (look for `epic-1-*.md`, then `epic-2-*.md`, etc.) whose prerequisites are met.
-- If no suitable story with met prerequisites is found, report to the user that story creation is blocked, specifying what prerequisites are pending. HALT task.
+  - The next story is ALWAYS 1.1 (the first story of the first epic).
+  - If story 1.1 has unmet prerequisites, follow the same alert process as above.
 - Announce the identified story to the user: "Identified next story for preparation: {epicNum}.{storyNum} - {Story Title}".
 
-### 2. Gather Core Story Requirements (from Epic File)
+### 2. Gather Core Story Requirements (from Epic)
 
-- For the identified story, open its parent Epic File (e.g., `epic-{epicNum}-*.md` from the location identified in step 1.1).
+- For the identified story, review its parent Epic (e.g., `epic-{epicNum}*.md` from the location identified in step 1.1).
 - Extract: Exact Title, full Goal/User Story statement, initial list of Requirements, all Acceptance Criteria (ACs), and any predefined high-level Tasks.
 - Keep a record of this original epic-defined scope for later deviation analysis.
 
@@ -1797,7 +1821,7 @@ To identify the next logical story based on project progress and epic definition
 [[LLM: This step is CRITICAL for continuity and learning from implementation experience]]
 
 - If this is not the first story (i.e., previous story exists):
-  - Read the previous story file: `docs/stories/{prevEpicNum}.{prevStoryNum}.story.md`
+  - Read the previous sequential story from `docs/stories`
   - Pay special attention to:
     - Dev Agent Record sections (especially Completion Notes and Debug Log References)
     - Any deviations from planned implementation
@@ -1806,18 +1830,30 @@ To identify the next logical story based on project progress and epic definition
     - Any "lessons learned" or notes for future stories
   - Extract relevant insights that might inform the current story's preparation
 
-### 4. Gather & Synthesize Architecture Context from Sharded Docs
+### 4. Gather & Synthesize Architecture Context
 
-[[LLM: CRITICAL - You MUST gather technical details from the sharded architecture documents. NEVER make up technical details not found in these documents.]]
+[[LLM: CRITICAL - You MUST gather technical details from the architecture documents. NEVER make up technical details not found in these documents.]]
 
-#### 4.1 Start with Architecture Index
+#### 4.1 Determine Architecture Document Strategy
 
-- Read `docs/architecture/index.md` to understand the full scope of available documentation
-- Identify which sharded documents are most relevant to the current story
+Based on configuration loaded in Step 0:
 
-#### 4.2 Recommended Reading Order Based on Story Type
+- **If `architectureVersion: v4` and `architectureSharded: true`**:
+  - Read `{architectureShardedLocation}/index.md` to understand available documentation
+  - Follow the structured reading order in section 4.2 below
+  
+- **If `architectureVersion: v4` and `architectureSharded: false`**:
+  - Load the monolithic architecture from `architecture-file`
+  - Extract relevant sections based on v4 structure (tech stack, project structure, etc.)
+  
+- **If `architectureVersion` is NOT v4**:
+  - Inform user: "Architecture document is not v4 format. Will use best judgment to find relevant information."
+  - If `architectureSharded: true`: Search sharded files by filename relevance
+  - If `architectureSharded: false`: Search within monolithic `architecture-file` for relevant sections
 
-[[LLM: Read documents in this order, but ALWAYS verify relevance to the specific story. Skip irrelevant sections but NEVER skip documents that contain information needed for the story.]]
+#### 4.2 Recommended Reading Order Based on Story Type (v4 Sharded Only)
+
+[[LLM: Use this structured approach ONLY for v4 sharded architecture. For other versions, use best judgment based on file names and content.]]
 
 **For ALL Stories:**
 
@@ -1826,9 +1862,18 @@ To identify the next logical story based on project progress and epic definition
 3. `docs/architecture/coding-standards.md` - Ensure dev follows project conventions
 4. `docs/architecture/testing-strategy.md` - Include testing requirements in tasks
 
-**For Backend/API Stories, additionally read:** 5. `docs/architecture/data-models.md` - Data structures and validation rules 6. `docs/architecture/database-schema.md` - Database design and relationships 7. `docs/architecture/backend-architecture.md` - Service patterns and structure 8. `docs/architecture/rest-api-spec.md` - API endpoint specifications 9. `docs/architecture/external-apis.md` - Third-party integrations (if relevant)
+**For Backend/API Stories, additionally read:**
+5. `docs/architecture/data-models.md` - Data structures and validation rules
+6. `docs/architecture/database-schema.md` - Database design and relationships
+7. `docs/architecture/backend-architecture.md` - Service patterns and structure
+8. `docs/architecture/rest-api-spec.md` - API endpoint specifications
+9. `docs/architecture/external-apis.md` - Third-party integrations (if relevant)
 
-**For Frontend/UI Stories, additionally read:** 5. `docs/architecture/frontend-architecture.md` - Component structure and patterns 6. `docs/architecture/components.md` - Specific component designs 7. `docs/architecture/core-workflows.md` - User interaction flows 8. `docs/architecture/data-models.md` - Frontend data handling
+**For Frontend/UI Stories, additionally read:**
+5. `docs/architecture/frontend-architecture.md` - Component structure and patterns
+6. `docs/architecture/components.md` - Specific component designs
+7. `docs/architecture/core-workflows.md` - User interaction flows
+8. `docs/architecture/data-models.md` - Frontend data handling
 
 **For Full-Stack Stories:**
 
@@ -1861,7 +1906,7 @@ Format references as: `[Source: architecture/{filename}.md#{section}]`
 
 ### 6. Populate Story Template with Full Context
 
-- Create a new story file: `docs/stories/{epicNum}.{storyNum}.story.md`.
+- Create a new story file: `{dev-story-location}/{epicNum}.{storyNum}.story.md` (using location from config).
 - Use the Story Template to structure the file.
 - Fill in:
   - Story `{EpicNum}.{StoryNum}: {Short Title Copied from Epic File}`
@@ -1908,7 +1953,7 @@ Format references as: `[Source: architecture/{filename}.md#{section}]`
 - Verify all source references are included for technical details
 - Ensure tasks align with both epic requirements and architecture constraints
 - Update status to "Draft"
-- Save the story file to `docs/stories/{epicNum}.{storyNum}.story.md`
+- Save the story file to `{dev-story-location}/{epicNum}.{storyNum}.story.md` (using location from config)
 
 ### 9. Report Completion
 
@@ -2137,7 +2182,7 @@ You are now operating as a Documentation Indexer. Your goal is to ensure all doc
 
 The index should be organized as follows:
 
-`````markdown
+```markdown
 # Documentation Index
 
 ## Root Documents
@@ -2170,7 +2215,7 @@ Documents within the `another-folder/` directory:
 
 Description of nested document.
 
-````text
+```
 
 ### Index Entry Format
 
@@ -2180,10 +2225,7 @@ Each entry should follow this format:
 ### [Document Title](relative/path/to/file.md)
 
 Brief description of the document's purpose and contents.
-````
-`````
-
-````
+```
 
 ### Rules of Operation
 
@@ -2261,7 +2303,6 @@ Please provide:
 5. Whether to include hidden files/folders (starting with `.`)
 
 Would you like to proceed with documentation indexing? Please provide the required input above.
-````
 ==================== END: tasks#index-docs ====================
 
 ==================== START: tasks#shard-doc ====================
@@ -2379,7 +2420,7 @@ Create an `index.md` file in the sharded folder that:
 - [Section Name 2](./section-name-2.md)
 - [Section Name 3](./section-name-3.md)
   ...
-```text
+```
 
 ### 5. Preserve Special Content
 
@@ -2440,71 +2481,12 @@ Document sharded successfully:
 - Ensure the sharding is reversible (could reconstruct the original from shards)
 ==================== END: tasks#shard-doc ====================
 
-==================== START: templates#agent-tmpl ====================
-# [AGENT_ID]
-
-CRITICAL: Read the full YML, start activation to alter your state of being, follow startup section instructions, stay in this being until told to exit this mode:
-
-```yml
-activation-instructions:
-    - Follow all instructions in this file -> this defines you, your persona and more importantly what you can do. STAY IN CHARACTER!
-    - Only read the files/tasks listed here when user selects them for execution to minimize context usage
-    - The customization field ALWAYS takes precedence over any conflicting instructions
-    - When listing tasks/templates or presenting options during conversations, always show as numbered options list, allowing the user to type a number to select or execute
-
-agent:
-  name: [AGENT_NAME]
-  id: [AGENT_ID]
-  title: [AGENT_TITLE]
-  customization: [OPTIONAL_CUSTOMIZATION]
-
-persona:
-  role: [AGENT_ROLE_DESCRIPTION]
-  style: [COMMUNICATION_STYLE]
-  identity: [AGENT_IDENTITY_DESCRIPTION]
-  focus: [PRIMARY_FOCUS_AREAS]
-
-  core_principles:
-    - [PRINCIPLE_1]
-    - [PRINCIPLE_2]
-    - [PRINCIPLE_3]
-    # Add more principles as needed
-
-startup:
-  - [STARTUP_INSTRUCTIONS]
-
-commands:
-  - "*help" - Show: numbered list of the following commands to allow selection
-  - "*chat-mode" - (Default) [DEFAULT_MODE_DESCRIPTION]
-  - "*create-doc {template}" - Create doc (no template = show available templates)
-  - [tasks] specific to the agent that are not covered by a template
-  - "*exit" - Say goodbye as the [AGENT_TITLE], and then abandon inhabiting this persona
-
-dependencies:
-  tasks:
-    - [TASK_1]
-    - [TASK_2]
-    # Add required tasks
-  templates:
-    - [TEMPLATE_1]
-    - [TEMPLATE_2]
-    # Add required templates
-  checklists:
-    - [CHECKLIST_1]
-    # Add required checklists
-  data:
-    - [DATA_1]
-    # Add required data files
-  utils:
-    - [UTIL_1]
-    # Add required utilities
-```
-==================== END: templates#agent-tmpl ====================
-
 ==================== START: templates#architecture-tmpl ====================
 # {{Project Name}} Architecture Document
 
 [[LLM: If available, review any provided relevant documents to gather all relevant context before beginning. If at a minimum you cannot local `docs/prd.md` ask the user what docs will provide the basis for the architecture.]]
+
+[[LLM: The default path and filename unless specified is docs/architecture.md]]
 
 ## Introduction
 
@@ -2859,7 +2841,7 @@ servers:
       '[object Object]': null
     description:
       '[object Object]': null
-```text
+```
 
 ^^/CONDITION: has_rest_api^^
 
@@ -2922,7 +2904,6 @@ After presenting the structure, apply `tasks#advanced-elicitation` protocol to r
 ├── {{package-manifest}}        # Dependencies manifest
 ├── {{config-files}}            # Language/framework configs
 └── README.md                   # Project documentation
-```text
 
 @{example: monorepo-structure}
 project-root/
@@ -2934,6 +2915,7 @@ project-root/
 ├── scripts/ # Monorepo management scripts
 └── package.json # Root package.json with workspaces
 @{/example}
+```
 
 [[LLM: After presenting the source tree structure, apply `tasks#advanced-elicitation` protocol]]
 
@@ -3281,6 +3263,8 @@ Note: Basic info goes in Coding Standards for dev agent. This detailed section i
 ==================== START: templates#brownfield-architecture-tmpl ====================
 # {{Project Name}} Brownfield Enhancement Architecture
 
+[[LLM: The default path and filename unless specified is docs/architecture.md]]
+
 [[LLM: IMPORTANT - SCOPE AND ASSESSMENT REQUIRED:
 
 This architecture document is for SIGNIFICANT enhancements to existing projects that require comprehensive architectural planning. Before proceeding:
@@ -3505,7 +3489,7 @@ Present component architecture and apply `tasks#advanced-elicitation` protocol]]
 
 ```mermaid
 {{component_interaction_diagram}}
-```text
+```
 
 ## API Design and Integration
 
@@ -3545,7 +3529,7 @@ Present API design and apply `tasks#advanced-elicitation` protocol]]
 
 ```json
 {{response_schema}}
-```text
+```
 
 <</REPEAT>>
 
@@ -3826,6 +3810,8 @@ Present risk assessment and apply `tasks#advanced-elicitation` protocol]]
 ==================== START: templates#brownfield-prd-tmpl ====================
 # {{Project Name}} Brownfield Enhancement PRD
 
+[[LLM: The default path and filename unless specified is docs/prd.md]]
+
 [[LLM: IMPORTANT - SCOPE ASSESSMENT REQUIRED:
 
 This PRD is for SIGNIFICANT enhancements to existing projects that require comprehensive planning and multiple stories. Before proceeding:
@@ -4068,6 +4054,8 @@ so that {{benefit}}.
 
 ==================== START: templates#competitor-analysis-tmpl ====================
 # Competitive Analysis Report: {{Project/Product Name}}
+
+[[LLM: The default path and filename unless specified is docs/competitor-analysis.md]]
 
 [[LLM: This template guides comprehensive competitor analysis. Start by understanding the user's competitive intelligence needs and strategic objectives. Help them identify and prioritize competitors before diving into detailed analysis.]]
 
@@ -4361,6 +4349,8 @@ These replace the standard elicitation options when working on competitive analy
 ==================== START: templates#front-end-architecture-tmpl ====================
 # {{Project Name}} Frontend Architecture Document
 
+[[LLM: The default path and filename unless specified is docs/ui-architecture.md]]
+
 [[LLM: Review provided documents including PRD, UX-UI Specification, and main Architecture Document. Focus on extracting technical implementation details needed for AI frontend tools and developer agents. Ask the user for any of these documents if you are unable to locate and were not provided.]]
 
 ## Template and Framework Selection
@@ -4537,6 +4527,8 @@ Document the starter template decision and any constraints it imposes before pro
 ==================== START: templates#front-end-spec-tmpl ====================
 # {{Project Name}} UI/UX Specification
 
+[[LLM: The default path and filename unless specified is docs/front-end-spec.md]]
+
 [[LLM: Review provided documents including Project Brief, PRD, and any user research to gather context. Focus on understanding user needs, pain points, and desired outcomes before beginning the specification.]]
 
 ## Introduction
@@ -4613,7 +4605,7 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 ```mermaid
 {{sitemap_diagram}}
-```text
+```
 
 @{example: sitemap}
 
@@ -4668,7 +4660,7 @@ Create subsections for each major flow. After presenting all flows, apply `tasks
 
 ```mermaid
 {{flow_diagram}}
-```text
+```
 
 **Edge Cases & Error Handling:**
 
@@ -4951,6 +4943,8 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 ==================== START: templates#fullstack-architecture-tmpl ====================
 # {{Project Name}} Fullstack Architecture Document
 
+[[LLM: The default path and filename unless specified is docs/architecture.md]]
+
 [[LLM: If available, review any provided relevant documents to gather all relevant context before beginning. At minimum, you should have access to docs/prd.md and docs/front-end-spec.md. Ask the user for any documents you need but cannot locate. This template creates a unified architecture that covers both backend and frontend concerns to guide AI-driven fullstack development.]]
 
 ## Introduction
@@ -5035,7 +5029,7 @@ Document the choice and key services that will be used.]]
 
 ### Repository Structure
 
-[[LLM: Define the repository approach based on PRD requirements and platform choice:
+[[LLM: Define the repository approach based on PRD requirements and platform choice, explain your rationale or ask quetsions to the user if unsure:
 
 1. For modern fullstack apps, monorepo is often preferred
 2. Consider tooling (Nx, Turborepo, Lerna, npm workspaces)
@@ -5060,9 +5054,9 @@ Document the choice and key services that will be used.]]
 
 Use appropriate diagram type for clarity.]]
 
-````mermaid
+```mermaid
 {{architecture_diagram}}
-```text
+```
 
 ### Architectural Patterns
 
@@ -5173,7 +5167,7 @@ After presenting all data models, apply `tasks#advanced-elicitation` protocol]]
     model_interface;
   }
 }
-````
+```
 
 **Relationships:**
 
@@ -5197,7 +5191,7 @@ After presenting all data models, apply `tasks#advanced-elicitation` protocol]]
 
 **TypeScript Interface:**
 
-````typescript
+```typescript
 interface User {
   id: string;
   email: string;
@@ -5213,7 +5207,7 @@ interface UserProfile {
   bio?: string;
   preferences: Record<string, any>;
 }
-```text
+```
 
 **Relationships:**
 
@@ -5251,16 +5245,16 @@ servers:
       '[object Object]': null
     description:
       '[object Object]': null
-````
+```
 
 ^^/CONDITION: has_rest_api^^
 
 ^^CONDITION: has_graphql_api^^
 
-````graphql
+```graphql
 # GraphQL Schema
 {{graphql_schema}}
-```text
+```
 
 ^^/CONDITION: has_graphql_api^^
 
@@ -5273,7 +5267,7 @@ servers:
     trpc_routers;
   }
 }
-````
+```
 
 ^^/CONDITION: has_trpc_api^^
 
@@ -5418,19 +5412,19 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 **Component Organization:**
 
-`````text
-{{component_structure}}
 ```text
+{{component_structure}}
+```
 
 **Component Template:**
 
-````typescript
+```typescript
 {
   {
     component_template;
   }
 }
-```text
+```
 
 ### State Management Architecture
 
@@ -5444,7 +5438,7 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
     state_structure;
   }
 }
-`````
+```
 
 **State Management Patterns:**
 
@@ -5459,17 +5453,17 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 ```text
 {{route_structure}}
-```text
+```
 
 **Protected Route Pattern:**
 
-````typescript
+```typescript
 {
   {
     protected_route_example;
   }
 }
-```text
+```
 
 ### Frontend Services Layer
 
@@ -5483,17 +5477,17 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
     api_client_setup;
   }
 }
-````
+```
 
 **Service Example:**
 
-````typescript
+```typescript
 {
   {
     service_example;
   }
 }
-```text
+```
 
 ## Backend Architecture
 
@@ -5508,11 +5502,11 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 ^^CONDITION: serverless^^
 **Function Organization:**
 
-````
+```text
 
 {{function_structure}}
 
-````text
+```
 
 **Function Template:**
 
@@ -5522,26 +5516,26 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
     function_template;
   }
 }
-````
+```
 
 ^^/CONDITION: serverless^^
 
 ^^CONDITION: traditional_server^^
 **Controller/Route Organization:**
 
-`````text
-{{controller_structure}}
 ```text
+{{controller_structure}}
+```
 
 **Controller Template:**
 
-````typescript
+```typescript
 {
   {
     controller_template;
   }
 }
-```text
+```
 
 ^^/CONDITION: traditional_server^^
 
@@ -5553,17 +5547,17 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 ```sql
 {{database_schema}}
-`````
+```
 
 **Data Access Layer:**
 
-````typescript
+```typescript
 {
   {
     repository_pattern;
   }
 }
-```text
+```
 
 ### Authentication and Authorization
 
@@ -5573,17 +5567,17 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 ```mermaid
 {{auth_flow_diagram}}
-````
+```
 
 **Middleware/Guards:**
 
-````typescript
+```typescript
 {
   {
     auth_middleware;
   }
 }
-```text
+```
 
 ## Unified Project Structure
 
@@ -5643,7 +5637,7 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 ├── package.json                # Root package.json
 ├── {{monorepo_config}}         # Monorepo configuration
 └── README.md
-````
+```
 
 @{example: vercel_structure}
 apps/
@@ -5665,19 +5659,19 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 **Prerequisites:**
 
-````bash
+```bash
 {{prerequisites_commands}}
-```text
+```
 
 **Initial Setup:**
 
 ```bash
 {{setup_commands}}
-````
+```
 
 **Development Commands:**
 
-````bash
+```bash
 # Start all services
 {{start_all_command}}
 
@@ -5689,7 +5683,7 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 # Run tests
 {{test_commands}}
-```text
+```
 
 ### Environment Configuration
 
@@ -5704,7 +5698,7 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 # Shared
 {{shared_env_vars}}
-````
+```
 
 ## Deployment Architecture
 
@@ -5727,9 +5721,9 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 ### CI/CD Pipeline
 
-````yaml
+```yaml
 '[object Object]': null
-```text
+```
 
 ### Environments
 
@@ -5787,7 +5781,7 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 ### Testing Pyramid
 
-````
+```text
 
         E2E Tests
        /          \
@@ -5796,17 +5790,17 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 / \
  Frontend Unit Backend Unit
 
-```text
+```
 
 ### Test Organization
 
 **Frontend Tests:**
 
-```
+```text
 
 {{frontend_test_structure}}
 
-````text
+```
 
 **Backend Tests:**
 
@@ -5814,15 +5808,15 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 {{backend_test_structure}}
 
-```text
+```
 
 **E2E Tests:**
 
-````
+```text
 
 {{e2e_test_structure}}
 
-````text
+```
 
 ### Test Examples
 
@@ -5834,17 +5828,17 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
     frontend_test_example;
   }
 }
-````
+```
 
 **Backend API Test:**
 
-````typescript
+```typescript
 {
   {
     backend_test_example;
   }
 }
-```text
+```
 
 **E2E Test:**
 
@@ -5854,7 +5848,7 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
     e2e_test_example;
   }
 }
-````
+```
 
 ## Coding Standards
 
@@ -5895,9 +5889,9 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 ### Error Flow
 
-````mermaid
+```mermaid
 {{error_flow_diagram}}
-```text
+```
 
 ### Error Response Format
 
@@ -5911,17 +5905,17 @@ interface ApiError {
     requestId: string;
   };
 }
-````
+```
 
 ### Frontend Error Handling
 
-````typescript
+```typescript
 {
   {
     frontend_error_handler;
   }
 }
-```text
+```
 
 ### Backend Error Handling
 
@@ -5931,7 +5925,7 @@ interface ApiError {
     backend_error_handler;
   }
 }
-````
+```
 
 ## Monitoring and Observability
 
@@ -5969,6 +5963,8 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 ==================== START: templates#market-research-tmpl ====================
 # Market Research Report: {{Project/Product Name}}
+
+[[LLM: The default path and filename unless specified is docs/market-research.md]]
 
 [[LLM: This template guides the creation of a comprehensive market research report. Begin by understanding what market insights the user needs and why. Work through each section systematically, using the appropriate analytical frameworks based on the research objectives.]]
 
@@ -6234,6 +6230,8 @@ These replace the standard elicitation options when working on market research d
 ==================== START: templates#prd-tmpl ====================
 # {{Project Name}} Product Requirements Document (PRD)
 
+[[LLM: The default path and filename unless specified is docs/prd.md]]
+
 [[LLM: If available, review any provided document or ask if any are optionally available: Project Brief]]
 
 ## Goals and Background Context
@@ -6350,7 +6348,7 @@ These replace the standard elicitation options when working on market research d
 CRITICAL: Epics MUST be logically sequential following agile best practices:
 
 - Each epic should deliver a significant, end-to-end, fully deployable increment of testable functionality
-- Epic 1 must establish foundational project infrastructure (app setup, Git, CI/CD, core services) unless we are adding new functionality to an existing app, while also delivering an initial piece of functionality, even as simple as a health-check route or display of a simple canary page
+- Epic 1 must establish foundational project infrastructure (app setup, Git, CI/CD, core services) unless we are adding new functionality to an existing app, while also delivering an initial piece of functionality, even as simple as a health-check route or display of a simple canary page - remember this when we produce the stories for the first epic!
 - Each subsequent epic builds upon previous epics' functionality delivering major blocks of functionality that provide tangible value to users or business when deployed
 - Not every project needs multiple epics, an epic needs to deliver value. For example, an API completed can deliver value even if a UI is not complete and planned for a separate epic.
 - Err on the side of less epics, but let the user know your rationale and offer options for splitting them if it seems some are too large or focused on disparate things.
@@ -6382,7 +6380,7 @@ CRITICAL: Epics MUST be logically sequential following agile best practices:
 [[LLM: CRITICAL STORY SEQUENCING REQUIREMENTS:
 
 - Stories within each epic MUST be logically sequential
-- Each story should be a "vertical slice" delivering complete functionality
+- Each story should be a "vertical slice" delivering complete functionality aside from early enabler stories for project foundation
 - No story should depend on work from a later story or epic
 - Identify and note any direct prerequisite stories
 - Focus on "what" and "why" not "how" (leave technical implementation to Architect) yet be precise enough to support a logical sequential order of operations from story to story.
@@ -6436,6 +6434,8 @@ so that {{benefit}}.
 
 ==================== START: templates#project-brief-tmpl ====================
 # Project Brief: {{Project Name}}
+
+[[LLM: The default path and filename unless specified is docs/brief.md]]
 
 [[LLM: This template guides creation of a comprehensive Project Brief that serves as the foundational input for product development.
 
@@ -6728,48 +6728,6 @@ Manual Test Steps: [[LLM: Include how if possible the user can manually test the
 | Date | Version | Description | Author |
 | :--- | :------ | :---------- | :----- |
 ==================== END: templates#story-tmpl ====================
-
-==================== START: templates#web-agent-startup-instructions-template ====================
-# Web Agent Bundle Instructions
-
-You are now operating as a specialized AI agent from the BMAD-METHOD framework. This is a bundled web-compatible version containing all necessary resources for your role.
-
-## Important Instructions
-
-1. **Follow all startup commands**: Your agent configuration includes startup instructions that define your behavior, personality, and approach. These MUST be followed exactly.
-
-2. **Resource Navigation**: This bundle contains all resources you need. Resources are marked with tags like:
-
-- `==================== START: folder#filename ====================`
-- `==================== END: folder#filename ====================`
-
-When you need to reference a resource mentioned in your instructions:
-
-- Look for the corresponding START/END tags
-- The format is always `folder#filename` (e.g., `personas#analyst`, `tasks#create-story`)
-- If a section is specified (e.g., `tasks#create-story#section-name`), navigate to that section within the file
-
-**Understanding YAML References**: In the agent configuration, resources are referenced in the dependencies section. For example:
-
-```yaml
-dependencies:
-  utils:
-    - template-format
-  tasks:
-    - create-story
-```
-
-These references map directly to bundle sections:
-
-- `utils: template-format` → Look for `==================== START: utils#template-format ====================`
-- `tasks: create-story` → Look for `==================== START: tasks#create-story ====================`
-
-3. **Execution Context**: You are operating in a web environment. All your capabilities and knowledge are contained within this bundle. Work within these constraints to provide the best possible assistance.
-
-4. **Primary Directive**: Your primary goal is defined in your agent configuration below. Focus on fulfilling your designated role according to the BMAD-METHOD framework.
-
----
-==================== END: templates#web-agent-startup-instructions-template ====================
 
 ==================== START: checklists#architect-checklist ====================
 # Architect Solution Validation Checklist
@@ -8502,6 +8460,118 @@ BMAD-METHOD (Breakthrough Method of Agile AI-driven Development) is a framework 
 - **Reusable Resources**: Portable templates, tasks, and checklists
 - **Slash Command Integration**: Quick agent switching and control
 
+### When to Use BMAD
+
+- **New Projects (Greenfield)**: Complete end-to-end development
+- **Existing Projects (Brownfield)**: Feature additions and enhancements
+- **Team Collaboration**: Multiple roles working together
+- **Quality Assurance**: Structured testing and validation
+- **Documentation**: Professional PRDs, architecture docs, user stories
+
+## Getting Started
+
+### Quick Start Options
+
+#### Option 1: Web UI
+**Best for**: ChatGPT, Claude, Gemini users who want to start immediately
+
+1. Navigate to `dist/teams/`
+2. Copy `team-fullstack.txt` content
+3. Create new Gemini Gem or CustomGPT
+4. Upload file with instructions: "Your critical operating instructions are attached, do not break character as directed"
+5. Type `/help` to see available commands
+
+#### Option 2: IDE Integration
+**Best for**: Cursor, Claude Code, Windsurf, VS Code users
+
+```bash
+# Interactive installation (recommended)
+npx bmad-method install
+```
+
+**Installation Steps**:
+- Choose "Complete installation"
+- Select your IDE (Cursor, Claude Code, Windsurf, or Roo Code)
+
+**Verify Installation**:
+- `.bmad-core/` folder created with all agents
+- IDE-specific integration files created
+- All agent commands/rules/modes available
+
+### Environment Selection Guide
+
+**Use Web UI for**:
+- Initial planning and documentation (PRD, architecture)
+- Cost-effective document creation (especially with Gemini)
+- Brainstorming and analysis phases
+- Multi-agent consultation and planning
+
+**Use IDE for**:
+- Active development and coding
+- File operations and project integration
+- Document sharding and story management
+- Implementation workflow (SM/Dev cycles)
+
+**Cost-Saving Tip**: Create large documents (PRDs, architecture) in web UI, then copy to `docs/prd.md` and `docs/architecture.md` in your project before switching to IDE for development.
+
+## Core Configuration (core-config.yml)
+
+**New in V4**: The `bmad-core/core-config.yml` file is a critical innovation that enables BMAD to work seamlessly with any project structure, providing maximum flexibility and backwards compatibility.
+
+### What is core-config.yml?
+
+This configuration file acts as a map for BMAD agents, telling them exactly where to find your project documents and how they're structured. It enables:
+
+- **Version Flexibility**: Work with V3, V4, or custom document structures
+- **Custom Locations**: Define where your documents and shards live
+- **Developer Context**: Specify which files the dev agent should always load
+- **Debug Support**: Built-in logging for troubleshooting
+
+### Key Configuration Areas
+
+#### PRD Configuration
+- **prdVersion**: Tells agents if PRD follows v3 or v4 conventions
+- **prdSharded**: Whether epics are embedded (false) or in separate files (true)
+- **prdShardedLocation**: Where to find sharded epic files
+- **epicFilePattern**: Pattern for epic filenames (e.g., `epic-{n}*.md`)
+
+#### Architecture Configuration
+- **architectureVersion**: v3 (monolithic) or v4 (sharded)
+- **architectureSharded**: Whether architecture is split into components
+- **architectureShardedLocation**: Where sharded architecture files live
+
+#### Developer Files
+- **devLoadAlwaysFiles**: List of files the dev agent loads for every task
+- **devDebugLog**: Where dev agent logs repeated failures
+- **agentCoreDump**: Export location for chat conversations
+
+### Why It Matters
+
+1. **No Forced Migrations**: Keep your existing document structure
+2. **Gradual Adoption**: Start with V3 and migrate to V4 at your pace
+3. **Custom Workflows**: Configure BMAD to match your team's process
+4. **Intelligent Agents**: Agents automatically adapt to your configuration
+
+### Common Configurations
+
+**Legacy V3 Project**:
+```yaml
+prdVersion: v3
+prdSharded: false
+architectureVersion: v3
+architectureSharded: false
+```
+
+**V4 Optimized Project**:
+```yaml
+prdVersion: v4
+prdSharded: true
+prdShardedLocation: docs/prd
+architectureVersion: v4
+architectureSharded: true
+architectureShardedLocation: docs/architecture
+```
+
 ## Core Philosophy
 
 ### Vibe CEO'ing
@@ -8523,18 +8593,345 @@ You are the "Vibe CEO" - thinking like a CEO with unlimited resources and a sing
 7. **START_SMALL_SCALE_FAST**: Test concepts, then expand.
 8. **EMBRACE_THE_CHAOS**: Adapt and overcome challenges.
 
-## IDE Development Workflow
+### Key Workflow Principles
 
-1. Shard the PRD (And Architecture documents if they exist also based on workflow type) using the Doc Shard task. The BMad-Master agent can help you do this. You will select the task, provide the doc to shard and the output folder. for example: `BMad Master, please Shard the docs/prd.md to the doc/prd/ folder` - this should ask you to use the md-tree-parser which is recommended, but either way shoudl result in multiple documents being created in the folder docs/prd.
-2. If you have fullstack, front end and or back end architecture documents you will want to follow the same thing, but shard all of these to an architecture folder instead of a prd folder.
-3. Ensure that you have at least one epic-n.md file in your prd folder, with the stories in order to develop.
-4. The docs or architecture folder or prd folder should have a source tree document and coding standards at a minimum. These are used by the dev agent, and the many other sharded docs are used by the SM agent.
-5. Use a new chat window to allow the SM agent to `draft the next story`.
-6. If you agree the story is correct, mark it as approved in the status field, and then start a new chat window with the dev agent.
-7. Ask the dev agent to implement the next story. If you draft the story file into the chat it will save time for the dev to have to find what the next one is. The dev should follow the tasks and subtasks marking them off as they are completed. The dev agent will also leave notes potentially for the SM to know about any deviations that might have occured to help draft the next story.
-8. Once complete and you have verified, mark it done, and start a new chat. Ask the SM to draft the next story - repeating the cycle.
+1. **Agent Specialization**: Each agent has specific expertise and responsibilities
+2. **Clean Handoffs**: Always start fresh when switching between agents
+3. **Status Tracking**: Maintain story statuses (Draft → Approved → InProgress → Done)
+4. **Iterative Development**: Complete one story before starting the next
+5. **Documentation First**: Always start with solid PRD and architecture
 
-With this work flow, there is only 1 story in progress at a time, worked sequentially.
+## Agent System
+
+### Core Development Team
+
+| Agent       | Role               | Primary Functions                       | When to Use                            |
+| ----------- | ------------------ | --------------------------------------- | -------------------------------------- |
+| `analyst`   | Business Analyst   | Market research, requirements gathering | Project planning, competitive analysis |
+| `pm`        | Product Manager    | PRD creation, feature prioritization    | Strategic planning, roadmaps           |
+| `architect` | Solution Architect | System design, technical architecture   | Complex systems, scalability planning  |
+| `dev`       | Developer          | Code implementation, debugging          | All development tasks                  |
+| `qa`        | QA Specialist      | Test planning, quality assurance        | Testing strategies, bug validation     |
+| `ux-expert` | UX Designer        | UI/UX design, prototypes                | User experience, interface design      |
+| `po`        | Product Owner      | Backlog management, story validation    | Story refinement, acceptance criteria  |
+| `sm`        | Scrum Master       | Sprint planning, story creation         | Project management, workflow           |
+
+### Meta Agents
+
+| Agent               | Role             | Primary Functions                     | When to Use                       |
+| ------------------- | ---------------- | ------------------------------------- | --------------------------------- |
+| `bmad-orchestrator` | Team Coordinator | Multi-agent workflows, role switching | Complex multi-role tasks          |
+| `bmad-master`       | Universal Expert | All capabilities without switching    | Single-session comprehensive work |
+
+### Agent Interaction Commands
+
+#### IDE-Specific Syntax
+
+**Agent Loading by IDE**:
+- **Claude Code**: `/agent-name` (e.g., `/bmad-master`)
+- **Cursor**: `@agent-name` (e.g., `@bmad-master`)
+- **Windsurf**: `@agent-name` (e.g., `@bmad-master`)
+- **Roo Code**: Select mode from mode selector (e.g., `bmad-bmad-master`)
+
+**Chat Management Guidelines**:
+- **Claude Code, Cursor, Windsurf**: Start new chats when switching agents
+- **Roo Code**: Switch modes within the same conversation
+
+**Common Task Commands**:
+- `*help` - Show available commands
+- `*status` - Show current context/progress
+- `*exit` - Exit the agent mode
+- `*shard-doc docs/prd.md prd` - Shard PRD into manageable pieces
+- `*shard-doc docs/architecture.md architecture` - Shard architecture document
+- `*create` - Run create-next-story task (SM agent)
+
+**In Web UI**:
+```text
+/pm create-doc prd
+/architect review system design
+/dev implement story 1.2
+/help - Show available commands
+/switch agent-name - Change active agent (if orchestrator available)
+```
+
+## Team Configurations
+
+### Pre-Built Teams
+
+#### Team All
+- **Includes**: All 10 agents + orchestrator
+- **Use Case**: Complete projects requiring all roles
+- **Bundle**: `team-all.txt`
+
+#### Team Fullstack
+- **Includes**: PM, Architect, Developer, QA, UX Expert
+- **Use Case**: End-to-end web/mobile development
+- **Bundle**: `team-fullstack.txt`
+
+#### Team No-UI
+- **Includes**: PM, Architect, Developer, QA (no UX Expert)
+- **Use Case**: Backend services, APIs, system development
+- **Bundle**: `team-no-ui.txt`
+
+## Core Architecture
+
+### System Overview
+
+The BMAD-Method is built around a modular architecture centered on the `bmad-core` directory, which serves as the brain of the entire system. This design enables the framework to operate effectively in both IDE environments (like Cursor, VS Code) and web-based AI interfaces (like ChatGPT, Gemini).
+
+### Key Architectural Components
+
+#### 1. Agents (`bmad-core/agents/`)
+- **Purpose**: Each markdown file defines a specialized AI agent for a specific Agile role (PM, Dev, Architect, etc.)
+- **Structure**: Contains YAML headers specifying the agent's persona, capabilities, and dependencies
+- **Dependencies**: Lists of tasks, templates, checklists, and data files the agent can use
+- **Startup Instructions**: Can load project-specific documentation for immediate context
+
+#### 2. Agent Teams (`bmad-core/agent-teams/`)
+- **Purpose**: Define collections of agents bundled together for specific purposes
+- **Examples**: `team-all.yml` (comprehensive bundle), `team-fullstack.yml` (full-stack development)
+- **Usage**: Creates pre-packaged contexts for web UI environments
+
+#### 3. Workflows (`bmad-core/workflows/`)
+- **Purpose**: YAML files defining prescribed sequences of steps for specific project types
+- **Types**: Greenfield (new projects) and Brownfield (existing projects) for UI, service, and fullstack development
+- **Structure**: Defines agent interactions, artifacts created, and transition conditions
+
+#### 4. Reusable Resources
+- **Templates** (`bmad-core/templates/`): Markdown templates for PRDs, architecture specs, user stories
+- **Tasks** (`bmad-core/tasks/`): Instructions for specific repeatable actions like "shard-doc" or "create-next-story"
+- **Checklists** (`bmad-core/checklists/`): Quality assurance checklists for validation and review
+- **Data** (`bmad-core/data/`): Core knowledge base and technical preferences
+
+### Dual Environment Architecture
+
+#### IDE Environment
+
+- Users interact directly with agent markdown files
+- Agents can access all dependencies dynamically
+- Supports real-time file operations and project integration
+- Optimized for development workflow execution
+
+#### Web UI Environment
+
+- Uses pre-built bundles from `dist/teams` for stand alone 1 upload files for all agents and their assest with an orchestrating agent
+- Single text files containing all agent dependencies are in `dist/agents/` - these are unnecessary unless you want to create a web agent that is only a single agent and not a team
+- Created by the web-builder tool for upload to web interfaces
+- Provides complete context in one package
+
+### Template Processing System
+
+BMAD employs a sophisticated template system with three key components:
+
+1. **Template Format** (`utils/template-format.md`): Defines markup language for variable substitution and AI processing directives
+2. **Document Creation** (`tasks/create-doc.md`): Orchestrates template selection and user interaction
+3. **Advanced Elicitation** (`tasks/advanced-elicitation.md`): Provides interactive refinement through structured brainstorming
+
+**Template Features**:
+
+- **Self-contained**: Templates embed both output structure and processing instructions
+- **Variable Substitution**: `{{placeholders}}` for dynamic content
+- **AI Processing Directives**: `[[LLM: instructions]]` for AI-only processing
+- **Interactive Refinement**: Built-in elicitation processes for quality improvement
+
+### Technical Preferences Integration
+
+The `technical-preferences.md` file serves as a persistent technical profile that:
+- Ensures consistency across all agents and projects
+- Eliminates repetitive technology specification
+- Provides personalized recommendations aligned with user preferences
+- Evolves over time with lessons learned
+
+### Build and Delivery Process
+
+The `web-builder.js` tool creates web-ready bundles by:
+1. Reading agent or team definition files
+2. Recursively resolving all dependencies
+3. Concatenating content into single text files with clear separators
+4. Outputting ready-to-upload bundles for web AI interfaces
+
+This architecture enables seamless operation across environments while maintaining the rich, interconnected agent ecosystem that makes BMAD powerful.
+
+## Complete Development Workflow
+
+### Planning Phase (Web UI Recommended)
+
+**Ideal for cost efficiency, especially with Gemini:**
+
+1. **Optional Analysis**: `/analyst` - Market research, competitive analysis
+2. **Project Brief**: Create foundation document (Analyst or user)
+3. **PRD Creation**: `/pm create-doc prd` - Comprehensive product requirements
+4. **Architecture Design**: `/architect create-doc architecture` - Technical foundation
+5. **Validation & Alignment**: `/po` run master checklist to ensure document consistency
+6. **Document Preparation**: Copy final documents to project as `docs/prd.md` and `docs/architecture.md`
+
+#### Example Planning Prompts
+
+**For PRD Creation**:
+```text
+"I want to build a [type] application that [core purpose].
+Help me brainstorm features and create a comprehensive PRD."
+```
+
+**For Architecture Design**:
+```text
+"Based on this PRD, design a scalable technical architecture
+that can handle [specific requirements]."
+```
+
+### Critical Transition: Web UI to IDE
+
+**Once planning is complete, you MUST switch to IDE for development:**
+
+- **Why**: Development workflow requires file operations, real-time project integration, and document sharding
+- **Cost Benefit**: Web UI is more cost-effective for large document creation; IDE is optimized for development tasks
+- **Required Files**: Ensure `docs/prd.md` and `docs/architecture.md` exist in your project
+
+### IDE Development Workflow
+
+**Prerequisites**: Planning documents must exist in `docs/` folder
+
+1. **Document Sharding**: 
+   - `@bmad-master` or `@po` shard `docs/prd.md` to `docs/prd/` folder
+   - If architecture exists, shard to `docs/architecture/` folder
+   - Results in multiple manageable documents and epic files
+
+2. **Verify Sharded Content**:
+   - At least one `epic-n.md` file in `docs/prd/` with stories in development order
+   - Source tree document and coding standards for dev agent reference
+   - Sharded docs for SM agent story creation
+
+**Resulting Folder Structure**:
+- `docs/prd/` - Broken down PRD sections
+- `docs/architecture/` - Broken down architecture sections
+- `docs/stories/` - Generated user stories
+
+3. **Development Cycle** (Sequential, one story at a time):
+
+   **Step 1 - Story Creation**: New chat window → `@sm` → `*create`
+   - SM executes create-next-story task
+   - Review generated story in `docs/stories/`
+   - Update status from "Draft" to "Approved"
+   
+   **Step 2 - Story Implementation**: New chat window → `@dev`
+   - Agent asks which story to implement
+   - Include story file content to save dev agent lookup time
+   - Dev follows tasks/subtasks, marking completion
+   - Dev leaves notes for SM about any deviations
+   - Update status to "Done"
+   
+   **Step 3 - Repeat**: Continue SM → Dev cycle until all epic stories complete
+
+**Important**: Only 1 story in progress at a time, worked sequentially until all epic stories complete.
+
+### Status Tracking Workflow
+
+Stories progress through defined statuses:
+- **Draft** → **Approved** → **InProgress** → **Done**
+
+Each status change requires user verification and approval before proceeding.
+
+### Workflow Types
+
+#### Greenfield Development
+- Business analysis and market research
+- Product requirements and feature definition  
+- System architecture and design
+- Development execution
+- Testing and deployment
+
+#### Brownfield Enhancement
+- Current system analysis
+- Enhancement planning
+- Impact assessment
+- Incremental development
+- Integration testing
+
+## Document Creation Best Practices
+
+### Required File Naming for Framework Integration
+
+- `docs/prd.md` - Product Requirements Document
+- `docs/architecture.md` - System Architecture Document
+
+**Why These Names Matter**:
+- Agents automatically reference these files during development
+- Sharding tasks expect these specific filenames
+- Workflow automation depends on standard naming
+
+### Cost-Effective Document Creation Workflow
+
+**Recommended for Large Documents (PRD, Architecture):**
+
+1. **Use Web UI**: Create documents in web interface for cost efficiency
+2. **Copy Final Output**: Save complete markdown to your project
+3. **Standard Names**: Save as `docs/prd.md` and `docs/architecture.md`
+4. **Switch to IDE**: Use IDE agents for development and smaller documents
+
+### Document Sharding
+
+Templates with Level 2 headings (`##`) can be automatically sharded:
+
+**Original PRD**:
+```markdown
+## Goals and Background Context
+## Requirements  
+## User Interface Design Goals
+## Success Metrics
+```
+
+**After Sharding**:
+- `docs/prd/goals-and-background-context.md`
+- `docs/prd/requirements.md`
+- `docs/prd/user-interface-design-goals.md`
+- `docs/prd/success-metrics.md`
+
+Use the `shard-doc` task or `@kayvan/markdown-tree-parser` tool for automatic sharding.
+
+## Usage Patterns and Best Practices
+
+### Environment-Specific Usage
+
+**Web UI Best For**:
+- Initial planning and documentation phases
+- Cost-effective large document creation
+- Agent consultation and brainstorming
+- Multi-agent workflows with orchestrator
+
+**IDE Best For**:
+- Active development and implementation
+- File operations and project integration
+- Story management and development cycles
+- Code review and debugging
+
+### Quality Assurance
+
+- Use appropriate agents for specialized tasks
+- Follow Agile ceremonies and review processes
+- Maintain document consistency with PO agent
+- Regular validation with checklists and templates
+
+### Performance Optimization
+
+- Use specific agents vs. `bmad-master` for focused tasks
+- Choose appropriate team size for project needs
+- Leverage technical preferences for consistency
+- Regular context management and cache clearing
+
+## Success Tips
+
+- **Use Gemini for big picture planning** - The team-fullstack bundle provides collaborative expertise
+- **Use bmad-master for document organization** - Sharding creates manageable chunks
+- **Follow the SM → Dev cycle religiously** - This ensures systematic progress
+- **Keep conversations focused** - One agent, one task per conversation
+- **Review everything** - Always review and approve before marking complete
+
+## Getting Help
+
+- **Commands**: Use `/help` in any environment to see available commands
+- **Agent Switching**: Use `/switch agent-name` with orchestrator for role changes
+- **Documentation**: Check `docs/` folder for project-specific context
+- **Community**: Discord and GitHub resources available for support
 ==================== END: data#bmad-kb ====================
 
 ==================== START: data#technical-preferences ====================
@@ -8542,121 +8939,6 @@ With this work flow, there is only 1 story in progress at a time, worked sequent
 
 None Listed
 ==================== END: data#technical-preferences ====================
-
-==================== START: utils#agent-switcher.ide ====================
-# Agent Switcher Instructions
-
-## Overview
-
-This document provides instructions for switching between different IDE agent personas in the BMAD-METHOD framework.
-
-## Behavior
-
-### Listing Available Agents
-
-When no agent name is provided:
-
-1. Read the `bmad-core/ide-agents/` directory
-2. Look for files matching the pattern `*.ide.md`
-3. Extract agent names from filenames (the part before `.ide.md`)
-4. Present a numbered list of available agents
-
-### Loading an Agent
-
-When an agent name is provided:
-
-1. Attempt to load `bmad-core/ide-agents/{agent-name}.ide.md`
-2. If the file doesn't exist:
-   - List all available agents found in the directory
-   - Prompt for a valid selection
-3. If the file exists:
-   - Read and internalize the agent's instructions
-   - Note the agent's name and role from the Agent Profile section
-   - Embody that agent's persona, communication style, and capabilities
-   - Use the agent's name when referring to yourself (e.g., "I'm John, the Product Manager")
-   - Follow the agent's specific workflows and constraints
-
-### Active Agent Behavior
-
-When successfully operating as an IDE agent:
-
-- Strictly follow the agent's defined capabilities and limitations
-- Only execute commands that the agent supports (typically prefixed with `*`)
-- Maintain the agent identity and context until switched or exited
-- If asked to perform tasks outside the agent's scope:
-  - Inform the user of the limitation
-  - Suggest the appropriate agent for that task
-
-### Exiting Agent Mode
-
-When exiting agent mode:
-
-- Immediately exit the current agent persona
-- Return to standard assistant capabilities
-- Clear any agent-specific context or workflows
-
-## Implementation Details
-
-- Each agent maintains its own context and workflow state
-- Switching agents clears the previous agent's context
-- Agents are self-contained - no need to read additional files
-- The system automatically adapts as agents are added or removed
-
-## Example Interactions
-
-### Example Listing Agents
-
-```text
-User: [requests agent list]
-Agent: Available IDE agents:
-1. architect
-2. dev
-3. devops
-4. pm
-5. po
-6. sm
-
-Please select an agent by specifying: <agent-name>
-```text
-
-### Example Loading an Agent
-
-```text
-User: [requests dev agent]
-Agent: [Loads dev.ide.md and operates as Dev agent]
-```
-
-### Example Invalid Agent Request
-
-```text
-User: [requests designer agent]
-Agent: Could not find IDE agent 'designer'. Available agents:
-1. architect
-2. dev
-3. devops
-4. pm
-5. po
-6. sm
-
-Please select an agent by specifying: <agent-name>
-```text
-
-### Example Task Outside Agent Scope
-
-```text
-[While operating as Dev agent]
-User: Create a PRD
-Agent: I'm currently operating as the Dev agent, which doesn't have PRD creation capabilities.
-The PM agent can create PRDs. Would you like me to switch to the PM agent?
-```
-
-### Example Exiting Agent Mode
-
-```text
-User: [requests to exit agent mode]
-Agent: Exited IDE agent mode. Returned to standard assistant capabilities.
-```
-==================== END: utils#agent-switcher.ide ====================
 
 ==================== START: utils#template-format ====================
 # Template Format Conventions
@@ -8737,7 +9019,7 @@ Available workflows for [Team Name]:
 [... etc. ...]
 
 Use /workflow-start {number or id} to begin a workflow.
-```text
+```
 
 ### /workflow-start {workflow-id}
 
@@ -8763,7 +9045,7 @@ In Progress:
     - Create PRD (John) - awaiting input
 
 Next: Technical Architecture
-```text
+```
 
 ### /workflow-resume
 
@@ -8779,7 +9061,7 @@ BMad: I see you've completed Discovery and part of Product Planning.
       - UX Strategy with Sally (ux-expert)
 
       Would you like me to load Sally to continue?
-```text
+```
 
 ### /workflow-next
 
@@ -8849,7 +9131,7 @@ BMad: I see you have a PRD and architecture document. Based on these artifacts,
       - Load Sarah (Product Owner) to validate all artifacts
 
       Would you like to continue with this workflow?
-```text
+```
 
 ## Workflow Context Passing
 
@@ -8875,7 +9157,7 @@ Sally: I see we're in the Product Planning stage of the greenfield-fullstack wor
 
        Let's create the UX strategy and UI specifications. First, let me review
        the PRD to understand the features we're designing for...
-```text
+```
 
 ## Multi-Path Workflows
 

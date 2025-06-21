@@ -46,7 +46,7 @@ BMAD-METHOD (Breakthrough Method of Agile AI-Driven Development) is an AI agent 
 
 Best for: ChatGPT, Claude, Gemini users
 
-1. Navigate to `.bmad-core/web-bundles/teams/`
+1. Navigate to `dist/teams/`
 2. Copy `team-fullstack.txt` content
 3. Create new Gemini Gem or CustomGPT
 4. Upload file with instructions: "Your critical operating instructions are attached, do not break character as directed"
@@ -59,10 +59,7 @@ Best for: Cursor, Claude Code, Windsurf, VS Code users
 ```bash
 # Interactive installation (recommended)
 npx bmad-method install
-
-# Command line installation
-npx bmad-method install --full --directory ./my-project --ide cursor
-```text
+```
 
 ### First Steps
 
@@ -130,7 +127,7 @@ dependencies:
 # Claude Code (files in commands folder - loaded with /)
 /pm Create user stories
 /dev Fix the login bug
-```text
+```
 
 **In Web UI:**
 
@@ -178,7 +175,7 @@ Templates follow the `template-format.md` specification:
 
 - **Template**: `architecture-template.md`
 - **Agent**: Architect
-- **Use Case**: System design, technical planning  
+- **Use Case**: System design, technical planning
 - **Command**: `/architect create-doc architecture`
 - **💡 Cost-Saving Tip**: For Gemini users, create architecture docs in the web UI to avoid high IDE token costs. Copy the final markdown output to `docs/architecture.md` in your project.
 
@@ -203,10 +200,12 @@ For cost efficiency, especially with Gemini:
 #### File Naming Conventions
 
 **Required Names for Framework Integration:**
+
 - `docs/prd.md` - Product Requirements Document
 - `docs/architecture.md` - System Architecture Document
 
 **Why These Names Matter:**
+
 - Agents automatically reference these files during development
 - Sharding tasks expect these specific filenames
 - Workflow automation depends on standard naming
@@ -214,6 +213,7 @@ For cost efficiency, especially with Gemini:
 #### IDE Document Creation
 
 When working directly in IDEs:
+
 - Agents should create documents in `docs/` folder automatically
 - If agents name files differently (e.g., `product-requirements.md`), rename to `prd.md`
 - Verify document location matches `docs/prd.md` and `docs/architecture.md`
@@ -226,7 +226,7 @@ Templates can include `advanced-elicitation.md` for enhanced interaction:
 
 ```markdown
 [[LLM: Use advanced-elicitation actions 0-3 to refine requirements]]
-```text
+```
 
 This provides 10 structured brainstorming actions:
 
@@ -262,7 +262,7 @@ graph TD
     I --> L["📁 Switch to IDE"]
     L --> M["PO: Shard Documents"]
     M --> N["Ready for SM/Dev Cycle"]
-    
+
     style I fill:#34a853,color:#fff
     style G fill:#f9ab00,color:#fff
     style L fill:#1a73e8,color:#fff
@@ -298,7 +298,7 @@ graph TD
     J --> E
 
     style J fill:#34a853,color:#fff
-```text
+```
 
 ### Workflow Phases
 
@@ -487,11 +487,13 @@ workflows:
 Web UI agents focus on planning and documentation. Here's how to interact with each:
 
 #### Agent Switching and Conversation
+
 - **Switch Agents**: Use `/pm`, `/architect`, `/analyst`, `/po` to switch between roles
 - **Agent Consultation**: Each agent offers their specialized options and capabilities
 - **Natural Conversation**: Agents guide you through their processes with questions and suggestions
 
 #### Planning Phase Agents
+
 - **Analyst**: `/analyst` - Brainstorming, market research, competitive analysis
 - **PM**: `/pm` - Product requirements, feature definition, roadmaps
 - **Architect**: `/architect` - System design, technical architecture
@@ -511,12 +513,13 @@ Web UI agents focus on planning and documentation. Here's how to interact with e
 
 1. **Use Web UI for PRD and Architecture**: These are token-heavy documents, especially in Gemini
 2. **Copy Final Output**: Save complete markdown to your project
-3. **Standard File Names**: 
+3. **Standard File Names**:
    - Save PRD as `docs/prd.md`
    - Save Architecture as `docs/architecture.md`
 4. **IDE for Development**: Switch to IDE agents for implementation tasks
 
 **Why This Saves Money:**
+
 - Web UI pricing is typically more cost-effective for large context windows
 - PRD and architecture creation involves extensive back-and-forth refinement
 - IDE token costs can accumulate quickly with large document generation
@@ -557,7 +560,7 @@ dependencies:
 ## Section 2
 
 {{section_2_content}}
-```text
+```
 
 ### Workflow Customization
 
@@ -611,27 +614,34 @@ Templates are self-contained documents that embed both output structure and proc
 @{example: Example content for AI guidance}
 
 ^^CONDITION: condition_name^^
+
 ## Conditional Section
+
 [[LLM: Only include if condition is met]]
 ^^/CONDITION^^
-```text
+```
 
 #### Key Template Patterns
 
 **Variable Substitution:**
+
 - `{{Project Name}}` - Dynamic project name
 - `{{document_title}}` - Document-specific title
 - `{{section_content}}` - Placeholder for generated content
 
 **AI Processing Instructions:**
+
 - `[[LLM: Instructions for AI behavior]]` - AI-only processing directives
 - `@{example: Sample content}` - Guidance examples (not output)
 - `tasks#advanced-elicitation` - Reference to embedded tasks
 
 **Conditional Content:**
+
 ```markdown
 ^^CONDITION: has_ui^^
+
 ## User Interface Section
+
 [[LLM: Only include for UI projects]]
 ^^/CONDITION^^
 ```
@@ -641,16 +651,21 @@ Templates are self-contained documents that embed both output structure and proc
 Level 2 headings (`##`) in templates can be automatically sharded into separate documents:
 
 **Original PRD:**
+
 ```markdown
 ## Goals and Background Context
-## Requirements  
+
+## Requirements
+
 ## User Interface Design Goals
+
 ## Success Metrics
-```text
+```
 
 **After Sharding:**
+
 - `docs/prd/goals-and-background-context.md`
-- `docs/prd/requirements.md`  
+- `docs/prd/requirements.md`
 - `docs/prd/user-interface-design-goals.md`
 - `docs/prd/success-metrics.md`
 
@@ -673,10 +688,12 @@ Tasks are reusable automation instructions that agents can execute. They follow 
 ## Instructions
 
 ### 1. Step One
+
 - Detailed instructions for the agent
 - Specific behaviors and outputs expected
 
-### 2. Step Two  
+### 2. Step Two
+
 - Additional processing steps
 - Integration with other resources
 
@@ -688,20 +705,23 @@ Tasks are reusable automation instructions that agents can execute. They follow 
 #### Task Patterns
 
 **Resource Integration:**
+
 ```markdown
 [[LLM: Check if docs/coding-standards.md exists and reference it]]
 [[LLM: Load docs/openapi-spec.yaml for API context]]
-```text
+```
 
 **Advanced Elicitation:**
+
 ```markdown
 [[LLM: Apply tasks#advanced-elicitation protocol after completion]]
 ```
 
 **Conditional Logic:**
+
 ```markdown
 [[LLM: If project has UI components, also check frontend standards]]
-```text
+```
 
 ### Creating Custom Agents
 
@@ -747,7 +767,7 @@ startup:
   - Review docs/project-structure.md for context
   - Check for docs/third-party-apis/ folder
   - Announce specialized capabilities
-```text
+```
 
 #### Loading Project Documents
 
@@ -763,8 +783,9 @@ Agents can reference and load documents from the `docs/` folder:
 
 ```markdown
 [[LLM: Before beginning, check for and load relevant context:
+
 - docs/coding-standards.md for development standards
-- docs/brand-guidelines.md for design consistency  
+- docs/brand-guidelines.md for design consistency
 - docs/third-party-apis/ for integration requirements
 - Any project-specific documentation in docs/ folder]]
 ```
@@ -780,50 +801,60 @@ This file allows you to define your preferred technologies, patterns, and standa
 #### What to Include
 
 **Technology Stack Preferences:**
+
 ```markdown
 ## Preferred Technologies
 
 ### Frontend
+
 - React with TypeScript
 - Tailwind CSS for styling
 - Next.js for full-stack applications
 
-### Backend  
+### Backend
+
 - Node.js with Express
 - PostgreSQL for relational data
 - Redis for caching
 
 ### Deployment
+
 - Vercel for frontend
 - Railway for backend services
-```text
+```
 
 **Design Patterns & Standards:**
+
 ```markdown
 ## Code Standards
+
 - Use functional programming patterns where possible
 - Prefer composition over inheritance
 - Always include comprehensive error handling
 - Write tests for all business logic
 
 ## Architecture Preferences
+
 - Microservices for complex applications
 - RESTful APIs with OpenAPI documentation
 - Event-driven architecture for real-time features
 ```
 
 **External Services & APIs:**
+
 ```markdown
 ## Preferred External Services
+
 - Auth0 for authentication
 - Stripe for payments
 - SendGrid for email
 - Cloudinary for image processing
 
 ## APIs to Avoid
+
 - Legacy SOAP services
 - Services without proper documentation
-```text
+```
 
 #### How Agents Use This File
 
@@ -837,21 +868,263 @@ This file allows you to define your preferred technologies, patterns, and standa
 
 **Learning and Evolution**: As you work on projects, add discoveries to your preferences file:
 
-```markdown
 ## Lessons Learned
+
 - Avoid using Library X for large datasets (performance issues)
 - Pattern Y works well for real-time features
 - Service Z has excellent documentation and support
 
 ## Future Exploration
+
 - Want to try Framework A on next appropriate project
 - Interested in Pattern B for microservices
 - Consider Service C for better performance
-```
 
-#### Using with Web Bundles
+### Using with Web Bundles
 
 When creating custom web bundles or uploading to AI platforms, include your `technical-preferences.md` content to ensure agents have your preferences from the start of any conversation.
+
+### Core Configuration (core-config.yml)
+
+The `bmad-core/core-config.yml` file is a critical V4 innovation that enables BMAD to work seamlessly with any project structure, providing maximum flexibility and backwards compatibility.
+
+#### Understanding core-config.yml
+
+This configuration file acts as a map for BMAD agents, telling them exactly where to find your project documents and how they're structured. It's what makes V4 agents intelligent enough to work with V3 projects, custom layouts, or any document organization you prefer.
+
+#### Configuration Structure
+
+```yaml
+core-project-information:
+  dev-story-location: docs/stories # Where completed stories are saved
+
+  prd:
+    prd-file: docs/prd.md
+    prdVersion: v4 # v3 or v4
+    prdSharded: true # false if epics are embedded in PRD
+    prdShardedLocation: docs/prd # Where sharded epics live
+    epicFilePattern: epic-{n}*.md # Pattern for epic files
+
+  architecture:
+    architecture-file: docs/architecture.md
+    architectureVersion: v4 # v3 or v4
+    architectureSharded: true # false if monolithic
+    architectureShardedLocation: docs/architecture
+
+  customTechnicalDocuments: null # Additional docs for SM
+
+  devLoadAlwaysFiles: # Files dev agent always loads
+    - docs/architecture/coding-standards.md
+    - docs/architecture/tech-stack.md
+    - docs/architecture/project-structure.md
+
+  devDebugLog: .ai/debug-log.md # Dev agent debug tracking
+  agentCoreDump: .ai/core-dump{n}.md # Export chat contents
+```
+
+#### Key Configuration Options
+
+##### PRD Configuration
+
+The Scrum Master agent uses these settings to locate epics:
+
+**V4 Sharded Structure:**
+
+```yaml
+prd:
+  prd-file: docs/prd.md
+  prdVersion: v4
+  prdSharded: true
+  prdShardedLocation: docs/prd
+  epicFilePattern: epic-{n}*.md
+```
+
+**V3 Embedded Epics:**
+
+```yaml
+prd:
+  prd-file: docs/prd.md
+  prdVersion: v3
+  prdSharded: false # Epics are inside PRD
+```
+
+**Custom Sharded Location:**
+
+```yaml
+prd:
+  prd-file: docs/product-requirements.md
+  prdVersion: v4
+  prdSharded: true
+  prdShardedLocation: docs # Epics in docs/ not docs/prd/
+  epicFilePattern: epic-*.md
+```
+
+##### Architecture Configuration
+
+Similar flexibility for architecture documents:
+
+**V4 Sharded Architecture:**
+
+```yaml
+architecture:
+  architecture-file: docs/architecture.md
+  architectureVersion: v4
+  architectureSharded: true
+  architectureShardedLocation: docs/architecture
+```
+
+**V3 Monolithic Architecture:**
+
+```yaml
+architecture:
+  architecture-file: docs/technical-architecture.md
+  architectureVersion: v3
+  architectureSharded: false # All in one file
+```
+
+##### Developer Context Files
+
+Define which files the dev agent should always load:
+
+```yaml
+devLoadAlwaysFiles:
+  - docs/architecture/coding-standards.md
+  - docs/architecture/tech-stack.md
+  - docs/architecture/project-structure.md
+  - docs/api-contracts.yaml
+  - docs/database-schema.md
+  - .env.example
+```
+
+This ensures the dev agent always has critical context without needing to search for it.
+
+##### Debug and Export Options
+
+**Debug Log:**
+
+```yaml
+devDebugLog: .ai/debug-log.md
+```
+
+When the dev agent encounters repeated failures implementing a story, it logs issues here to avoid repeating the same mistakes.
+
+**Core Dump:**
+
+```yaml
+agentCoreDump: .ai/core-dump{n}.md
+```
+
+Export entire chat conversations for preservation or analysis. The `{n}` is replaced with a number.
+
+#### Common Configurations
+
+##### Legacy V3 Project
+
+```yaml
+core-project-information:
+  dev-story-location: docs/stories
+  prd:
+    prd-file: docs/prd.md
+    prdVersion: v3
+    prdSharded: false
+  architecture:
+    architecture-file: docs/architecture.md
+    architectureVersion: v3
+    architectureSharded: false
+  devLoadAlwaysFiles: []
+```
+
+##### Hybrid Project (V3 PRD, V4 Architecture)
+
+```yaml
+core-project-information:
+  dev-story-location: .ai/stories
+  prd:
+    prd-file: docs/product-requirements.md
+    prdVersion: v3
+    prdSharded: false
+  architecture:
+    architecture-file: docs/architecture.md
+    architectureVersion: v4
+    architectureSharded: true
+    architectureShardedLocation: docs/architecture
+  devLoadAlwaysFiles:
+    - docs/architecture/tech-stack.md
+```
+
+##### Custom Organization
+
+```yaml
+core-project-information:
+  dev-story-location: development/completed-stories
+  prd:
+    prd-file: planning/requirements.md
+    prdVersion: v4
+    prdSharded: true
+    prdShardedLocation: planning/epics
+    epicFilePattern: requirement-{n}.md
+  architecture:
+    architecture-file: technical/system-design.md
+    architectureVersion: v4
+    architectureSharded: true
+    architectureShardedLocation: technical/components
+  customTechnicalDocuments:
+    - technical/api-guide.md
+    - technical/deployment.md
+  devLoadAlwaysFiles:
+    - technical/coding-guidelines.md
+    - technical/git-workflow.md
+```
+
+#### Migration Strategies
+
+##### Gradual V3 to V4 Migration
+
+Start with V3 documents and gradually adopt V4 patterns:
+
+1. **Initial State**: Set `prdVersion: v3` and `prdSharded: false`
+2. **Shard PRD**: Use PO agent to shard, then update to `prdSharded: true`
+3. **Update Version**: Change to `prdVersion: v4` after using V4 templates
+4. **Repeat for Architecture**: Same process for architecture documents
+
+##### Working with Mixed Teams
+
+If some team members use V3 and others use V4:
+
+```yaml
+# Support both patterns
+customTechnicalDocuments:
+  - docs/legacy-requirements.md # V3 format
+  - docs/prd.md # V4 format
+```
+
+#### Best Practices
+
+1. **Always Configure for Your Structure**: Don't force your project to match BMAD defaults
+2. **Keep devLoadAlwaysFiles Focused**: Only include files needed for every dev task
+3. **Use Debug Log**: Enable when troubleshooting story implementation issues
+4. **Version Control core-config.yml**: Track changes to understand project evolution
+5. **Document Custom Patterns**: If using custom epicFilePattern, document it
+
+#### Troubleshooting
+
+**Scrum Master Can't Find Epics:**
+
+- Check `prdSharded` matches your structure
+- Verify `prdShardedLocation` path exists
+- Confirm `epicFilePattern` matches your files
+
+**Dev Agent Missing Context:**
+
+- Add critical files to `devLoadAlwaysFiles`
+- Ensure file paths are correct
+- Check files exist and are readable
+
+**Architecture Not Loading:**
+
+- Verify `architecture-file` path
+- Check `architectureVersion` setting
+- Confirm sharding configuration matches reality
 
 ### Extension Packs
 

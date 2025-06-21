@@ -11,16 +11,11 @@ workflow:
     - modernization
     - integration-enhancement
 
-  # For Complex Enhancements (Multiple Stories, Architectural Changes)
-  complex_enhancement_sequence:
-    - step: scope_assessment
-      agent: any
-      action: assess complexity
-      notes: "First, assess if this is a simple change (use simple_enhancement_sequence) or complex enhancement requiring full planning."
-
+  sequence:
     - step: project_analysis
-      agent: analyst
-      action: analyze existing project
+      agent: architect
+      action: analyze existing project and use task document-project
+      creates: multiple documents per the document-project template
       notes: "Review existing documentation, codebase structure, and identify integration points. Document current system understanding before proceeding."
 
     - agent: pm
@@ -49,68 +44,34 @@ workflow:
       action: move_to_ide
       notes: "All planning artifacts complete. Move to IDE environment to begin development. Explain to the user the IDE Development Workflow next steps: data#bmad-kb:IDE Development Workflow"
 
-  # For Simple Enhancements (1-3 Stories, Following Existing Patterns)
-  simple_enhancement_sequence:
-    - step: enhancement_type
-      action: choose approach
-      notes: "Choose between creating single story (very small change) or epic (1-3 related stories)."
-
-    - agent: pm|po|sm
-      creates: brownfield_epic OR brownfield_story
-      uses: brownfield-create-epic OR brownfield-create-story
-      notes: "Create focused enhancement with existing system integration. Choose agent based on team preference and context."
-
-    - workflow_end:
-      action: move_to_ide
-      notes: "Enhancement defined. Move to IDE environment to begin development. Explain to the user the IDE Development Workflow next steps: data#bmad-kb:IDE Development Workflow"
-
   flow_diagram: |
     ```mermaid
     graph TD
-        A[Start: Brownfield Enhancement] --> B{Enhancement Complexity?}
-        B -->|Complex/Significant| C[analyst: analyze existing project]
-        B -->|Simple| D{1 Story or 2-3 Stories?}
+        A[Start: Brownfield Enhancement] --> B[analyst: analyze existing project]
+        B --> C[pm: brownfield-prd.md]
+        C --> D[architect: brownfield-architecture.md]
+        D --> E[po: validate with po-master-checklist]
+        E --> F{PO finds issues?}
+        F -->|Yes| G[Return to relevant agent for fixes]
+        F -->|No| H[Move to IDE Environment]
+        G --> E
 
-        C --> E[pm: brownfield-prd.md]
-        E --> F[architect: brownfield-architecture.md]
-        F --> G[po: validate with po-master-checklist]
-        G --> H{PO finds issues?}
-        H -->|Yes| I[Return to relevant agent for fixes]
-        H -->|No| J[Move to IDE Environment]
-        I --> G
-
-        D -->|1 Story| K[pm/po/sm: brownfield-create-story]
-        D -->|2-3 Stories| L[pm/po/sm: brownfield-create-epic]
-        K --> M[Move to IDE Environment]
-        L --> M
-
-        style J fill:#90EE90
-        style M fill:#90EE90
-        style E fill:#FFE4B5
-        style F fill:#FFE4B5
-        style K fill:#FFB6C1
-        style L fill:#FFB6C1
+        style H fill:#90EE90
+        style C fill:#FFE4B5
+        style D fill:#FFE4B5
     ```
 
   decision_guidance:
-    use_complex_sequence_when:
-      - Enhancement requires multiple coordinated stories (4+)
+    when_to_use:
+      - Enhancement requires coordinated stories
       - Architectural changes are needed
       - Significant integration work required
       - Risk assessment and mitigation planning necessary
       - Multiple team members will work on related changes
-
-    use_simple_sequence_when:
-      - Enhancement can be completed in 1-3 stories
-      - Follows existing project patterns
-      - Integration complexity is minimal
-      - Risk to existing system is low
-      - Change is isolated with clear boundaries
 
   handoff_prompts:
     analyst_to_pm: "Existing project analysis complete. Create comprehensive brownfield PRD with integration strategy."
     pm_to_architect: "Brownfield PRD ready. Save it as docs/brownfield-prd.md, then create the integration architecture."
     architect_to_po: "Architecture complete. Save it as docs/brownfield-architecture.md. Please validate all artifacts for integration safety."
     po_issues: "PO found issues with [document]. Please return to [agent] to fix and re-save the updated document."
-    simple_to_ide: "Enhancement defined with existing system integration. Move to IDE environment to begin development."
-    complex_complete: "All brownfield planning artifacts validated and saved in docs/ folder. Move to IDE environment to begin development."
+    complete: "All brownfield planning artifacts validated and saved in docs/ folder. Move to IDE environment to begin development."

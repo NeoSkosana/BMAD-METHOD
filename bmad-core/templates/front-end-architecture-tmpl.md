@@ -1,5 +1,7 @@
 # {{Project Name}} Frontend Architecture Document
 
+[[LLM: The default path and filename unless specified is docs/ui-architecture.md]]
+
 [[LLM: Review provided documents including PRD, UX-UI Specification, and main Architecture Document. Focus on extracting technical implementation details needed for AI frontend tools and developer agents. Ask the user for any of these documents if you are unable to locate and were not provided.]]
 
 ## Template and Framework Selection

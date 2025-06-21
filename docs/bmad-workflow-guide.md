@@ -33,11 +33,13 @@ The BMAD Method follows a structured approach to AI-assisted software developmen
 
 Use Google's Gemini for collaborative planning with the full team:
 
-1. **Open [Google AI Studio](https://aistudio.google.com/)**
-2. **Load team-fullstack**:
-   - Copy contents of: `/Users/brianmadison/dev/BMAD-METHOD/.bmad-core/web-bundles/teams/team-fullstack.txt`
-   - Paste into new Gemini chat
-3. **Collaborate with the team**:
+1. **Open [Google Gems](https://gemini.google.com/gems/view)**
+2. **Create a new Gem**:
+   - Give it a title and description (e.g., "BMAD Team Fullstack")
+3. **Load team-fullstack**:
+   - Copy contents of: `dist/teams/team-fullstack.txt` from your project
+   - Paste this content into the Gem setup to configure the team
+4. **Collaborate with the team**:
    - Business Analyst: Requirements gathering
    - Product Manager: Feature prioritization
    - Solution Architect: Technical design
@@ -53,9 +55,9 @@ Help me brainstorm features and create a comprehensive PRD."
 that can handle [specific requirements]."
 ```
 
-4. **Export planning documents**:
-   - Save PRD as `docs/prd.md`
-   - Save architecture as `docs/architecture.md`
+5. **Export planning documents**:
+   - Copy the PRD output and save as `docs/prd.md` in your project
+   - Copy the architecture output and save as `docs/architecture.md` in your project
 
 ### Phase 3: Document Organization (IDE)
 

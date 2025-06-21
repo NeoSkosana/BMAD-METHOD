@@ -33,7 +33,7 @@ installer/
 
 ## Usage
 
-````bash
+```bash
 # Interactive installation
 npx bmad-method install
 
@@ -42,7 +42,7 @@ npx bmad-method install --profile=minimal
 
 # Update existing installation
 npx bmad-method update
-```text
+```
 
 ## Development
 
@@ -55,4 +55,4 @@ npm test
 
 # Lint code
 npm run lint
-````
+```

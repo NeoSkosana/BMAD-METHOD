@@ -68,7 +68,7 @@ The epic numbering starts at 1 and increments for each epic found.
 
 ### Before (PRD):
 
-`````markdown
+```markdown
 # Product Requirements Document
 
 ## 1. Executive Summary
@@ -91,9 +91,10 @@ Epic content...
 
 Content here...
 
-````text
+```
 
 ### After (PRD):
+
 ```markdown
 # Product Requirements Document
 
@@ -113,9 +114,11 @@ Epic content...
 
 ## Success Metrics
 Content here...
-```text
+
+```
 
 ### Before (Non-PRD):
+
 ```markdown
 # Architecture Document
 
@@ -124,9 +127,10 @@ Content...
 
 ## 2.1 Technical Stack & Tools
 Content...
-```text
+```
 
 ### After (Non-PRD):
+
 ```markdown
 # Architecture Document
 
@@ -135,9 +139,5 @@ Content...
 
 ## Technical Stack Tools
 Content...
-````
-`````
-
-```text
 
 ```

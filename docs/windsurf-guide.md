@@ -6,9 +6,11 @@ This guide walks you through the complete BMAD workflow using Windsurf as your A
 
 1. Navigate to your project directory
 2. Run the BMAD installer:
+
    ```bash
    npx bmad-method install
    ```
+
 3. When prompted:
    - **Installation Type**: Choose "Complete installation (recommended)"
    - **IDE**: Select "Windsurf"
@@ -17,11 +19,11 @@ This creates a `.bmad-core` folder with all agents and a `.windsurf/rules` folde
 
 ## Step 2: Set Up Team Fullstack in Gemini
 
-For ideation and planning, use Google's Gemini with the team-fullstack configuration:
+For ideation and planning, use Google's Gemini Custom Gem with the team-fullstack configuration:
 
-1. Open [Google AI Studio (Gemini)](https://aistudio.google.com/)
-2. Create a new chat
-3. Copy the contents of `/Users/brianmadison/dev/BMAD-METHOD/.bmad-core/web-bundles/teams/team-fullstack.txt`
+1. Open [Google gems](https://gemini.google.com/gems/view)
+2. Create a new Gem - give it a title and description
+3. Copy the contents of `.<install location>/<web-bundles>/teams/team-fullstack.txt` (location can vary if you chose a non default installation location for the bundles) - or just use the bundle premade from the repo dist folder.
 4. Paste this content into Gemini to set up the team
 
 ### Gemini Planning Phase

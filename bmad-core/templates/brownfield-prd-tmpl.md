@@ -1,5 +1,7 @@
 # {{Project Name}} Brownfield Enhancement PRD
 
+[[LLM: The default path and filename unless specified is docs/prd.md]]
+
 [[LLM: IMPORTANT - SCOPE ASSESSMENT REQUIRED:
 
 This PRD is for SIGNIFICANT enhancements to existing projects that require comprehensive planning and multiple stories. Before proceeding:

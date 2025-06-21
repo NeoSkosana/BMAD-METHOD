@@ -1,6 +1,6 @@
 {
   "name": "bmad-method",
-  "version": "4.4.2",
+  "version": "4.10.3",
   "description": "Breakthrough Method of Agile AI-driven Development",
   "main": "tools/cli.js",
   "bin": {
@@ -14,7 +14,7 @@
     "list:agents": "node tools/cli.js list:agents",
     "validate": "node tools/cli.js validate",
     "install:bmad": "node tools/installer/bin/bmad.js install",
-    "format": "prettier --write \"**/*.md\" && node tools/yaml-format.js **/*.md **/*.yml **/*.yaml .roo/.roomodes",
+    "format": "prettier --write \"**/*.md\"",
     "version:patch": "node tools/version-bump.js patch",
     "version:minor": "node tools/version-bump.js minor",
     "version:major": "node tools/version-bump.js major",
@@ -60,20 +60,8 @@
     "yaml-lint": "^1.7.0"
   },
   "lint-staged": {
-    "**/*.{yml,yaml}": [
-      "node tools/yaml-format.js"
-    ],
     "**/*.md": [
-      "node tools/yaml-format.js"
-    ],
-    ".roomodes": [
-      "node tools/yaml-format.js"
-    ],
-    "bmad-core/**/*.yml": [
-      "node tools/yaml-format.js"
-    ],
-    ".github/**/*.yml": [
-      "node tools/yaml-format.js"
+      "prettier --write"
     ]
   }
 }

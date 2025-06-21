@@ -11,16 +11,11 @@ workflow:
     - design-refresh
     - frontend-enhancement
 
-  # For Complex UI Enhancements (Multiple Stories, Design Changes)
-  complex_enhancement_sequence:
-    - step: scope_assessment
-      agent: any
-      action: assess complexity
-      notes: "First, assess if this is a simple UI change (use simple_enhancement_sequence) or complex enhancement requiring full planning."
-
+  sequence:
     - step: ui_analysis
-      agent: analyst
-      action: analyze existing UI
+      agent: architect
+      action: analyze existing project and use task document-project
+      creates: multiple documents per the document-project template
       notes: "Review existing frontend application, user feedback, analytics data, and identify improvement areas."
 
     - agent: pm
@@ -57,65 +52,32 @@ workflow:
       action: move_to_ide
       notes: "All planning artifacts complete. Move to IDE environment to begin development. Explain to the user the IDE Development Workflow next steps: data#bmad-kb:IDE Development Workflow"
 
-  # For Simple UI Enhancements (1-3 Stories, Following Existing Design)
-  simple_enhancement_sequence:
-    - step: enhancement_type
-      action: choose approach
-      notes: "Choose between creating single story (simple component change) or epic (1-3 related UI changes)."
-
-    - agent: pm|po|sm
-      creates: brownfield_epic OR brownfield_story
-      uses: brownfield-create-epic OR brownfield-create-story
-      notes: "Create focused UI enhancement with existing design system integration. Choose agent based on team preference and context."
-
-    - workflow_end:
-      action: move_to_ide
-      notes: "UI enhancement defined. Move to IDE environment to begin development. Explain to the user the IDE Development Workflow next steps: data#bmad-kb:IDE Development Workflow"
-
   flow_diagram: |
     ```mermaid
     graph TD
-        A[Start: UI Enhancement] --> B{Enhancement Complexity?}
-        B -->|Complex/Significant| C[analyst: analyze existing UI]
-        B -->|Simple| D{1 Story or 2-3 Stories?}
+        A[Start: UI Enhancement] --> B[analyst: analyze existing UI]
+        B --> C[pm: brownfield-prd.md]
+        C --> D[ux-expert: front-end-spec.md]
+        D --> E[architect: brownfield-architecture.md]
+        E --> F[po: validate with po-master-checklist]
+        F --> G{PO finds issues?}
+        G -->|Yes| H[Return to relevant agent for fixes]
+        G -->|No| I[Move to IDE Environment]
+        H --> F
 
-        C --> E[pm: brownfield-prd.md]
-        E --> F[ux-expert: front-end-spec.md]
-        F --> G[architect: brownfield-architecture.md]
-        G --> H[po: validate with po-master-checklist]
-        H --> I{PO finds issues?}
-        I -->|Yes| J[Return to relevant agent for fixes]
-        I -->|No| K[Move to IDE Environment]
-        J --> H
-
-        D -->|1 Story| L[pm/po/sm: brownfield-create-story]
-        D -->|2-3 Stories| M[pm/po/sm: brownfield-create-epic]
-        L --> N[Move to IDE Environment]
-        M --> N
-
-        style K fill:#90EE90
-        style N fill:#90EE90
+        style I fill:#90EE90
+        style C fill:#FFE4B5
+        style D fill:#FFE4B5
         style E fill:#FFE4B5
-        style F fill:#FFE4B5
-        style G fill:#FFE4B5
-        style L fill:#FFB6C1
-        style M fill:#FFB6C1
     ```
 
   decision_guidance:
-    use_complex_sequence_when:
-      - UI enhancement requires multiple coordinated stories (4+)
+    when_to_use:
+      - UI enhancement requires coordinated stories
       - Design system changes needed
       - New component patterns required
       - User research and testing needed
       - Multiple team members will work on related changes
-
-    use_simple_sequence_when:
-      - Enhancement can be completed in 1-3 stories
-      - Follows existing design patterns exactly
-      - Component changes are isolated
-      - Risk to existing UI is low
-      - Change maintains current user experience
 
   handoff_prompts:
     analyst_to_pm: "UI analysis complete. Create comprehensive brownfield PRD with UI integration strategy."
@@ -123,5 +85,4 @@ workflow:
     ux_to_architect: "UI/UX spec complete. Save it as docs/front-end-spec.md, then create the frontend architecture."
     architect_to_po: "Architecture complete. Save it as docs/brownfield-architecture.md. Please validate all artifacts for UI integration safety."
     po_issues: "PO found issues with [document]. Please return to [agent] to fix and re-save the updated document."
-    simple_to_ide: "UI enhancement defined with existing design integration. Move to IDE environment to begin development."
-    complex_complete: "All brownfield planning artifacts validated and saved in docs/ folder. Move to IDE environment to begin development."
+    complete: "All brownfield planning artifacts validated and saved in docs/ folder. Move to IDE environment to begin development."

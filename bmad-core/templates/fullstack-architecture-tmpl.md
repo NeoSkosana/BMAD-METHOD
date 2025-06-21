@@ -1,5 +1,7 @@
 # {{Project Name}} Fullstack Architecture Document
 
+[[LLM: The default path and filename unless specified is docs/architecture.md]]
+
 [[LLM: If available, review any provided relevant documents to gather all relevant context before beginning. At minimum, you should have access to docs/prd.md and docs/front-end-spec.md. Ask the user for any documents you need but cannot locate. This template creates a unified architecture that covers both backend and frontend concerns to guide AI-driven fullstack development.]]
 
 ## Introduction
@@ -84,7 +86,7 @@ Document the choice and key services that will be used.]]
 
 ### Repository Structure
 
-[[LLM: Define the repository approach based on PRD requirements and platform choice:
+[[LLM: Define the repository approach based on PRD requirements and platform choice, explain your rationale or ask quetsions to the user if unsure:
 
 1. For modern fullstack apps, monorepo is often preferred
 2. Consider tooling (Nx, Turborepo, Lerna, npm workspaces)
@@ -109,9 +111,9 @@ Document the choice and key services that will be used.]]
 
 Use appropriate diagram type for clarity.]]
 
-````mermaid
+```mermaid
 {{architecture_diagram}}
-```text
+```
 
 ### Architectural Patterns
 
@@ -222,7 +224,7 @@ After presenting all data models, apply `tasks#advanced-elicitation` protocol]]
     model_interface;
   }
 }
-````
+```
 
 **Relationships:**
 
@@ -246,7 +248,7 @@ After presenting all data models, apply `tasks#advanced-elicitation` protocol]]
 
 **TypeScript Interface:**
 
-````typescript
+```typescript
 interface User {
   id: string;
   email: string;
@@ -262,7 +264,7 @@ interface UserProfile {
   bio?: string;
   preferences: Record<string, any>;
 }
-```text
+```
 
 **Relationships:**
 
@@ -300,16 +302,16 @@ servers:
       '[object Object]': null
     description:
       '[object Object]': null
-````
+```
 
 ^^/CONDITION: has_rest_api^^
 
 ^^CONDITION: has_graphql_api^^
 
-````graphql
+```graphql
 # GraphQL Schema
 {{graphql_schema}}
-```text
+```
 
 ^^/CONDITION: has_graphql_api^^
 
@@ -322,7 +324,7 @@ servers:
     trpc_routers;
   }
 }
-````
+```
 
 ^^/CONDITION: has_trpc_api^^
 
@@ -467,19 +469,19 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 **Component Organization:**
 
-`````text
-{{component_structure}}
 ```text
+{{component_structure}}
+```
 
 **Component Template:**
 
-````typescript
+```typescript
 {
   {
     component_template;
   }
 }
-```text
+```
 
 ### State Management Architecture
 
@@ -493,7 +495,7 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
     state_structure;
   }
 }
-`````
+```
 
 **State Management Patterns:**
 
@@ -508,17 +510,17 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 ```text
 {{route_structure}}
-```text
+```
 
 **Protected Route Pattern:**
 
-````typescript
+```typescript
 {
   {
     protected_route_example;
   }
 }
-```text
+```
 
 ### Frontend Services Layer
 
@@ -532,17 +534,17 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
     api_client_setup;
   }
 }
-````
+```
 
 **Service Example:**
 
-````typescript
+```typescript
 {
   {
     service_example;
   }
 }
-```text
+```
 
 ## Backend Architecture
 
@@ -557,11 +559,11 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 ^^CONDITION: serverless^^
 **Function Organization:**
 
-````
+```text
 
 {{function_structure}}
 
-````text
+```
 
 **Function Template:**
 
@@ -571,26 +573,26 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
     function_template;
   }
 }
-````
+```
 
 ^^/CONDITION: serverless^^
 
 ^^CONDITION: traditional_server^^
 **Controller/Route Organization:**
 
-`````text
-{{controller_structure}}
 ```text
+{{controller_structure}}
+```
 
 **Controller Template:**
 
-````typescript
+```typescript
 {
   {
     controller_template;
   }
 }
-```text
+```
 
 ^^/CONDITION: traditional_server^^
 
@@ -602,17 +604,17 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 ```sql
 {{database_schema}}
-`````
+```
 
 **Data Access Layer:**
 
-````typescript
+```typescript
 {
   {
     repository_pattern;
   }
 }
-```text
+```
 
 ### Authentication and Authorization
 
@@ -622,17 +624,17 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 ```mermaid
 {{auth_flow_diagram}}
-````
+```
 
 **Middleware/Guards:**
 
-````typescript
+```typescript
 {
   {
     auth_middleware;
   }
 }
-```text
+```
 
 ## Unified Project Structure
 
@@ -692,7 +694,7 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 ├── package.json                # Root package.json
 ├── {{monorepo_config}}         # Monorepo configuration
 └── README.md
-````
+```
 
 @{example: vercel_structure}
 apps/
@@ -714,19 +716,19 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 **Prerequisites:**
 
-````bash
+```bash
 {{prerequisites_commands}}
-```text
+```
 
 **Initial Setup:**
 
 ```bash
 {{setup_commands}}
-````
+```
 
 **Development Commands:**
 
-````bash
+```bash
 # Start all services
 {{start_all_command}}
 
@@ -738,7 +740,7 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 # Run tests
 {{test_commands}}
-```text
+```
 
 ### Environment Configuration
 
@@ -753,7 +755,7 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 # Shared
 {{shared_env_vars}}
-````
+```
 
 ## Deployment Architecture
 
@@ -776,9 +778,9 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 ### CI/CD Pipeline
 
-````yaml
+```yaml
 '[object Object]': null
-```text
+```
 
 ### Environments
 
@@ -836,7 +838,7 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 ### Testing Pyramid
 
-````
+```text
 
         E2E Tests
        /          \
@@ -845,17 +847,17 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 / \
  Frontend Unit Backend Unit
 
-```text
+```
 
 ### Test Organization
 
 **Frontend Tests:**
 
-```
+```text
 
 {{frontend_test_structure}}
 
-````text
+```
 
 **Backend Tests:**
 
@@ -863,15 +865,15 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 {{backend_test_structure}}
 
-```text
+```
 
 **E2E Tests:**
 
-````
+```text
 
 {{e2e_test_structure}}
 
-````text
+```
 
 ### Test Examples
 
@@ -883,17 +885,17 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
     frontend_test_example;
   }
 }
-````
+```
 
 **Backend API Test:**
 
-````typescript
+```typescript
 {
   {
     backend_test_example;
   }
 }
-```text
+```
 
 **E2E Test:**
 
@@ -903,7 +905,7 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
     e2e_test_example;
   }
 }
-````
+```
 
 ## Coding Standards
 
@@ -944,9 +946,9 @@ After presenting this section, apply `tasks#advanced-elicitation` protocol]]
 
 ### Error Flow
 
-````mermaid
+```mermaid
 {{error_flow_diagram}}
-```text
+```
 
 ### Error Response Format
 
@@ -960,17 +962,17 @@ interface ApiError {
     requestId: string;
   };
 }
-````
+```
 
 ### Frontend Error Handling
 
-````typescript
+```typescript
 {
   {
     frontend_error_handler;
   }
 }
-```text
+```
 
 ### Backend Error Handling
 
@@ -980,7 +982,7 @@ interface ApiError {
     backend_error_handler;
   }
 }
-````
+```
 
 ## Monitoring and Observability
 

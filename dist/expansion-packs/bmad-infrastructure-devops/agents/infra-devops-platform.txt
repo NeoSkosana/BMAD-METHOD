@@ -1006,7 +1006,7 @@ module "vpc" {
   public_subnets = {{public_subnets}}
   private_subnets = {{private_subnets}}
 }
-```text
+```
 
 ### Security Foundation
 
@@ -1053,7 +1053,7 @@ eksctl create cluster \
   --nodegroup-name {{nodegroup_name}} \
   --node-type {{instance_type}} \
   --nodes {{node_count}}
-```text
+```
 
 ^^/CONDITION: uses_eks^^
 
@@ -1067,7 +1067,7 @@ az aks create \
   --node-count {{node_count}} \
   --node-vm-size {{vm_size}} \
   --network-plugin azure
-```text
+```
 
 ^^/CONDITION: uses_aks^^
 
@@ -1111,11 +1111,11 @@ metadata:
 spec:
   source:
     repoURL:
-      '[object Object]': null
+      "[object Object]": null
     targetRevision:
-      '[object Object]': null
+      "[object Object]": null
     path:
-      '[object Object]': null
+      "[object Object]": null
 ```
 
 ^^/CONDITION: uses_argocd^^
@@ -1132,10 +1132,10 @@ spec:
   interval: 1m
   ref:
     branch:
-      '[object Object]': null
+      "[object Object]": null
   url:
-    '[object Object]': null
-```text
+    "[object Object]": null
+```
 
 ^^/CONDITION: uses_flux^^
 
@@ -1153,7 +1153,7 @@ platform-gitops/
    applications/
        base/
        overlays/
-```text
+```
 
 ### Deployment Workflows
 
@@ -1197,7 +1197,7 @@ istioctl install --set profile={{istio_profile}} \
 # Linkerd Installation
 linkerd install --cluster-name={{cluster_name}} | kubectl apply -f -
 linkerd viz install | kubectl apply -f -
-```text
+```
 
 - Control plane setup
 - Proxy injection
@@ -1248,7 +1248,7 @@ spec:
     - name: deploy
       taskRef:
         name: gitops-deploy
-```text
+```
 
 ### Development Tools
 
@@ -1290,7 +1290,7 @@ data:
       - job_name: 'kubernetes-pods'
         kubernetes_sd_configs:
           - role: pod
-```text
+```
 
 ### Platform Observability
 
@@ -1380,7 +1380,7 @@ stages:
   - develop
   - test
   - deploy
-```text
+```
 
 ## Platform Validation & Testing
 
@@ -1409,8 +1409,8 @@ stages:
 
 ### Load Testing
 
-```yaml
-# K6 Load Test Example
+```typescript
+// K6 Load Test Example
 import http from 'k6/http';
 import { check } from 'k6';
 
@@ -2019,3 +2019,38 @@ This checklist serves as a comprehensive framework for validating infrastructure
 - [ ] Platform component integration validated
 - [ ] Cross-platform functionality tested and verified
 ==================== END: checklists#infrastructure-checklist ====================
+
+==================== START: data#technical-preferences ====================
+# User-Defined Preferred Patterns and Preferences
+
+None Listed
+==================== END: data#technical-preferences ====================
+
+==================== START: utils#template-format ====================
+# Template Format Conventions
+
+Templates in the BMAD method use standardized markup for AI processing. These conventions ensure consistent document generation.
+
+## Template Markup Elements
+
+- **{{placeholders}}**: Variables to be replaced with actual content
+- **[[LLM: instructions]]**: Internal processing instructions for AI agents (never shown to users)
+- **REPEAT** sections: Content blocks that may be repeated as needed
+- **^^CONDITION^^** blocks: Conditional content included only if criteria are met
+- **@{examples}**: Example content for guidance (never output to users)
+
+## Processing Rules
+
+- Replace all {{placeholders}} with project-specific content
+- Execute all [[LLM: instructions]] internally without showing users
+- Process conditional and repeat blocks as specified
+- Use examples for guidance but never include them in final output
+- Present only clean, formatted content to users
+
+## Critical Guidelines
+
+- **NEVER display template markup, LLM instructions, or examples to users**
+- Template elements are for AI processing only
+- Focus on faithful template execution and clean output
+- All template-specific instructions are embedded within templates
+==================== END: utils#template-format ====================
