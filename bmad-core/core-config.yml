@@ -1,26 +1,20 @@
-core-project-information:
-  dev-story-location: docs/stories # alternate could be .ai/stories if preferred for example
-  prd:
-    prd-file: docs/prd.md
-    prdVersion: v4
-    prdSharded: true
-    prdShardedLocation: docs/prd
-    epicFilePattern: epic-{n}*.md
-  architecture:
-    architecture-file: docs/architecture.md
-    architectureVersion: v4
-    architectureSharded: true
-    architectureShardedLocation: docs/architecture
-  # if you have a front-end architecture document, uncomment the following and validate the file path
-  # front-end-architecture:
-  #   front-end-architecture-file: docs/front-end-architecture.md
-  #   architectureVersion: v4
-  #   architectureSharded: true
-  #   architectureShardedLocation: docs/architecture
-  customTechnicalDocuments: null # list other documents only if you want the SM to read them when creating stories
-  devLoadAlwaysFiles:
-    - docs/architecture/coding-standards.md
-    - docs/architecture/tech-stack.md
-    - docs/architecture/source-tree.md
-  devDebugLog: .ai/debug-log.md
-  agentCoreDump: .ai/core-dump{n}.md
+markdownExploder: true
+prd:
+  prdFile: docs/prd.md
+  prdVersion: v4
+  prdSharded: true
+  prdShardedLocation: docs/prd
+  epicFilePattern: epic-{n}*.md
+architecture:
+  architectureFile: docs/architecture.md
+  architectureVersion: v4
+  architectureSharded: true
+  architectureShardedLocation: docs/architecture
+customTechnicalDocuments: null
+devLoadAlwaysFiles:
+  - docs/architecture/coding-standards.md
+  - docs/architecture/tech-stack.md
+  - docs/architecture/source-tree.md
+devDebugLog: .ai/debug-log.md
+devStoryLocation: docs/stories
+agentCoreDump: .ai/core-dump{n}.md

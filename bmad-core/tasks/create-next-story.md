@@ -17,14 +17,14 @@ To identify the next logical story based on project progress and epic definition
     2. Run the BMAD installer against your project to upgrade and add the file automatically
     Please add and configure core-config.yml before proceeding."
 - Extract the following key configurations:
-  - `dev-story-location`: Where to save story files
+  - `devStoryLocation`: Where to save story files
   - `prd.prdSharded`: Whether PRD is sharded or monolithic
-  - `prd.prd-file`: Location of monolithic PRD (if not sharded)
+  - `prd.prdFile`: Location of monolithic PRD (if not sharded)
   - `prd.prdShardedLocation`: Location of sharded epic files
   - `prd.epicFilePattern`: Pattern for epic files (e.g., `epic-{n}*.md`)
   - `architecture.architectureVersion`: Architecture document version
   - `architecture.architectureSharded`: Whether architecture is sharded
-  - `architecture.architecture-file`: Location of monolithic architecture
+  - `architecture.architectureFile`: Location of monolithic architecture
   - `architecture.architectureShardedLocation`: Location of sharded architecture files
 
 ### 1. Identify Next Story for Preparation
@@ -33,11 +33,11 @@ To identify the next logical story based on project progress and epic definition
 
 - Based on `prdSharded` from config:
   - **If `prdSharded: true`**: Look for epic files in `prdShardedLocation` using `epicFilePattern`
-  - **If `prdSharded: false`**: Load the full PRD from `prd-file` and extract epics from section headings (## Epic N or ### Epic N)
+  - **If `prdSharded: false`**: Load the full PRD from `prdFile` and extract epics from section headings (## Epic N or ### Epic N)
 
 #### 1.2 Review Existing Stories
 
-- Check `dev-story-location` from config (e.g., `docs/stories/`) for existing story files
+- Check `devStoryLocation` from config (e.g., `docs/stories/`) for existing story files
 - If the directory exists and has at least 1 file, find the highest-numbered story file.
 - **If a highest story file exists (`{lastEpicNum}.{lastStoryNum}.story.md`):**
   - Verify its `Status` is 'Done' (or equivalent).
@@ -126,13 +126,13 @@ Based on configuration loaded in Step 0:
   - Follow the structured reading order in section 4.2 below
   
 - **If `architectureVersion: v4` and `architectureSharded: false`**:
-  - Load the monolithic architecture from `architecture-file`
+  - Load the monolithic architecture from `architectureFile`
   - Extract relevant sections based on v4 structure (tech stack, project structure, etc.)
   
 - **If `architectureVersion` is NOT v4**:
   - Inform user: "Architecture document is not v4 format. Will use best judgment to find relevant information."
   - If `architectureSharded: true`: Search sharded files by filename relevance
-  - If `architectureSharded: false`: Search within monolithic `architecture-file` for relevant sections
+  - If `architectureSharded: false`: Search within monolithic `architectureFile` for relevant sections
 
 #### 4.2 Recommended Reading Order Based on Story Type (v4 Sharded Only)
 
@@ -189,7 +189,7 @@ Format references as: `[Source: architecture/{filename}.md#{section}]`
 
 ### 6. Populate Story Template with Full Context
 
-- Create a new story file: `{dev-story-location}/{epicNum}.{storyNum}.story.md` (using location from config).
+- Create a new story file: `{devStoryLocation}/{epicNum}.{storyNum}.story.md` (using location from config).
 - Use the Story Template to structure the file.
 - Fill in:
   - Story `{EpicNum}.{StoryNum}: {Short Title Copied from Epic File}`
@@ -236,7 +236,7 @@ Format references as: `[Source: architecture/{filename}.md#{section}]`
 - Verify all source references are included for technical details
 - Ensure tasks align with both epic requirements and architecture constraints
 - Update status to "Draft"
-- Save the story file to `{dev-story-location}/{epicNum}.{storyNum}.story.md` (using location from config)
+- Save the story file to `{devStoryLocation}/{epicNum}.{storyNum}.story.md` (using location from config)
 
 ### 9. Report Completion
 

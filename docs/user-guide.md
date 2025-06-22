@@ -895,18 +895,18 @@ This configuration file acts as a map for BMAD agents, telling them exactly wher
 #### Configuration Structure
 
 ```yaml
-core-project-information:
-  dev-story-location: docs/stories # Where completed stories are saved
+coreProjectLocation:
+  devStoryLocation: docs/stories # Where completed stories are saved
 
   prd:
-    prd-file: docs/prd.md
+    prdFile: docs/prd.md
     prdVersion: v4 # v3 or v4
     prdSharded: true # false if epics are embedded in PRD
     prdShardedLocation: docs/prd # Where sharded epics live
     epicFilePattern: epic-{n}*.md # Pattern for epic files
 
   architecture:
-    architecture-file: docs/architecture.md
+    architectureFile: docs/architecture.md
     architectureVersion: v4 # v3 or v4
     architectureSharded: true # false if monolithic
     architectureShardedLocation: docs/architecture
@@ -932,7 +932,7 @@ The Scrum Master agent uses these settings to locate epics:
 
 ```yaml
 prd:
-  prd-file: docs/prd.md
+  prdFile: docs/prd.md
   prdVersion: v4
   prdSharded: true
   prdShardedLocation: docs/prd
@@ -943,7 +943,7 @@ prd:
 
 ```yaml
 prd:
-  prd-file: docs/prd.md
+  prdFile: docs/prd.md
   prdVersion: v3
   prdSharded: false # Epics are inside PRD
 ```
@@ -952,7 +952,7 @@ prd:
 
 ```yaml
 prd:
-  prd-file: docs/product-requirements.md
+  prdFile: docs/product-requirements.md
   prdVersion: v4
   prdSharded: true
   prdShardedLocation: docs # Epics in docs/ not docs/prd/
@@ -967,7 +967,7 @@ Similar flexibility for architecture documents:
 
 ```yaml
 architecture:
-  architecture-file: docs/architecture.md
+  architectureFile: docs/architecture.md
   architectureVersion: v4
   architectureSharded: true
   architectureShardedLocation: docs/architecture
@@ -977,7 +977,7 @@ architecture:
 
 ```yaml
 architecture:
-  architecture-file: docs/technical-architecture.md
+  architectureFile: docs/technical-architecture.md
   architectureVersion: v3
   architectureSharded: false # All in one file
 ```
@@ -1021,14 +1021,14 @@ Export entire chat conversations for preservation or analysis. The `{n}` is repl
 ##### Legacy V3 Project
 
 ```yaml
-core-project-information:
-  dev-story-location: docs/stories
+coreProjectLocation:
+  devStoryLocation: docs/stories
   prd:
-    prd-file: docs/prd.md
+    prdFile: docs/prd.md
     prdVersion: v3
     prdSharded: false
   architecture:
-    architecture-file: docs/architecture.md
+    architectureFile: docs/architecture.md
     architectureVersion: v3
     architectureSharded: false
   devLoadAlwaysFiles: []
@@ -1037,14 +1037,14 @@ core-project-information:
 ##### Hybrid Project (V3 PRD, V4 Architecture)
 
 ```yaml
-core-project-information:
-  dev-story-location: .ai/stories
+coreProjectLocation:
+  devStoryLocation: .ai/stories
   prd:
-    prd-file: docs/product-requirements.md
+    prdFile: docs/product-requirements.md
     prdVersion: v3
     prdSharded: false
   architecture:
-    architecture-file: docs/architecture.md
+    architectureFile: docs/architecture.md
     architectureVersion: v4
     architectureSharded: true
     architectureShardedLocation: docs/architecture
@@ -1055,16 +1055,16 @@ core-project-information:
 ##### Custom Organization
 
 ```yaml
-core-project-information:
-  dev-story-location: development/completed-stories
+coreProjectLocation:
+  devStoryLocation: development/completed-stories
   prd:
-    prd-file: planning/requirements.md
+    prdFile: planning/requirements.md
     prdVersion: v4
     prdSharded: true
     prdShardedLocation: planning/epics
     epicFilePattern: requirement-{n}.md
   architecture:
-    architecture-file: technical/system-design.md
+    architectureFile: technical/system-design.md
     architectureVersion: v4
     architectureSharded: true
     architectureShardedLocation: technical/components
@@ -1122,7 +1122,7 @@ customTechnicalDocuments:
 
 **Architecture Not Loading:**
 
-- Verify `architecture-file` path
+- Verify `architectureFile` path
 - Check `architectureVersion` setting
 - Confirm sharding configuration matches reality
 

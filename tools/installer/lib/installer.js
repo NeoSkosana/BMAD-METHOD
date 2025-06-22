@@ -350,7 +350,12 @@ class Installer {
     // Install web bundles if requested
     if (config.includeWebBundles && config.webBundlesDirectory) {
       spinner.text = "Installing web bundles...";
-      await this.installWebBundles(config.webBundlesDirectory, config, spinner);
+      // Resolve web bundles directory using the same logic as the main installation directory
+      const originalCwd = process.env.INIT_CWD || process.env.PWD || process.cwd();
+      let resolvedWebBundlesDir = path.isAbsolute(config.webBundlesDirectory) 
+        ? config.webBundlesDirectory 
+        : path.resolve(originalCwd, config.webBundlesDirectory);
+      await this.installWebBundles(resolvedWebBundlesDir, config, spinner);
     }
 
     // Set up IDE integration if requested
@@ -608,7 +613,12 @@ class Installer {
     
     if (config.includeWebBundles && config.webBundlesDirectory) {
       const bundleInfo = this.getWebBundleInfo(config);
-      console.log(chalk.green(`✓ Web bundles (${bundleInfo}) installed to: ${config.webBundlesDirectory}`));
+      // Resolve the web bundles directory for display
+      const originalCwd = process.env.INIT_CWD || process.env.PWD || process.cwd();
+      const resolvedWebBundlesDir = path.isAbsolute(config.webBundlesDirectory) 
+        ? config.webBundlesDirectory 
+        : path.resolve(originalCwd, config.webBundlesDirectory);
+      console.log(chalk.green(`✓ Web bundles (${bundleInfo}) installed to: ${resolvedWebBundlesDir}`));
     }
     
     if (ides.length > 0) {

@@ -1,3 +1,15 @@
+# [4.11.0](https://github.com/bmadcode/BMAD-METHOD/compare/v4.10.3...v4.11.0) (2025-06-21)
+
+
+### Bug Fixes
+
+* resolve web bundles directory path when using relative paths in NPX installer ([5c8485d](https://github.com/bmadcode/BMAD-METHOD/commit/5c8485d09ffec60ad4965ced62f4595890cb7535))
+
+
+### Features
+
+* add markdown-tree integration for document sharding ([540578b](https://github.com/bmadcode/BMAD-METHOD/commit/540578b39d1815e41e11f0e87545de3f09ee54e1))
+
 ## [4.10.3](https://github.com/bmadcode/BMAD-METHOD/compare/v4.10.2...v4.10.3) (2025-06-20)
 
 
