@@ -8,7 +8,39 @@ Generate comprehensive documentation for existing projects optimized for AI deve
 
 ### 1. Initial Project Analysis
 
-[[LLM: Begin by conducting a comprehensive analysis of the existing project. Use available tools to:
+[[LLM: First, check if a PRD or requirements document exists in context. If yes, use it to focus your documentation efforts on relevant areas only.
+
+**IF PRD EXISTS**: 
+
+- Review the PRD to understand what enhancement/feature is planned
+- Identify which modules, services, or areas will be affected
+- Focus documentation ONLY on these relevant areas
+- Skip unrelated parts of the codebase to keep docs lean
+
+**IF NO PRD EXISTS**:
+Ask the user:
+
+"I notice you haven't provided a PRD or requirements document. To create more focused and useful documentation, I recommend one of these options:
+
+1. **Create a PRD first** - Would you like me to help create a brownfield PRD before documenting? This helps focus documentation on relevant areas.
+
+2. **Provide existing requirements** - Do you have a requirements document, epic, or feature description you can share?
+
+3. **Describe the focus** - Can you briefly describe what enhancement or feature you're planning? For example:
+   - 'Adding payment processing to the user service'
+   - 'Refactoring the authentication module'
+   - 'Integrating with a new third-party API'
+
+4. **Document everything** - Or should I proceed with comprehensive documentation of the entire codebase? (Note: This may create excessive documentation for large projects)
+
+Please let me know your preference, or I can proceed with full documentation if you prefer."
+
+Based on their response:
+
+- If they choose option 1-3: Use that context to focus documentation
+- If they choose option 4 or decline: Proceed with comprehensive analysis below
+
+Begin by conducting analysis of the existing project. Use available tools to:
 
 1. **Project Structure Discovery**: Examine the root directory structure, identify main folders, and understand the overall organization
 2. **Technology Stack Identification**: Look for package.json, requirements.txt, Cargo.toml, pom.xml, etc. to identify languages, frameworks, and dependencies
@@ -23,367 +55,263 @@ Ask the user these elicitation questions to better understand their needs:
 - What types of tasks do you expect AI agents to perform on this project? (e.g., bug fixes, feature additions, refactoring, testing)
 - Are there any existing documentation standards or formats you prefer?
 - What level of technical detail should the documentation target? (junior developers, senior developers, mixed team)
+- Is there a specific feature or enhancement you're planning? (This helps focus documentation)
   ]]
 
-### 2. Core Documentation Generation
+### 2. Deep Codebase Analysis
 
-[[LLM: Based on your analysis, generate the following core documentation files. Adapt the content and structure to match the specific project type and context you discovered:
+[[LLM: Before generating documentation, conduct extensive analysis of the existing codebase:
 
-**Core Documents (always generate):**
+1. **Explore Key Areas**:
+   - Entry points (main files, index files, app initializers)
+   - Configuration files and environment setup
+   - Package dependencies and versions
+   - Build and deployment configurations
+   - Test suites and coverage
 
-1. **docs/index.md** - Master documentation index
-2. **docs/architecture/index.md** - Architecture documentation index
-3. **docs/architecture/coding-standards.md** - Coding conventions and style guidelines
-4. **docs/architecture/tech-stack.md** - Technology stack and version constraints
-5. **docs/architecture/unified-project-structure.md** - Project structure and organization
-6. **docs/architecture/testing-strategy.md** - Testing approaches and requirements
+2. **Ask Clarifying Questions**:
+   - "I see you're using [technology X]. Are there any custom patterns or conventions I should document?"
+   - "What are the most critical/complex parts of this system that developers struggle with?"
+   - "Are there any undocumented 'tribal knowledge' areas I should capture?"
+   - "What technical debt or known issues should I document?"
+   - "Which parts of the codebase change most frequently?"
 
-**Backend Documents (generate for backend/full-stack projects):**
+3. **Map the Reality**:
+   - Identify ACTUAL patterns used (not theoretical best practices)
+   - Find where key business logic lives
+   - Locate integration points and external dependencies
+   - Document workarounds and technical debt
+   - Note areas that differ from standard patterns
 
-7. **docs/architecture/backend-architecture.md** - Backend service patterns and structure
-8. **docs/architecture/rest-api-spec.md** - API endpoint specifications
-9. **docs/architecture/data-models.md** - Data structures and validation rules
-10. **docs/architecture/database-schema.md** - Database design and relationships
-11. **docs/architecture/external-apis.md** - Third-party integrations
+**IF PRD PROVIDED**: Also analyze what would need to change for the enhancement]]
 
-**Frontend Documents (generate for frontend/full-stack projects):**
+### 3. Core Documentation Generation
 
-12. **docs/architecture/frontend-architecture.md** - Frontend patterns and structure
-13. **docs/architecture/components.md** - UI component specifications
-14. **docs/architecture/core-workflows.md** - User interaction flows
-15. **docs/architecture/ui-ux-spec.md** - UI/UX specifications and guidelines
+[[LLM: Generate a comprehensive BROWNFIELD architecture document that reflects the ACTUAL state of the codebase.
 
-**Additional Documents (generate if applicable):**
+**CRITICAL**: This is NOT an aspirational architecture document. Document what EXISTS, including:
+- Technical debt and workarounds
+- Inconsistent patterns between different parts
+- Legacy code that can't be changed
+- Integration constraints
+- Performance bottlenecks
 
-16. **docs/prd.md** - Product requirements document (if not exists)
-17. **docs/architecture/deployment-guide.md** - Deployment and operations info
-18. **docs/architecture/security-considerations.md** - Security patterns and requirements
-19. **docs/architecture/performance-guidelines.md** - Performance optimization patterns
+**Document Structure**:
 
-**Optional Enhancement Documents:**
+# [Project Name] Brownfield Architecture Document
 
-20. **docs/architecture/troubleshooting-guide.md** - Common issues and solutions
-21. **docs/architecture/changelog-conventions.md** - Change management practices
-22. **docs/architecture/code-review-checklist.md** - Review standards and practices
+## Introduction
+This document captures the CURRENT STATE of the [Project Name] codebase, including technical debt, workarounds, and real-world patterns. It serves as a reference for AI agents working on enhancements.
 
-Present each document section by section, using the advanced elicitation task after each major section.]]
+### Document Scope
+[If PRD provided: "Focused on areas relevant to: {enhancement description}"]
+[If no PRD: "Comprehensive documentation of entire system"]
 
-### 3. Document Structure Template
+### Change Log
+| Date | Version | Description | Author |
+|------|---------|-------------|--------|
+| [Date] | 1.0 | Initial brownfield analysis | [Analyst] |
 
-[[LLM: Use this standardized structure for each documentation file, adapting content as needed:
+## Quick Reference - Key Files and Entry Points
 
-```markdown
-# {{Document Title}}
+### Critical Files for Understanding the System
+- **Main Entry**: `src/index.js` (or actual entry point)
+- **Configuration**: `config/app.config.js`, `.env.example`
+- **Core Business Logic**: `src/services/`, `src/domain/`
+- **API Definitions**: `src/routes/` or link to OpenAPI spec
+- **Database Models**: `src/models/` or link to schema files
+- **Key Algorithms**: [List specific files with complex logic]
 
-## Overview
+### If PRD Provided - Enhancement Impact Areas
+[Highlight which files/modules will be affected by the planned enhancement]
 
-{{Brief description of what this document covers and why it's important for AI agents}}
+## High Level Architecture
 
-## Quick Reference
+### Technical Summary
+[Real assessment of architecture - mention if it's well-structured or has issues]
 
-{{Key points, commands, or patterns that agents need most frequently}}
+### Actual Tech Stack (from package.json/requirements.txt)
+| Category | Technology | Version | Notes |
+|----------|------------|---------|--------|
+| Runtime | Node.js | 16.x | [Any constraints] |
+| Framework | Express | 4.18.2 | [Custom middleware?] |
+| Database | PostgreSQL | 13 | [Connection pooling setup] |
+| [etc...] |
 
-## Detailed Information
+### Repository Structure Reality Check
+- Type: [Monorepo/Polyrepo/Hybrid]
+- Package Manager: [npm/yarn/pnpm]
+- Notable: [Any unusual structure decisions]
 
-{{Comprehensive information organized into logical sections}}
+## Source Tree and Module Organization
 
-## Examples
-
-{{Concrete examples showing proper usage or implementation}}
-
-## Common Patterns
-
-{{Recurring patterns agents should recognize and follow}}
-
-## Things to Avoid
-
-{{Anti-patterns, deprecated approaches, or common mistakes}}
-
-## Related Resources
-
-{{Links to other relevant documentation or external resources}}
+### Project Structure (Actual)
+```
+project-root/
+├── src/
+│   ├── controllers/     # HTTP request handlers
+│   ├── services/        # Business logic (NOTE: inconsistent patterns between user and payment services)
+│   ├── models/          # Database models (Sequelize)
+│   ├── utils/           # Mixed bag - needs refactoring
+│   └── legacy/          # DO NOT MODIFY - old payment system still in use
+├── tests/               # Jest tests (60% coverage)
+├── scripts/             # Build and deployment scripts
+└── config/              # Environment configs
 ```
 
-Each document should be:
+### Key Modules and Their Purpose
+- **User Management**: `src/services/userService.js` - Handles all user operations
+- **Authentication**: `src/middleware/auth.js` - JWT-based, custom implementation
+- **Payment Processing**: `src/legacy/payment.js` - CRITICAL: Do not refactor, tightly coupled
+- **[List other key modules with their actual files]**
+
+## Data Models and APIs
+
+### Data Models
+Instead of duplicating, reference actual model files:
+- **User Model**: See `src/models/User.js`
+- **Order Model**: See `src/models/Order.js`
+- **Related Types**: TypeScript definitions in `src/types/`
+
+### API Specifications
+- **OpenAPI Spec**: `docs/api/openapi.yaml` (if exists)
+- **Postman Collection**: `docs/api/postman-collection.json`
+- **Manual Endpoints**: [List any undocumented endpoints discovered]
+
+## Technical Debt and Known Issues
+
+### Critical Technical Debt
+1. **Payment Service**: Legacy code in `src/legacy/payment.js` - tightly coupled, no tests
+2. **User Service**: Different pattern than other services, uses callbacks instead of promises
+3. **Database Migrations**: Manually tracked, no proper migration tool
+4. **[Other significant debt]**
+
+### Workarounds and Gotchas
+- **Environment Variables**: Must set `NODE_ENV=production` even for staging (historical reason)
+- **Database Connections**: Connection pool hardcoded to 10, changing breaks payment service
+- **[Other workarounds developers need to know]**
+
+## Integration Points and External Dependencies
+
+### External Services
+| Service | Purpose | Integration Type | Key Files |
+|---------|---------|------------------|-----------|
+| Stripe | Payments | REST API | `src/integrations/stripe/` |
+| SendGrid | Emails | SDK | `src/services/emailService.js` |
+| [etc...] |
+
+### Internal Integration Points
+- **Frontend Communication**: REST API on port 3000, expects specific headers
+- **Background Jobs**: Redis queue, see `src/workers/`
+- **[Other integrations]**
+
+## Development and Deployment
+
+### Local Development Setup
+1. Actual steps that work (not ideal steps)
+2. Known issues with setup
+3. Required environment variables (see `.env.example`)
+
+### Build and Deployment Process
+- **Build Command**: `npm run build` (webpack config in `webpack.config.js`)
+- **Deployment**: Manual deployment via `scripts/deploy.sh`
+- **Environments**: Dev, Staging, Prod (see `config/environments/`)
+
+## Testing Reality
+
+### Current Test Coverage
+- Unit Tests: 60% coverage (Jest)
+- Integration Tests: Minimal, in `tests/integration/`
+- E2E Tests: None
+- Manual Testing: Primary QA method
+
+### Running Tests
+```bash
+npm test           # Runs unit tests
+npm run test:integration  # Runs integration tests (requires local DB)
+```
+
+## If Enhancement PRD Provided - Impact Analysis
+
+### Files That Will Need Modification
+Based on the enhancement requirements, these files will be affected:
+- `src/services/userService.js` - Add new user fields
+- `src/models/User.js` - Update schema
+- `src/routes/userRoutes.js` - New endpoints
+- [etc...]
+
+### New Files/Modules Needed
+- `src/services/newFeatureService.js` - New business logic
+- `src/models/NewFeature.js` - New data model
+- [etc...]
+
+### Integration Considerations
+- Will need to integrate with existing auth middleware
+- Must follow existing response format in `src/utils/responseFormatter.js`
+- [Other integration points]
+
+## Appendix - Useful Commands and Scripts
+
+### Frequently Used Commands
+```bash
+npm run dev         # Start development server
+npm run build       # Production build
+npm run migrate     # Run database migrations
+npm run seed        # Seed test data
+```
+
+### Debugging and Troubleshooting
+- **Logs**: Check `logs/app.log` for application logs
+- **Debug Mode**: Set `DEBUG=app:*` for verbose logging
+- **Common Issues**: See `docs/troubleshooting.md`]]
 
-- **Concrete and actionable** - Focus on what agents need to do, not just concepts
-- **Pattern-focused** - Highlight recurring patterns agents can recognize and replicate
-- **Example-rich** - Include specific code examples and real file references
-- **Context-aware** - Reference actual project files, folders, and conventions
-- **Assumption-free** - Don't assume agents know project history or implicit knowledge
-  ]]
+### 4. Document Delivery
 
-### 4. Content Guidelines for Each Document Type
+[[LLM: After generating the complete architecture document:
 
-#### Core Architecture Documents
+1. **In Web UI (Gemini, ChatGPT, Claude)**:
+   - Present the entire document in one response (or multiple if too long)
+   - Tell user to copy and save as `docs/brownfield-architecture.md` or `docs/project-architecture.md`
+   - Mention it can be sharded later in IDE if needed
 
-##### docs/architecture/index.md
+2. **In IDE Environment**:
+   - Create the document as `docs/brownfield-architecture.md`
+   - Inform user this single document contains all architectural information
+   - Can be sharded later using PO agent if desired
 
-[[LLM: Create a comprehensive index of all architecture documentation:
+The document should be comprehensive enough that future agents can understand:
+- The actual state of the system (not idealized)
+- Where to find key files and logic
+- What technical debt exists
+- What constraints must be respected
+- If PRD provided: What needs to change for the enhancement]]
 
-- List all architecture documents with brief descriptions
-- Group documents by category (backend, frontend, shared)
-- Include quick links to key sections
-- Provide reading order recommendations for different use cases]]
+### 5. Quality Assurance
 
-##### docs/architecture/unified-project-structure.md
+[[LLM: Before finalizing the document:
 
-[[LLM: Document the complete project structure:
+1. **Accuracy Check**: Verify all technical details match the actual codebase
+2. **Completeness Review**: Ensure all major system components are documented
+3. **Focus Validation**: If user provided scope, verify relevant areas are emphasized
+4. **Clarity Assessment**: Check that explanations are clear for AI agents
+5. **Navigation**: Ensure document has clear section structure for easy reference
 
-- Root-level directory structure with explanations
-- Where each type of code belongs (backend, frontend, tests, etc.)
-- File naming conventions and patterns
-- Module/package organization
-- Generated vs. source file locations
-- Build output locations]]
-
-##### docs/architecture/coding-standards.md
-
-[[LLM: Capture project-wide coding conventions:
-
-- Language-specific style guidelines
-- Naming conventions (variables, functions, classes, files)
-- Code organization within files
-- Import/export patterns
-- Comment and documentation standards
-- Linting and formatting tool configurations
-- Git commit message conventions]]
-
-##### docs/architecture/tech-stack.md
-
-[[LLM: Document all technologies and versions:
-
-- Primary languages and versions
-- Frameworks and major libraries with versions
-- Development tools and their versions
-- Database systems and versions
-- External services and APIs used
-- Browser/runtime requirements]]
-
-##### docs/architecture/testing-strategy.md
-
-[[LLM: Define testing approaches and requirements:
-
-- Test file locations and naming conventions
-- Unit testing patterns and frameworks
-- Integration testing approaches
-- E2E testing setup (if applicable)
-- Test coverage requirements
-- Mocking strategies
-- Test data management]]
-
-#### Backend Architecture Documents
-
-##### docs/architecture/backend-architecture.md
-
-[[LLM: Document backend service structure:
-
-- Service layer organization
-- Controller/route patterns
-- Middleware architecture
-- Authentication/authorization patterns
-- Request/response flow
-- Background job processing
-- Service communication patterns]]
-
-##### docs/architecture/rest-api-spec.md
-
-[[LLM: Specify all API endpoints:
-
-- Base URL and versioning strategy
-- Authentication methods
-- Common headers and parameters
-- Each endpoint with:
-  - HTTP method and path
-  - Request parameters/body
-  - Response format and status codes
-  - Error responses
-- Rate limiting and quotas]]
-
-##### docs/architecture/data-models.md
-
-[[LLM: Define data structures and validation:
-
-- Core business entities
-- Data validation rules
-- Relationships between entities
-- Computed fields and derivations
-- Data transformation patterns
-- Serialization formats]]
-
-##### docs/architecture/database-schema.md
-
-[[LLM: Document database design:
-
-- Database type and version
-- Table/collection structures
-- Indexes and constraints
-- Relationships and foreign keys
-- Migration patterns
-- Seed data requirements
-- Backup and recovery procedures]]
-
-##### docs/architecture/external-apis.md
-
-[[LLM: Document third-party integrations:
-
-- List of external services used
-- Authentication methods for each
-- API endpoints and usage patterns
-- Rate limits and quotas
-- Error handling strategies
-- Webhook configurations
-- Data synchronization patterns]]
-
-#### Frontend Architecture Documents
-
-##### docs/architecture/frontend-architecture.md
-
-[[LLM: Document frontend application structure:
-
-- Component hierarchy and organization
-- State management patterns
-- Routing architecture
-- Data fetching patterns
-- Authentication flow
-- Error boundary strategies
-- Performance optimization patterns]]
-
-##### docs/architecture/components.md
-
-[[LLM: Specify UI components:
-
-- Component library/design system used
-- Custom component specifications
-- Props and state for each component
-- Component composition patterns
-- Styling approaches
-- Accessibility requirements
-- Component testing patterns]]
-
-##### docs/architecture/core-workflows.md
-
-[[LLM: Document user interaction flows:
-
-- Major user journeys
-- Screen flow diagrams
-- Form handling patterns
-- Navigation patterns
-- Data flow through workflows
-- Error states and recovery
-- Loading and transition states]]
-
-##### docs/architecture/ui-ux-spec.md
-
-[[LLM: Define UI/UX guidelines:
-
-- Design system specifications
-- Color palette and typography
-- Spacing and layout grids
-- Responsive breakpoints
-- Animation and transition guidelines
-- Accessibility standards
-- Browser compatibility requirements]]
-
-### 5. Adaptive Content Strategy
-
-[[LLM: Adapt your documentation approach based on project characteristics:
-
-**For Web Applications:**
-
-- Focus on component patterns, routing, state management
-- Include build processes, asset handling, and deployment
-- Cover API integration patterns and data fetching
-
-**For Backend Services:**
-
-- Emphasize service architecture, data models, and API design
-- Include database interaction patterns and migration strategies
-- Cover authentication, authorization, and security patterns
-
-**For CLI Tools:**
-
-- Focus on command structure, argument parsing, and output formatting
-- Include plugin/extension patterns if applicable
-- Cover configuration file handling and user interaction patterns
-
-**For Libraries/Frameworks:**
-
-- Emphasize public API design and usage patterns
-- Include extension points and customization approaches
-- Cover versioning, compatibility, and migration strategies
-
-**For Mobile Applications:**
-
-- Focus on platform-specific patterns and navigation
-- Include state management and data persistence approaches
-- Cover platform integration and native feature usage
-
-**For Data Science/ML Projects:**
-
-- Emphasize data pipeline patterns and model organization
-- Include experiment tracking and reproducibility approaches
-- Cover data validation and model deployment patterns
-  ]]
-
-### 6. Quality Assurance
-
-[[LLM: Before completing each document:
-
-1. **Accuracy Check**: Verify all file paths, commands, and code examples work
-2. **Completeness Review**: Ensure the document covers the most important patterns an agent would encounter
-3. **Clarity Assessment**: Check that explanations are clear and actionable
-4. **Consistency Verification**: Ensure terminology and patterns align across all documents
-5. **Agent Perspective**: Review from the viewpoint of an AI agent that needs to contribute to this project
-
-Ask the user to review each completed document and use the advanced elicitation task to refine based on their feedback.]]
-
-### 7. Final Integration
-
-[[LLM: After all documents are completed:
-
-1. Ensure all documents are created in the proper BMAD-expected locations:
-
-   - Core docs in `docs/` (index.md, prd.md)
-   - Architecture shards in `docs/architecture/` subdirectory
-   - Create the `docs/architecture/` directory if it doesn't exist
-
-2. Create/update the master index documents:
-
-   - Update `docs/index.md` to reference all documentation
-   - Create `docs/architecture/index.md` listing all architecture shards
-
-3. Verify document cross-references:
-
-   - Ensure all documents link to related documentation
-   - Check that file paths match the actual project structure
-   - Validate that examples reference real files in the project
-
-4. Provide maintenance guidance:
-
-   - Document update triggers (when to update each doc)
-   - Create a simple checklist for keeping docs current
-   - Suggest automated validation approaches
-
-5. Summary report including:
-   - List of all documents created with their paths
-   - Any gaps or areas needing human review
-   - Recommendations for project-specific additions
-   - Next steps for maintaining documentation accuracy
-
-Present a summary of what was created and ask if any additional documentation would be helpful for AI agents working on this specific project.]]
+Apply the advanced elicitation task after major sections to refine based on user feedback.]]
 
 ## Success Criteria
 
-- Documentation enables AI agents to understand project context without additional explanation
-- All major architectural patterns and coding conventions are captured
-- Examples reference actual project files and demonstrate real usage
-- Documentation is structured consistently and easy to navigate
-- Content is actionable and focuses on what agents need to do, not just understand
+- Single comprehensive brownfield architecture document created
+- Document reflects REALITY including technical debt and workarounds
+- Key files and modules are referenced with actual paths
+- Models/APIs reference source files rather than duplicating content
+- If PRD provided: Clear impact analysis showing what needs to change
+- Document enables AI agents to navigate and understand the actual codebase
+- Technical constraints and "gotchas" are clearly documented
 
 ## Notes
 
-- This task is designed to work with any project type, language, or framework
-- The documentation should reflect the project as it actually is, not as it should be
-- Focus on patterns that agents can recognize and replicate consistently
-- Include both positive examples (what to do) and negative examples (what to avoid)
+- This task creates ONE document that captures the TRUE state of the system
+- References actual files rather than duplicating content when possible
+- Documents technical debt, workarounds, and constraints honestly
+- For brownfield projects with PRD: Provides clear enhancement impact analysis
+- The goal is PRACTICAL documentation for AI agents doing real work

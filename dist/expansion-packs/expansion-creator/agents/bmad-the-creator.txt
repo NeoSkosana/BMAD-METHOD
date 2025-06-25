@@ -101,7 +101,7 @@ This task guides you through creating a new BMAD agent following the standard te
 
 ## Prerequisites
 
-- Agent template: `.bmad-core/templates/agent-tmpl.md`
+- Agent template: `../templates/agent-tmpl.md`
 - Target directory: `.bmad-core/agents/`
 
 ## Steps
@@ -318,7 +318,7 @@ Every expansion pack MUST include a custom BMAD orchestrator agent with sophisti
 
 1. **Create Planning Document First**: Before any implementation, create a comprehensive plan for user approval
 2. **Agent Architecture Standards**: Use YAML-in-Markdown structure with activation instructions, personas, and command systems
-3. **Character Consistency**: Every agent must have a persistent persona with name, communication style, and numbered options protocol
+3. **Character Consistency**: Every agent must have a persistent persona with name, communication style, and numbered options protocol similar to `expansion-packs/bmad-2d-phaser-game-dev/agents/game-designer.md`
 4. **Custom Themed Orchestrator**: The orchestrator should embody the domain theme (e.g., Office Manager for medical, Project Lead for tech) for better user experience
 5. **Core Utilities Required**: ALWAYS include these core files in every expansion pack:
    - `tasks/create-doc.md` - Document creation from templates
@@ -326,8 +326,8 @@ Every expansion pack MUST include a custom BMAD orchestrator agent with sophisti
    - `utils/template-format.md` - Template markup conventions
    - `utils/workflow-management.md` - Workflow orchestration
 6. **Team and Workflow Requirements**: If pack has >1 agent, MUST include:
-   - At least one team configuration in `agent-teams/`
-   - At least one workflow in `workflows/`
+   - At least one team configuration in `expansion-packs/{new-expansion}/agent-teams/`
+   - At least one workflow in `expansion-packs/{new-expansion}workflows/`
 7. **Template Sophistication**: Implement LLM instruction embedding with `[[LLM: guidance]]`, conditional content, and variable systems
 8. **Workflow Orchestration**: Include decision trees, handoff protocols, and validation loops
 9. **Quality Assurance Integration**: Multi-level checklists with star ratings and ready/not-ready frameworks
@@ -1318,14 +1318,6 @@ Embedded knowledge (automatic):
 - [ ] Template conditional content tested with different scenarios
 - [ ] Workflow decision trees validated with sample use cases
 - [ ] Character interactions tested for consistency and professional authenticity
-
-```
-
-```
-
-```
-
-```
 ==================== END: tasks#generate-expansion-pack ====================
 
 ==================== START: tasks#advanced-elicitation ====================

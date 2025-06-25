@@ -1,3 +1,24 @@
+# [4.14.0](https://github.com/bmadcode/BMAD-METHOD/compare/v4.13.0...v4.14.0) (2025-06-25)
+
+
+### Features
+
+* enhance QA agent as senior developer with code review capabilities and major brownfield improvements ([3af3d33](https://github.com/bmadcode/BMAD-METHOD/commit/3af3d33d4a40586479a382620687fa99a9f6a5f7))
+
+# [4.13.0](https://github.com/bmadcode/BMAD-METHOD/compare/v4.12.0...v4.13.0) (2025-06-24)
+
+
+### Features
+
+* **ide-setup:** add support for Cline IDE and configuration rules ([#262](https://github.com/bmadcode/BMAD-METHOD/issues/262)) ([913dbec](https://github.com/bmadcode/BMAD-METHOD/commit/913dbeced60ad65086df6233086d83a51ead81a9))
+
+# [4.12.0](https://github.com/bmadcode/BMAD-METHOD/compare/v4.11.0...v4.12.0) (2025-06-23)
+
+
+### Features
+
+* **dev-agent:** add quality gates to prevent task completion with failing validations ([#261](https://github.com/bmadcode/BMAD-METHOD/issues/261)) ([45110ff](https://github.com/bmadcode/BMAD-METHOD/commit/45110ffffe6d29cc08e227e22a901892185dfbd2))
+
 # [4.11.0](https://github.com/bmadcode/BMAD-METHOD/compare/v4.10.3...v4.11.0) (2025-06-21)
 
 

@@ -4,7 +4,7 @@ This task guides you through creating a new BMAD agent following the standard te
 
 ## Prerequisites
 
-- Agent template: `.bmad-core/templates/agent-tmpl.md`
+- Agent template: `../templates/agent-tmpl.md`
 - Target directory: `.bmad-core/agents/`
 
 ## Steps
