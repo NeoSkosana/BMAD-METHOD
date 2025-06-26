@@ -1,3 +1,31 @@
+## [4.16.1](https://github.com/bmadcode/BMAD-METHOD/compare/v4.16.0...v4.16.1) (2025-06-26)
+
+
+### Bug Fixes
+
+* remove accidental folder add ([b1c2de1](https://github.com/bmadcode/BMAD-METHOD/commit/b1c2de1fb58029f68e021faa90cd5d5faf345198))
+
+# [4.16.0](https://github.com/bmadcode/BMAD-METHOD/compare/v4.15.0...v4.16.0) (2025-06-26)
+
+
+### Features
+
+* repo builds all rules sets for supported ides for easy copy if desired ([ea945bb](https://github.com/bmadcode/BMAD-METHOD/commit/ea945bb43f6ea50594910b954c72e79f96a8504c))
+
+# [4.15.0](https://github.com/bmadcode/BMAD-METHOD/compare/v4.14.1...v4.15.0) (2025-06-26)
+
+
+### Features
+
+* Add Gemini CLI Integration ([#271](https://github.com/bmadcode/BMAD-METHOD/issues/271)) ([44b9d7b](https://github.com/bmadcode/BMAD-METHOD/commit/44b9d7bcb5cbb6de5a15d8f2ec7918d186ac9576))
+
+## [4.14.1](https://github.com/bmadcode/BMAD-METHOD/compare/v4.14.0...v4.14.1) (2025-06-26)
+
+
+### Bug Fixes
+
+* add updated web builds ([6dabbcb](https://github.com/bmadcode/BMAD-METHOD/commit/6dabbcb670ef22708db6c01dac82069547ca79d6))
+
 # [4.14.0](https://github.com/bmadcode/BMAD-METHOD/compare/v4.13.0...v4.14.0) (2025-06-25)
 
 

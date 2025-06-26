@@ -54,7 +54,7 @@ agent:
   id: analyst
   title: Business Analyst
   icon: 📊
-  whenToUse: Use for market research, brainstorming, competitive analysis, creating project briefs, and initial project discovery
+  whenToUse: Use for market research, brainstorming, competitive analysis, creating project briefs, initial project discovery, and documenting existing projects (brownfield)
   customization: null
 persona:
   role: Insightful Analyst & Strategic Ideation Partner
@@ -82,6 +82,7 @@ commands:
   - brainstorm {topic}: Facilitate structured brainstorming session
   - research {topic}: Generate deep research prompt for investigation
   - elicit: Run advanced elicitation to clarify requirements
+  - document-project: Analyze and document existing project structure comprehensively
   - exit: Say goodbye as the Business Analyst, and then abandon inhabiting this persona
 dependencies:
   tasks:
@@ -89,6 +90,7 @@ dependencies:
     - create-deep-research-prompt
     - create-doc
     - advanced-elicitation
+    - document-project
   templates:
     - project-brief-tmpl
     - market-research-tmpl
@@ -816,6 +818,326 @@ Choose an action (0-9 - 9 to bypass - HELP for explanation of these options):
 9. Proceed / No Further Actions
    [[LLM: Acknowledge the user's choice to finalize the current work, accept the AI's last output as is, or move on to the next step without selecting another action from this list. Prepare to proceed accordingly.]]
 ==================== END: tasks#advanced-elicitation ====================
+
+==================== START: tasks#document-project ====================
+# Document an Existing Project
+
+## Purpose
+
+Generate comprehensive documentation for existing projects optimized for AI development agents. This task creates structured reference materials that enable AI agents to understand project context, conventions, and patterns for effective contribution to any codebase.
+
+## Task Instructions
+
+### 1. Initial Project Analysis
+
+[[LLM: First, check if a PRD or requirements document exists in context. If yes, use it to focus your documentation efforts on relevant areas only.
+
+**IF PRD EXISTS**: 
+
+- Review the PRD to understand what enhancement/feature is planned
+- Identify which modules, services, or areas will be affected
+- Focus documentation ONLY on these relevant areas
+- Skip unrelated parts of the codebase to keep docs lean
+
+**IF NO PRD EXISTS**:
+Ask the user:
+
+"I notice you haven't provided a PRD or requirements document. To create more focused and useful documentation, I recommend one of these options:
+
+1. **Create a PRD first** - Would you like me to help create a brownfield PRD before documenting? This helps focus documentation on relevant areas.
+
+2. **Provide existing requirements** - Do you have a requirements document, epic, or feature description you can share?
+
+3. **Describe the focus** - Can you briefly describe what enhancement or feature you're planning? For example:
+   - 'Adding payment processing to the user service'
+   - 'Refactoring the authentication module'
+   - 'Integrating with a new third-party API'
+
+4. **Document everything** - Or should I proceed with comprehensive documentation of the entire codebase? (Note: This may create excessive documentation for large projects)
+
+Please let me know your preference, or I can proceed with full documentation if you prefer."
+
+Based on their response:
+
+- If they choose option 1-3: Use that context to focus documentation
+- If they choose option 4 or decline: Proceed with comprehensive analysis below
+
+Begin by conducting analysis of the existing project. Use available tools to:
+
+1. **Project Structure Discovery**: Examine the root directory structure, identify main folders, and understand the overall organization
+2. **Technology Stack Identification**: Look for package.json, requirements.txt, Cargo.toml, pom.xml, etc. to identify languages, frameworks, and dependencies
+3. **Build System Analysis**: Find build scripts, CI/CD configurations, and development commands
+4. **Existing Documentation Review**: Check for README files, docs folders, and any existing documentation
+5. **Code Pattern Analysis**: Sample key files to understand coding patterns, naming conventions, and architectural approaches
+
+Ask the user these elicitation questions to better understand their needs:
+
+- What is the primary purpose of this project?
+- Are there any specific areas of the codebase that are particularly complex or important for agents to understand?
+- What types of tasks do you expect AI agents to perform on this project? (e.g., bug fixes, feature additions, refactoring, testing)
+- Are there any existing documentation standards or formats you prefer?
+- What level of technical detail should the documentation target? (junior developers, senior developers, mixed team)
+- Is there a specific feature or enhancement you're planning? (This helps focus documentation)
+  ]]
+
+### 2. Deep Codebase Analysis
+
+[[LLM: Before generating documentation, conduct extensive analysis of the existing codebase:
+
+1. **Explore Key Areas**:
+   - Entry points (main files, index files, app initializers)
+   - Configuration files and environment setup
+   - Package dependencies and versions
+   - Build and deployment configurations
+   - Test suites and coverage
+
+2. **Ask Clarifying Questions**:
+   - "I see you're using [technology X]. Are there any custom patterns or conventions I should document?"
+   - "What are the most critical/complex parts of this system that developers struggle with?"
+   - "Are there any undocumented 'tribal knowledge' areas I should capture?"
+   - "What technical debt or known issues should I document?"
+   - "Which parts of the codebase change most frequently?"
+
+3. **Map the Reality**:
+   - Identify ACTUAL patterns used (not theoretical best practices)
+   - Find where key business logic lives
+   - Locate integration points and external dependencies
+   - Document workarounds and technical debt
+   - Note areas that differ from standard patterns
+
+**IF PRD PROVIDED**: Also analyze what would need to change for the enhancement]]
+
+### 3. Core Documentation Generation
+
+[[LLM: Generate a comprehensive BROWNFIELD architecture document that reflects the ACTUAL state of the codebase.
+
+**CRITICAL**: This is NOT an aspirational architecture document. Document what EXISTS, including:
+- Technical debt and workarounds
+- Inconsistent patterns between different parts
+- Legacy code that can't be changed
+- Integration constraints
+- Performance bottlenecks
+
+**Document Structure**:
+
+# [Project Name] Brownfield Architecture Document
+
+## Introduction
+This document captures the CURRENT STATE of the [Project Name] codebase, including technical debt, workarounds, and real-world patterns. It serves as a reference for AI agents working on enhancements.
+
+### Document Scope
+[If PRD provided: "Focused on areas relevant to: {enhancement description}"]
+[If no PRD: "Comprehensive documentation of entire system"]
+
+### Change Log
+| Date | Version | Description | Author |
+|------|---------|-------------|--------|
+| [Date] | 1.0 | Initial brownfield analysis | [Analyst] |
+
+## Quick Reference - Key Files and Entry Points
+
+### Critical Files for Understanding the System
+- **Main Entry**: `src/index.js` (or actual entry point)
+- **Configuration**: `config/app.config.js`, `.env.example`
+- **Core Business Logic**: `src/services/`, `src/domain/`
+- **API Definitions**: `src/routes/` or link to OpenAPI spec
+- **Database Models**: `src/models/` or link to schema files
+- **Key Algorithms**: [List specific files with complex logic]
+
+### If PRD Provided - Enhancement Impact Areas
+[Highlight which files/modules will be affected by the planned enhancement]
+
+## High Level Architecture
+
+### Technical Summary
+[Real assessment of architecture - mention if it's well-structured or has issues]
+
+### Actual Tech Stack (from package.json/requirements.txt)
+| Category | Technology | Version | Notes |
+|----------|------------|---------|--------|
+| Runtime | Node.js | 16.x | [Any constraints] |
+| Framework | Express | 4.18.2 | [Custom middleware?] |
+| Database | PostgreSQL | 13 | [Connection pooling setup] |
+| [etc...] |
+
+### Repository Structure Reality Check
+- Type: [Monorepo/Polyrepo/Hybrid]
+- Package Manager: [npm/yarn/pnpm]
+- Notable: [Any unusual structure decisions]
+
+## Source Tree and Module Organization
+
+### Project Structure (Actual)
+```
+project-root/
+├── src/
+│   ├── controllers/     # HTTP request handlers
+│   ├── services/        # Business logic (NOTE: inconsistent patterns between user and payment services)
+│   ├── models/          # Database models (Sequelize)
+│   ├── utils/           # Mixed bag - needs refactoring
+│   └── legacy/          # DO NOT MODIFY - old payment system still in use
+├── tests/               # Jest tests (60% coverage)
+├── scripts/             # Build and deployment scripts
+└── config/              # Environment configs
+```
+
+### Key Modules and Their Purpose
+- **User Management**: `src/services/userService.js` - Handles all user operations
+- **Authentication**: `src/middleware/auth.js` - JWT-based, custom implementation
+- **Payment Processing**: `src/legacy/payment.js` - CRITICAL: Do not refactor, tightly coupled
+- **[List other key modules with their actual files]**
+
+## Data Models and APIs
+
+### Data Models
+Instead of duplicating, reference actual model files:
+- **User Model**: See `src/models/User.js`
+- **Order Model**: See `src/models/Order.js`
+- **Related Types**: TypeScript definitions in `src/types/`
+
+### API Specifications
+- **OpenAPI Spec**: `docs/api/openapi.yaml` (if exists)
+- **Postman Collection**: `docs/api/postman-collection.json`
+- **Manual Endpoints**: [List any undocumented endpoints discovered]
+
+## Technical Debt and Known Issues
+
+### Critical Technical Debt
+1. **Payment Service**: Legacy code in `src/legacy/payment.js` - tightly coupled, no tests
+2. **User Service**: Different pattern than other services, uses callbacks instead of promises
+3. **Database Migrations**: Manually tracked, no proper migration tool
+4. **[Other significant debt]**
+
+### Workarounds and Gotchas
+- **Environment Variables**: Must set `NODE_ENV=production` even for staging (historical reason)
+- **Database Connections**: Connection pool hardcoded to 10, changing breaks payment service
+- **[Other workarounds developers need to know]**
+
+## Integration Points and External Dependencies
+
+### External Services
+| Service | Purpose | Integration Type | Key Files |
+|---------|---------|------------------|-----------|
+| Stripe | Payments | REST API | `src/integrations/stripe/` |
+| SendGrid | Emails | SDK | `src/services/emailService.js` |
+| [etc...] |
+
+### Internal Integration Points
+- **Frontend Communication**: REST API on port 3000, expects specific headers
+- **Background Jobs**: Redis queue, see `src/workers/`
+- **[Other integrations]**
+
+## Development and Deployment
+
+### Local Development Setup
+1. Actual steps that work (not ideal steps)
+2. Known issues with setup
+3. Required environment variables (see `.env.example`)
+
+### Build and Deployment Process
+- **Build Command**: `npm run build` (webpack config in `webpack.config.js`)
+- **Deployment**: Manual deployment via `scripts/deploy.sh`
+- **Environments**: Dev, Staging, Prod (see `config/environments/`)
+
+## Testing Reality
+
+### Current Test Coverage
+- Unit Tests: 60% coverage (Jest)
+- Integration Tests: Minimal, in `tests/integration/`
+- E2E Tests: None
+- Manual Testing: Primary QA method
+
+### Running Tests
+```bash
+npm test           # Runs unit tests
+npm run test:integration  # Runs integration tests (requires local DB)
+```
+
+## If Enhancement PRD Provided - Impact Analysis
+
+### Files That Will Need Modification
+Based on the enhancement requirements, these files will be affected:
+- `src/services/userService.js` - Add new user fields
+- `src/models/User.js` - Update schema
+- `src/routes/userRoutes.js` - New endpoints
+- [etc...]
+
+### New Files/Modules Needed
+- `src/services/newFeatureService.js` - New business logic
+- `src/models/NewFeature.js` - New data model
+- [etc...]
+
+### Integration Considerations
+- Will need to integrate with existing auth middleware
+- Must follow existing response format in `src/utils/responseFormatter.js`
+- [Other integration points]
+
+## Appendix - Useful Commands and Scripts
+
+### Frequently Used Commands
+```bash
+npm run dev         # Start development server
+npm run build       # Production build
+npm run migrate     # Run database migrations
+npm run seed        # Seed test data
+```
+
+### Debugging and Troubleshooting
+- **Logs**: Check `logs/app.log` for application logs
+- **Debug Mode**: Set `DEBUG=app:*` for verbose logging
+- **Common Issues**: See `docs/troubleshooting.md`]]
+
+### 4. Document Delivery
+
+[[LLM: After generating the complete architecture document:
+
+1. **In Web UI (Gemini, ChatGPT, Claude)**:
+   - Present the entire document in one response (or multiple if too long)
+   - Tell user to copy and save as `docs/brownfield-architecture.md` or `docs/project-architecture.md`
+   - Mention it can be sharded later in IDE if needed
+
+2. **In IDE Environment**:
+   - Create the document as `docs/brownfield-architecture.md`
+   - Inform user this single document contains all architectural information
+   - Can be sharded later using PO agent if desired
+
+The document should be comprehensive enough that future agents can understand:
+- The actual state of the system (not idealized)
+- Where to find key files and logic
+- What technical debt exists
+- What constraints must be respected
+- If PRD provided: What needs to change for the enhancement]]
+
+### 5. Quality Assurance
+
+[[LLM: Before finalizing the document:
+
+1. **Accuracy Check**: Verify all technical details match the actual codebase
+2. **Completeness Review**: Ensure all major system components are documented
+3. **Focus Validation**: If user provided scope, verify relevant areas are emphasized
+4. **Clarity Assessment**: Check that explanations are clear for AI agents
+5. **Navigation**: Ensure document has clear section structure for easy reference
+
+Apply the advanced elicitation task after major sections to refine based on user feedback.]]
+
+## Success Criteria
+
+- Single comprehensive brownfield architecture document created
+- Document reflects REALITY including technical debt and workarounds
+- Key files and modules are referenced with actual paths
+- Models/APIs reference source files rather than duplicating content
+- If PRD provided: Clear impact analysis showing what needs to change
+- Document enables AI agents to navigate and understand the actual codebase
+- Technical constraints and "gotchas" are clearly documented
+
+## Notes
+
+- This task creates ONE document that captures the TRUE state of the system
+- References actual files rather than duplicating content when possible
+- Documents technical debt, workarounds, and constraints honestly
+- For brownfield projects with PRD: Provides clear enhancement impact analysis
+- The goal is PRACTICAL documentation for AI agents doing real work
+==================== END: tasks#document-project ====================
 
 ==================== START: templates#project-brief-tmpl ====================
 # Project Brief: {{Project Name}}
@@ -2013,10 +2335,16 @@ This architecture enables seamless operation across environments while maintaini
 
 ## Complete Development Workflow
 
-### Planning Phase (Web UI Recommended)
+### Planning Phase (Web UI Recommended - Especially Gemini!)
 
-**Ideal for cost efficiency, especially with Gemini:**
+**Ideal for cost efficiency with Gemini's massive context:**
 
+**For Brownfield Projects - Start Here!**:
+1. **Upload entire project to Gemini Web** (GitHub URL, files, or zip)
+2. **Document existing system**: `/analyst` → `*document-project`
+3. **Creates comprehensive docs** from entire codebase analysis
+
+**For All Projects**:
 1. **Optional Analysis**: `/analyst` - Market research, competitive analysis
 2. **Project Brief**: Create foundation document (Analyst or user)
 3. **PRD Creation**: `/pm create-doc prd` - Comprehensive product requirements
@@ -2120,25 +2448,70 @@ Each status change requires user verification and approval before proceeding.
 
 #### Brownfield Enhancement (Existing Projects)
 
-**Key Concept**: Brownfield development requires generating good documentation for agents to understand your existing project.
+**Key Concept**: Brownfield development requires comprehensive documentation of your existing project for AI agents to understand context, patterns, and constraints.
 
-**Recommended Approach**:
-1. **Analysis Phase**: Use Gemini Web or AI Studio with their 1M+ context windows
-2. **Document Generation**: Ask Architect agent to analyze your project and run `document-project` task
-3. **PRD Creation**: Even brownfield projects typically need a PRD unless:
-   - Very small, focused changes
-   - Using `brownfield-create-epic` for single epic without full PRD
-4. **Architecture Assessment**: Use brownfield-specific templates for complex enhancements
+**Complete Brownfield Workflow Options**:
 
-**Brownfield Templates Available**:
-- `brownfield-prd-tmpl.md`: For substantial enhancements requiring multiple stories
-- `brownfield-architecture-tmpl.md`: For complex changes impacting system architecture
-- Both templates emphasize compatibility and integration with existing systems
+**Option 1: PRD-First (Recommended for Large Codebases/Monorepos)**:
+1. **Upload project to Gemini Web** (GitHub URL, files, or zip)
+2. **Create PRD first**: `@pm` → `*create-doc brownfield-prd`
+3. **Focused documentation**: `@analyst` → `*document-project`
+   - Analyst asks for focus if no PRD provided
+   - Choose "single document" format for Web UI
+   - Uses PRD to document ONLY relevant areas
+   - Creates one comprehensive markdown file
+   - Avoids bloating docs with unused code
 
-**When to Skip PRD**:
-- For focused, single-epic work, use `brownfield-create-epic` task with detailed guidance
-- For one-off stories without larger context
-- Note: These tasks will evolve to require some documentation (potentially from `document-project`)
+**Option 2: Document-First (Good for Smaller Projects)**:
+1. **Upload project to Gemini Web**
+2. **Document everything**: `@analyst` → `*document-project`
+3. **Then create PRD**: `@pm` → `*create-doc brownfield-prd`
+   - More thorough but can create excessive documentation
+
+2. **Requirements Gathering**:
+   - **Brownfield PRD**: Use PM agent with `brownfield-prd-tmpl`
+   - **Analyzes**: Existing system, constraints, integration points
+   - **Defines**: Enhancement scope, compatibility requirements, risk assessment
+   - **Creates**: Epic and story structure for changes
+
+3. **Architecture Planning**:
+   - **Brownfield Architecture**: Use Architect agent with `brownfield-architecture-tmpl`
+   - **Integration Strategy**: How new features integrate with existing system
+   - **Migration Planning**: Gradual rollout and backwards compatibility
+   - **Risk Mitigation**: Addressing potential breaking changes
+
+**Brownfield-Specific Resources**:
+
+**Templates**:
+- `brownfield-prd-tmpl.md`: Comprehensive enhancement planning with existing system analysis
+- `brownfield-architecture-tmpl.md`: Integration-focused architecture for existing systems
+
+**Tasks**:
+- `document-project`: Generates comprehensive documentation from existing codebase
+- `brownfield-create-epic`: Creates single epic for focused enhancements (when full PRD is overkill)
+- `brownfield-create-story`: Creates individual story for small, isolated changes
+
+**When to Use Each Approach**:
+
+**Full Brownfield Workflow** (Recommended for):
+- Major feature additions
+- System modernization
+- Complex integrations
+- Multiple related changes
+
+**Quick Epic/Story Creation** (Use when):
+- Single, focused enhancement
+- Isolated bug fixes
+- Small feature additions
+- Well-documented existing system
+
+**Critical Success Factors**:
+1. **Documentation First**: Always run `document-project` if docs are outdated/missing
+2. **Context Matters**: Provide agents access to relevant code sections
+3. **Integration Focus**: Emphasize compatibility and non-breaking changes
+4. **Incremental Approach**: Plan for gradual rollout and testing
+
+**For detailed guide**: See `docs/working-in-the-brownfield.md`
 
 ## Document Creation Best Practices
 

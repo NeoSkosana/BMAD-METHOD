@@ -811,10 +811,16 @@ This architecture enables seamless operation across environments while maintaini
 
 ## Complete Development Workflow
 
-### Planning Phase (Web UI Recommended)
+### Planning Phase (Web UI Recommended - Especially Gemini!)
 
-**Ideal for cost efficiency, especially with Gemini:**
+**Ideal for cost efficiency with Gemini's massive context:**
 
+**For Brownfield Projects - Start Here!**:
+1. **Upload entire project to Gemini Web** (GitHub URL, files, or zip)
+2. **Document existing system**: `/analyst` → `*document-project`
+3. **Creates comprehensive docs** from entire codebase analysis
+
+**For All Projects**:
 1. **Optional Analysis**: `/analyst` - Market research, competitive analysis
 2. **Project Brief**: Create foundation document (Analyst or user)
 3. **PRD Creation**: `/pm create-doc prd` - Comprehensive product requirements
@@ -918,25 +924,70 @@ Each status change requires user verification and approval before proceeding.
 
 #### Brownfield Enhancement (Existing Projects)
 
-**Key Concept**: Brownfield development requires generating good documentation for agents to understand your existing project.
+**Key Concept**: Brownfield development requires comprehensive documentation of your existing project for AI agents to understand context, patterns, and constraints.
 
-**Recommended Approach**:
-1. **Analysis Phase**: Use Gemini Web or AI Studio with their 1M+ context windows
-2. **Document Generation**: Ask Architect agent to analyze your project and run `document-project` task
-3. **PRD Creation**: Even brownfield projects typically need a PRD unless:
-   - Very small, focused changes
-   - Using `brownfield-create-epic` for single epic without full PRD
-4. **Architecture Assessment**: Use brownfield-specific templates for complex enhancements
+**Complete Brownfield Workflow Options**:
 
-**Brownfield Templates Available**:
-- `brownfield-prd-tmpl.md`: For substantial enhancements requiring multiple stories
-- `brownfield-architecture-tmpl.md`: For complex changes impacting system architecture
-- Both templates emphasize compatibility and integration with existing systems
+**Option 1: PRD-First (Recommended for Large Codebases/Monorepos)**:
+1. **Upload project to Gemini Web** (GitHub URL, files, or zip)
+2. **Create PRD first**: `@pm` → `*create-doc brownfield-prd`
+3. **Focused documentation**: `@analyst` → `*document-project`
+   - Analyst asks for focus if no PRD provided
+   - Choose "single document" format for Web UI
+   - Uses PRD to document ONLY relevant areas
+   - Creates one comprehensive markdown file
+   - Avoids bloating docs with unused code
 
-**When to Skip PRD**:
-- For focused, single-epic work, use `brownfield-create-epic` task with detailed guidance
-- For one-off stories without larger context
-- Note: These tasks will evolve to require some documentation (potentially from `document-project`)
+**Option 2: Document-First (Good for Smaller Projects)**:
+1. **Upload project to Gemini Web**
+2. **Document everything**: `@analyst` → `*document-project`
+3. **Then create PRD**: `@pm` → `*create-doc brownfield-prd`
+   - More thorough but can create excessive documentation
+
+2. **Requirements Gathering**:
+   - **Brownfield PRD**: Use PM agent with `brownfield-prd-tmpl`
+   - **Analyzes**: Existing system, constraints, integration points
+   - **Defines**: Enhancement scope, compatibility requirements, risk assessment
+   - **Creates**: Epic and story structure for changes
+
+3. **Architecture Planning**:
+   - **Brownfield Architecture**: Use Architect agent with `brownfield-architecture-tmpl`
+   - **Integration Strategy**: How new features integrate with existing system
+   - **Migration Planning**: Gradual rollout and backwards compatibility
+   - **Risk Mitigation**: Addressing potential breaking changes
+
+**Brownfield-Specific Resources**:
+
+**Templates**:
+- `brownfield-prd-tmpl.md`: Comprehensive enhancement planning with existing system analysis
+- `brownfield-architecture-tmpl.md`: Integration-focused architecture for existing systems
+
+**Tasks**:
+- `document-project`: Generates comprehensive documentation from existing codebase
+- `brownfield-create-epic`: Creates single epic for focused enhancements (when full PRD is overkill)
+- `brownfield-create-story`: Creates individual story for small, isolated changes
+
+**When to Use Each Approach**:
+
+**Full Brownfield Workflow** (Recommended for):
+- Major feature additions
+- System modernization
+- Complex integrations
+- Multiple related changes
+
+**Quick Epic/Story Creation** (Use when):
+- Single, focused enhancement
+- Isolated bug fixes
+- Small feature additions
+- Well-documented existing system
+
+**Critical Success Factors**:
+1. **Documentation First**: Always run `document-project` if docs are outdated/missing
+2. **Context Matters**: Provide agents access to relevant code sections
+3. **Integration Focus**: Emphasize compatibility and non-breaking changes
+4. **Incremental Approach**: Plan for gradual rollout and testing
+
+**For detailed guide**: See `docs/working-in-the-brownfield.md`
 
 ## Document Creation Best Practices
 

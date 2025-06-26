@@ -65,7 +65,7 @@ BMAD-METHOD (Breakthrough Method of Agile AI-Driven Development) revolutionizes 
 - **🎯 Specialized Expertise**: Each agent is an expert in their specific role
 - **🔄 True Agile Workflow**: Follows real Agile methodologies and best practices
 - **📦 Modular Design**: Use one agent or an entire team
-- **🛠️ IDE Integration**: Works seamlessly with Cursor, Claude Code, and Windsurf
+- **🛠️ IDE Integration**: Works seamlessly with Cursor, Claude Code, Windsurf, and Gemini
 - **🌐 Platform Agnostic**: Use with ChatGPT, Claude, Gemini, or any AI platform
 
 ## Installation
@@ -94,6 +94,7 @@ The BMad Method works with any IDE, but has built-in integration for:
 - `cursor` - Cursor IDE with @agent commands
 - `claude-code` - Claude Code with /agent commands
 - `windsurf` - Windsurf with @agent commands
+- `gemini-cli` - Gemini with @agent commands
 - `roo` - Roo Code with custom modes (see `.roomodes`)
 - More coming soon - BUT ITS easy to use with ANY IDE - just copy the bmad-code folder to your project, and rename it .bmad-code.
 
