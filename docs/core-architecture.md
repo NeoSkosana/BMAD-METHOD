@@ -204,12 +204,180 @@ graph TD
     F -->|Approved| G["Dev: Implement Story"]
     F -->|Needs Changes| E
     G --> H["Dev: Complete story Tasks"]
-    H --> I{"User Verification"}
-    I -->|Verified Complete| J["Mark Story as Done"]
-    I -->|Needs Fixes| G
-    J --> E
+    H --> I["Dev: Mark Ready for Review"]
+    I --> J{"User Verification"}
+    J -->|Request QA Review| K["QA: Run review-story task"]
+    J -->|Approve Without QA| M["Mark Story as Done"]
+    K --> L{"QA Review Results"}
+    L -->|Needs Work| G
+    L -->|Approved| M["Mark Story as Done"]
+    J -->|Needs Fixes| G
+    M --> E
 
-    style J fill:#34a853,color:#fff
+    style M fill:#34a853,color:#fff
+    style K fill:#f9ab00,color:#fff
 ```
 
-This cycle continues, with the Scrum Master and Developer agents working in tandem, until all stories in the epic are completed.
+This cycle continues, with the Scrum Master, Developer, and optionally QA agents working together. The QA agent provides senior developer review capabilities through the `review-story` task, offering code refactoring, quality improvements, and knowledge transfer. This ensures high code quality while maintaining development velocity.
+
+## 8. Complete Source Tree
+
+The BMAD-METHOD project structure is designed for clarity, modularity, and extensibility. Here's the complete source tree with explanations:
+
+```plaintext
+bmad-method/
+├── .bmad-core/                    # Core framework (installed in user projects)
+│   ├── agents/                    # Individual agent definitions
+│   │   ├── analyst.md            # Business analyst agent
+│   │   ├── architect.md          # Solution architect agent
+│   │   ├── bmad-master.md        # Universal expert agent
+│   │   ├── bmad-orchestrator.md  # Multi-agent coordinator
+│   │   ├── dev.md                # Full-stack developer agent
+│   │   ├── pm.md                 # Product manager agent
+│   │   ├── po.md                 # Product owner agent
+│   │   ├── qa.md                 # QA specialist agent
+│   │   ├── sm.md                 # Scrum master agent
+│   │   └── ux-expert.md          # UX designer agent
+│   ├── agent-teams/              # Pre-configured agent teams
+│   │   ├── team-all.yml          # All agents bundle
+│   │   ├── team-fullstack.yml    # Full-stack development team
+│   │   ├── team-ide-minimal.yml  # Minimal IDE-focused team
+│   │   └── team-no-ui.yml        # Backend-only team
+│   ├── checklists/               # Quality assurance checklists
+│   │   ├── architect-checklist.md
+│   │   ├── po-master-checklist.md
+│   │   └── story-dod-checklist.md
+│   ├── data/                     # Knowledge base and preferences
+│   │   ├── bmad-kb.md            # Core knowledge base
+│   │   └── technical-preferences.md  # User tech preferences
+│   ├── tasks/                    # Reusable task definitions
+│   │   ├── advanced-elicitation.md   # Deep diving techniques
+│   │   ├── create-doc.md         # Document creation task
+│   │   ├── create-next-story.md  # Story generation task
+│   │   ├── doc-migration-task.md # V3 to V4 migration
+│   │   ├── execute-checklist.md  # Checklist runner
+│   │   └── shard-doc.md          # Document sharding task
+│   ├── templates/                # Document templates
+│   │   ├── full-stack-architecture-tmpl.md
+│   │   ├── prd-tmpl.md
+│   │   ├── project-brief-tmpl.md
+│   │   ├── story-tmpl.md
+│   │   └── [other templates...]
+│   ├── utils/                    # Utility components
+│   │   ├── agent-switcher.web    # Web UI agent switching
+│   │   ├── template-format.md    # Template markup spec
+│   │   └── workflow-management.md # Workflow helpers
+│   ├── workflows/                # Development workflows
+│   │   ├── brownfield-enhancement.yml
+│   │   ├── greenfield-fullstack.yml
+│   │   ├── greenfield-service.yml
+│   │   └── greenfield-simple.yml
+│   └── core-config.yml           # V4 configuration system
+│
+├── dist/                         # Pre-built bundles (generated)
+│   ├── agents/                   # Individual agent bundles
+│   │   ├── analyst.txt
+│   │   ├── architect.txt
+│   │   └── [other agents...]
+│   ├── teams/                    # Team bundles for web UI
+│   │   ├── team-all.txt
+│   │   ├── team-fullstack.txt
+│   │   └── [other teams...]
+│   └── expansion-packs/          # Expansion pack bundles
+│
+├── docs/                         # Documentation
+│   ├── agentic-tools/           # IDE-specific guides
+│   │   ├── claude-code-guide.md
+│   │   ├── cursor-guide.md
+│   │   ├── cline-guide.md
+│   │   ├── gemini-cli-guide.md
+│   │   ├── roo-code-guide.md
+│   │   └── windsurf-guide.md
+│   ├── bmad-workflow-guide.md    # Universal workflow guide
+│   ├── core-architecture.md      # This document
+│   ├── expansion-packs.md        # Expansion pack guide
+│   ├── user-guide.md            # Comprehensive user guide
+│   └── [other docs...]
+│
+├── expansion-packs/              # Domain-specific extensions
+│   ├── bmad-2d-phaser-game-dev/ # Game development pack
+│   ├── bmad-creator-tools/      # Agent creation tools
+│   ├── bmad-infrastructure-devops/ # DevOps pack
+│   └── README.md
+│
+├── tools/                        # Build and installation tools
+│   ├── builders/                 # Build system
+│   │   └── web-builder.js       # Bundle generator
+│   ├── cli.js                   # Main CLI tool
+│   ├── installer/               # NPX installer
+│   │   ├── index.js             # Installer entry point
+│   │   ├── config/              # Installation configs
+│   │   ├── lib/                 # Installer utilities
+│   │   └── templates/           # IDE template files
+│   └── lib/                     # Shared libraries
+│       ├── bundle-utils.js
+│       ├── dependency-resolver.js
+│       └── file-processor.js
+│
+├── .github/                     # GitHub configuration
+│   ├── workflows/               # GitHub Actions
+│   └── ISSUE_TEMPLATE/         # Issue templates
+│
+├── common/                      # Shared resources
+│   ├── tasks/                   # Common tasks
+│   └── utils/                   # Common utilities
+│
+├── bmad-core/                   # Source for .bmad-core
+│   └── [mirrors .bmad-core structure]
+│
+├── package.json                 # Node.js configuration
+├── README.md                    # Project readme
+├── CONTRIBUTING.md              # Contribution guidelines
+├── GUIDING-PRINCIPLES.md        # Core principles
+└── LICENSE                      # MIT license
+```
+
+### Directory Purposes
+
+#### Core Framework (.bmad-core/)
+
+- **agents/**: Individual AI agent personalities and capabilities
+- **agent-teams/**: Bundles of agents for specific workflows
+- **checklists/**: Quality assurance and validation steps
+- **data/**: Knowledge base and user preferences
+- **tasks/**: Reusable procedures agents can execute
+- **templates/**: Document templates with embedded AI instructions
+- **utils/**: Helper components for agents
+- **workflows/**: Structured development processes
+
+#### Generated Bundles (dist/)
+
+- Pre-built text files ready for web UI upload
+- Automatically generated by the build system
+- Includes resolved dependencies for each agent/team
+
+#### Tools (tools/)
+
+- **cli.js**: Main build tool for creating bundles
+- **installer/**: NPX-based installer for projects
+- **builders/**: Bundle generation logic
+- **lib/**: Shared utilities for build system
+
+#### Expansion Packs (expansion-packs/)
+
+- Domain-specific agent collections
+- Extend BMAD beyond software development
+- Each pack is self-contained with its own agents, tasks, and templates
+
+#### Documentation (docs/)
+
+- Comprehensive guides for users
+- Technical architecture documentation
+- IDE-specific setup instructions
+
+### Key Files
+
+- **core-config.yml**: V4's flexible configuration system
+- **bmad-kb.md**: Central knowledge base loaded by most agents
+- **template-format.md**: Specification for BMAD's template markup
+- **dependency-resolver.js**: Manages agent resource loading

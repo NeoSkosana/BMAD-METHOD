@@ -40,7 +40,7 @@ try {
 
 program
   .version(version)
-  .description('BMAD Method installer - AI-powered Agile development framework');
+  .description('BMAD Method installer - Universal AI agent framework for any domain');
 
 program
   .command('install')
@@ -329,7 +329,7 @@ async function promptInstallation() {
       type: 'confirm',
       name: 'includeWebBundles',
       message: 'Would you like to include pre-built web bundles? (standalone files for ChatGPT, Claude, Gemini)',
-      default: true
+      default: false
     }
   ]);
 

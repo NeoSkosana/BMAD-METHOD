@@ -26,8 +26,47 @@ class ConfigLoader {
   }
 
   async getAvailableAgents() {
-    const config = await this.load();
-    return config['available-agents'] || [];
+    const agentsDir = path.join(this.getBmadCorePath(), 'agents');
+    
+    try {
+      const entries = await fs.readdir(agentsDir, { withFileTypes: true });
+      const agents = [];
+      
+      for (const entry of entries) {
+        if (entry.isFile() && entry.name.endsWith('.md')) {
+          const agentPath = path.join(agentsDir, entry.name);
+          const agentId = path.basename(entry.name, '.md');
+          
+          try {
+            const agentContent = await fs.readFile(agentPath, 'utf8');
+            
+            // Extract YAML block from agent file
+            const yamlMatch = agentContent.match(/```yml\n([\s\S]*?)\n```/);
+            if (yamlMatch) {
+              const yamlContent = yaml.load(yamlMatch[1]);
+              const agentConfig = yamlContent.agent || {};
+              
+              agents.push({
+                id: agentId,
+                name: agentConfig.title || agentConfig.name || agentId,
+                file: `bmad-core/agents/${entry.name}`,
+                description: agentConfig.whenToUse || 'No description available'
+              });
+            }
+          } catch (error) {
+            console.warn(`Failed to read agent ${entry.name}: ${error.message}`);
+          }
+        }
+      }
+      
+      // Sort agents by name for consistent display
+      agents.sort((a, b) => a.name.localeCompare(b.name));
+      
+      return agents;
+    } catch (error) {
+      console.warn(`Failed to read agents directory: ${error.message}`);
+      return [];
+    }
   }
 
   async getAvailableExpansionPacks() {
@@ -38,24 +77,45 @@ class ConfigLoader {
       const expansionPacks = [];
       
       for (const entry of entries) {
-        if (entry.isDirectory()) {
-          const manifestPath = path.join(expansionPacksDir, entry.name, 'manifest.yml');
+        if (entry.isDirectory() && !entry.name.startsWith('.')) {
+          const packPath = path.join(expansionPacksDir, entry.name);
+          const configPath = path.join(packPath, 'config.yml');
           
           try {
-            const manifestContent = await fs.readFile(manifestPath, 'utf8');
-            const manifest = yaml.load(manifestContent);
+            // Read config.yml
+            const configContent = await fs.readFile(configPath, 'utf8');
+            const config = yaml.load(configContent);
             
             expansionPacks.push({
               id: entry.name,
-              name: manifest.name || entry.name,
-              description: manifest.description || 'No description available',
-              version: manifest.version || '1.0.0',
-              author: manifest.author || 'Unknown',
-              manifestPath: manifestPath,
-              dependencies: manifest.dependencies || []
+              name: config.name || entry.name,
+              description: config['short-title'] || config.description || 'No description available',
+              fullDescription: config.description || config['short-title'] || 'No description available',
+              version: config.version || '1.0.0',
+              author: config.author || 'BMAD Team',
+              packPath: packPath,
+              dependencies: config.dependencies?.agents || []
             });
           } catch (error) {
-            console.warn(`Failed to read manifest for expansion pack ${entry.name}: ${error.message}`);
+            // Fallback if config.yml doesn't exist or can't be read
+            console.warn(`Failed to read config for expansion pack ${entry.name}: ${error.message}`);
+            
+            // Try to derive info from directory name as fallback
+            const name = entry.name
+              .split('-')
+              .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(' ');
+            
+            expansionPacks.push({
+              id: entry.name,
+              name: name,
+              description: 'No description available',
+              fullDescription: 'No description available',
+              version: '1.0.0',
+              author: 'BMAD Team',
+              packPath: packPath,
+              dependencies: []
+            });
           }
         }
       }
@@ -72,36 +132,24 @@ class ConfigLoader {
     const DependencyResolver = require('../../lib/dependency-resolver');
     const resolver = new DependencyResolver(path.join(__dirname, '..', '..', '..'));
     
-    try {
-      const agentDeps = await resolver.resolveAgentDependencies(agentId);
-      
-      // Convert to flat list of file paths
-      const depPaths = [];
-      
-      // Core files and utilities are included automatically by DependencyResolver
-      
-      // Add agent file itself is already handled by installer
-      
-      // Add all resolved resources
-      for (const resource of agentDeps.resources) {
-        const filePath = `.bmad-core/${resource.type}/${resource.id}.md`;
-        if (!depPaths.includes(filePath)) {
-          depPaths.push(filePath);
-        }
+    const agentDeps = await resolver.resolveAgentDependencies(agentId);
+    
+    // Convert to flat list of file paths
+    const depPaths = [];
+    
+    // Core files and utilities are included automatically by DependencyResolver
+    
+    // Add agent file itself is already handled by installer
+    
+    // Add all resolved resources
+    for (const resource of agentDeps.resources) {
+      const filePath = `.bmad-core/${resource.type}/${resource.id}.md`;
+      if (!depPaths.includes(filePath)) {
+        depPaths.push(filePath);
       }
-      
-      return depPaths;
-    } catch (error) {
-      console.warn(`Failed to dynamically resolve dependencies for ${agentId}: ${error.message}`);
-      
-      // Fall back to static config
-      const config = await this.load();
-      const dependencies = config['agent-dependencies'] || {};
-      const coreFiles = dependencies['core-files'] || [];
-      const agentDeps = dependencies[agentId] || [];
-      
-      return [...coreFiles, ...agentDeps];
     }
+    
+    return depPaths;
   }
 
   async getIdeConfiguration(ide) {

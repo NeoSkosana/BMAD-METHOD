@@ -1,22 +1,18 @@
 # Working in the Brownfield: A Complete Guide
 
-> 🚀 **HIGHLY RECOMMENDED: Use Gemini Web for Brownfield Documentation!**
+> 🚀 **HIGHLY RECOMMENDED: Use Gemini Web or Gemini CLI for Brownfield Documentation!**
 >
-> Gemini Web's 1M+ token context window can analyze your ENTIRE codebase at once:
+> Gemini Web's 1M+ token context window or Gemini CLI (when its working) can analyze your ENTIRE codebase at once:
 >
 > - Upload via GitHub URL
 > - Upload up to 1000 files
 > - Upload zipped project
->
-> This is MUCH more cost-effective than IDE analysis which reads files one by one!
 
 ## What is Brownfield Development?
 
 Brownfield development refers to adding features, fixing bugs, or modernizing existing software projects. Unlike greenfield (new) projects, brownfield work requires understanding existing code, respecting constraints, and ensuring new changes integrate seamlessly without breaking existing functionality.
 
-## When to Use BMAD for Brownfield
-
-BMAD-METHOD excels at brownfield development when you need to:
+## When to Use BMad for Brownfield
 
 - Add significant new features to existing applications
 - Modernize legacy codebases
@@ -29,7 +25,7 @@ BMAD-METHOD excels at brownfield development when you need to:
 
 ### Choose Your Approach
 
-#### Approach A: PRD-First (Recommended for Large Codebases/Monorepos)
+#### Approach A: PRD-First (Recommended if adding very large and complex new features, single or multiple epics or massive changes)
 
 **Best for**: Large codebases, monorepos, or when you know exactly what you want to build
 
@@ -116,7 +112,7 @@ The analyst will generate comprehensive documentation of everything.
 
 #### Option A: Full Brownfield Workflow (Recommended for Major Changes)
 
-**1. Create Brownfield PRD**
+**1. Create Brownfield PRD**:
 
 ```bash
 @pm
@@ -143,7 +139,7 @@ The PM agent will:
 - "What are the critical constraints we must respect?"
 - "What is your timeline and team size?"
 
-**2. Create Brownfield Architecture**
+**2. Create Brownfield Architecture**:
 
 ```bash
 @architect

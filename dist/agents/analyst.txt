@@ -681,9 +681,9 @@ Confirm with the user their preferred interaction style:
 
 ### 3. Execute Template
 
-- Load specified template from `templates#*` or the /templates directory
+- Load specified template from `templates#*` or the `{root}/templates directory`
 - Follow ALL embedded LLM instructions within the template
-- Process template markup according to `utils#template-format` conventions
+- Process template markup according to `utils#template-format` or `{root}/utils/template-format` conventions
 
 ### 4. Template Processing Rules
 
@@ -2654,7 +2654,7 @@ Expansion packs extend BMAD-METHOD beyond traditional software development into 
 ### Using Expansion Packs
 
 1. **Browse Available Packs**: Check `expansion-packs/` directory
-2. **Get Inspiration**: See `docs/expansion-pack-ideas.md` for detailed examples
+2. **Get Inspiration**: See `docs/expansion-packs.md` for detailed examples and ideas
 3. **Install via CLI**: 
    ```bash
    npx bmad-method install

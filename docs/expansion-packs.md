@@ -132,6 +132,21 @@ Property investment and management:
 - **Flip Strategist**: Renovation ROI, project planning
 - **Agent Assistant**: Listing optimization, showing prep
 
+### Personal Development Pack
+
+Complete personal growth system:
+
+- **Life Coach**: Guides personal growth and transformation
+- **Goal Strategist**: Helps achieve objectives with SMART goals
+- **Habit Builder**: Creates lasting habits with accountability
+- **Mindset Mentor**: Develops positive thinking patterns
+
+Key tasks include:
+
+- `goal-setting`: Defines SMART goals with action plans
+- `habit-tracking`: Monitors habit formation progress
+- `reflection-exercise`: Facilitates deep self-reflection
+
 ## Unique & Innovative Packs
 
 ### Role-Playing Game Master Pack

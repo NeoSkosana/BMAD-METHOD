@@ -4,9 +4,14 @@ Thank you for considering contributing to this project! This document outlines t
 
 🆕 **New to GitHub or pull requests?** Check out our [beginner-friendly Pull Request Guide](docs/how-to-contribute-with-pull-requests.md) first!
 
-📋 **Before contributing**, please read our [Guiding Principles](GUIDING-PRINCIPLES.md) to understand the BMAD Method's core philosophy and architectural decisions.
+📋 **Before contributing**, please read our [Guiding Principles](GUIDING-PRINCIPLES.md) to understand the BMad Method's core philosophy and architectural decisions.
 
 Also note, we use the discussions feature in GitHub to have a community to discuss potential ideas, uses, additions and enhancements.
+
+💬 **Discord Community**: Join our [Discord server](https://discord.gg/g6ypHytrCB) for real-time discussions:
+
+- **#general-dev** - Technical discussions, feature ideas, and development questions
+- **#bugs-issues** - Bug reports and issue discussions
 
 ## Code of Conduct
 
@@ -16,15 +21,34 @@ By participating in this project, you agree to abide by our Code of Conduct. Ple
 
 ### Reporting Bugs
 
-- Check if the bug has already been reported in the Issues section
-- Include detailed steps to reproduce the bug
-- Include any relevant logs or screenshots
+1. **Check existing issues** first to avoid duplicates
+2. **Use the bug report template** when creating a new issue - it will guide you through providing:
+   - Clear bug description
+   - Steps to reproduce
+   - Expected vs actual behavior
+   - Model/IDE/BMad version details
+   - Screenshots or links if applicable
+3. **Consider discussing in Discord** (#bugs-issues channel) for quick help
+4. **Indicate if you're working on a fix** to avoid duplicate efforts
 
 ### Suggesting Features
 
-- Check if the feature has already been suggested in the Issues section, and consider using the discussions tab in GitHub also. Explain the feature in detail and why it would be valuable.
+1. **Discuss first in Discord** (#general-dev channel) - the feature request template asks if you've done this
+2. **Check existing issues and discussions** to avoid duplicates
+3. **Use the feature request template** when creating an issue - it will guide you through:
+   - Confirming Discord discussion
+   - Describing the problem it solves
+   - Explaining your solution
+   - Listing alternatives considered
+4. **Be specific** about why this feature would benefit the BMad community
 
 ### Pull Request Process
+
+⚠️ **Before starting work:**
+
+1. **For bugs**: Check if an issue exists (create one using the bug template if not)
+2. **For features**: Ensure you've discussed in Discord (#general-dev) AND created a feature request issue
+3. **For large changes**: Always open an issue first to discuss alignment
 
 Please only propose small granular commits! If its large or significant, please discuss in the discussions tab and open up an issue first. I do not want you to waste your time on a potentially very large PR to have it rejected because it is not aligned or deviates from other planned changes. Communicate and lets work together to build and improve this great community project!
 
@@ -95,6 +119,15 @@ Example breakdown:
 6. Push to your branch (`git push origin feature/your-feature-name`)
 7. Open a Pull Request against the main branch
 
+## Issue Templates
+
+We use GitHub issue templates to ensure all necessary information is provided:
+
+- **Bug Reports**: Automatically guides you through providing reproduction steps, environment details, and expected behavior
+- **Feature Requests**: Requires Discord discussion confirmation and asks for problem/solution descriptions
+
+Using these templates helps maintainers understand and address your contribution faster.
+
 ## Pull Request Description Guidelines
 
 Keep PR descriptions short and to the point following this template:
@@ -111,6 +144,7 @@ Keep your PR description concise and focused. Use this template:
 ## Why
 
 [1-2 sentences explaining WHY this change is needed]
+Fixes #[issue number] (if applicable)
 
 ## How
 

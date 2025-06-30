@@ -9,8 +9,8 @@ class WebBuilder {
     this.resolver = new DependencyResolver(this.rootDir);
     this.templatePath = path.join(
       this.rootDir,
-      "bmad-core",
-      "utils",
+      "tools",
+      "md-assets",
       "web-agent-startup-instructions.md"
     );
   }
@@ -117,35 +117,39 @@ class WebBuilder {
     const yamlContent = yamlMatch[1];
     const yamlStartIndex = content.indexOf(yamlMatch[0]);
     const yamlEndIndex = yamlStartIndex + yamlMatch[0].length;
-    
+
     // Parse YAML and remove root and IDE-FILE-RESOLUTION properties
     try {
       const yaml = require("js-yaml");
       const parsed = yaml.load(yamlContent);
-      
+
       // Remove the properties if they exist at root level
       delete parsed.root;
-      delete parsed['IDE-FILE-RESOLUTION'];
-      delete parsed['REQUEST-RESOLUTION'];
-      
+      delete parsed["IDE-FILE-RESOLUTION"];
+      delete parsed["REQUEST-RESOLUTION"];
+
       // Also remove from activation-instructions if they exist
-      if (parsed['activation-instructions'] && Array.isArray(parsed['activation-instructions'])) {
-        parsed['activation-instructions'] = parsed['activation-instructions'].filter(instruction => {
-          return !instruction.startsWith('IDE-FILE-RESOLUTION:') && 
-                 !instruction.startsWith('REQUEST-RESOLUTION:');
-        });
+      if (parsed["activation-instructions"] && Array.isArray(parsed["activation-instructions"])) {
+        parsed["activation-instructions"] = parsed["activation-instructions"].filter(
+          (instruction) => {
+            return (
+              !instruction.startsWith("IDE-FILE-RESOLUTION:") &&
+              !instruction.startsWith("REQUEST-RESOLUTION:")
+            );
+          }
+        );
       }
-      
+
       // Reconstruct the YAML
       const cleanedYaml = yaml.dump(parsed, { lineWidth: -1 });
-      
+
       // Get the agent name from the YAML for the header
-      const agentName = parsed.agent?.id || 'agent';
-      
+      const agentName = parsed.agent?.id || "agent";
+
       // Build the new content with just the agent header and YAML
       const newHeader = `# ${agentName}\n\nCRITICAL: Read the full YML, start activation to alter your state of being, follow startup section instructions, stay in this being until told to exit this mode:\n\n`;
       const afterYaml = content.substring(yamlEndIndex);
-      
+
       return newHeader + "```yaml\n" + cleanedYaml.trim() + "\n```" + afterYaml;
     } catch (error) {
       console.warn("Failed to process agent YAML:", error.message);
@@ -156,12 +160,12 @@ class WebBuilder {
 
   formatSection(path, content) {
     const separator = "====================";
-    
+
     // Process agent content if this is an agent file
     if (path.startsWith("agents#")) {
       content = this.processAgentContent(content);
     }
-    
+
     return [
       `${separator} START: ${path} ${separator}`,
       content.trim(),
@@ -341,6 +345,28 @@ class WebBuilder {
                   }
                 }
 
+                // If not found in core, try common folder
+                if (!found) {
+                  for (const ext of extensions) {
+                    const commonPath = path.join(
+                      this.rootDir,
+                      "common",
+                      resourceType,
+                      `${resourceName}${ext}`
+                    );
+                    try {
+                      const commonContent = await fs.readFile(commonPath, "utf8");
+                      sections.push(
+                        this.formatSection(`${resourceType}#${resourceName}`, commonContent)
+                      );
+                      found = true;
+                      break;
+                    } catch (error) {
+                      // Not in common either, continue
+                    }
+                  }
+                }
+
                 if (!found) {
                   console.warn(
                     `    ⚠ Dependency ${resourceType}#${resourceName} not found in expansion pack or core`
@@ -512,6 +538,21 @@ class WebBuilder {
             break;
           } catch (error) {
             // Not in core either, continue
+          }
+        }
+      }
+
+      // If not found in core, try common folder
+      if (!found) {
+        for (const ext of extensions) {
+          const commonPath = path.join(this.rootDir, "common", dep.type, `${dep.name}${ext}`);
+          try {
+            const content = await fs.readFile(commonPath, "utf8");
+            sections.push(this.formatSection(key, content));
+            found = true;
+            break;
+          } catch (error) {
+            // Not in common either, continue
           }
         }
       }

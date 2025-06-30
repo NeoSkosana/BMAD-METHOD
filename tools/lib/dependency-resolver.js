@@ -6,6 +6,7 @@ class DependencyResolver {
   constructor(rootDir) {
     this.rootDir = rootDir;
     this.bmadCore = path.join(rootDir, 'bmad-core');
+    this.common = path.join(rootDir, 'common');
     this.cache = new Map();
   }
 
@@ -123,6 +124,7 @@ class DependencyResolver {
       let content = null;
       let filePath = null;
 
+      // First try bmad-core
       for (const ext of extensions) {
         try {
           filePath = path.join(this.bmadCore, type, `${id}${ext}`);
@@ -130,6 +132,19 @@ class DependencyResolver {
           break;
         } catch (e) {
           // Try next extension
+        }
+      }
+      
+      // If not found in bmad-core, try common folder
+      if (!content) {
+        for (const ext of extensions) {
+          try {
+            filePath = path.join(this.common, type, `${id}${ext}`);
+            content = await fs.readFile(filePath, 'utf8');
+            break;
+          } catch (e) {
+            // Try next extension
+          }
         }
       }
 

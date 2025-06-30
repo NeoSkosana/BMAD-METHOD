@@ -16,7 +16,6 @@ Guiding Principles of V4:
 - Helpers for installers and web builders that will work with any OS and IDE easily
 - Align all agents to be the same for IDE and Web, without losing the power of the web versions, or the leanness of the files in the IDE to reduce context
 - Further improvements to the two most important agents - the SM and DEV
-- Expansion Packs - Coming soon...
 
 ## V3
 

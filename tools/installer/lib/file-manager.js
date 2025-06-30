@@ -90,6 +90,7 @@ class FileManager {
       agent: config.agent || null,
       ide_setup: config.ide || null,
       ides_setup: config.ides || [],
+      expansion_packs: config.expansionPacks || [],
       files: [],
     };
 

@@ -1,3 +1,51 @@
+# [4.20.0](https://github.com/bmadcode/BMAD-METHOD/compare/v4.19.2...v4.20.0) (2025-06-29)
+
+
+### Features
+
+* Massive documentation refactor, added explanation of the new expanded role of the QA agent that will make your code quality MUCH better. 2 new diagram clearly explain the role of the pre dev ideation cycle (prd and architecture) and the details of how the dev cycle works. ([c881dcc](https://github.com/bmadcode/BMAD-METHOD/commit/c881dcc48ff827ddfe8653aa364a021a66ce66eb))
+
+## [4.19.2](https://github.com/bmadcode/BMAD-METHOD/compare/v4.19.1...v4.19.2) (2025-06-28)
+
+
+### Bug Fixes
+
+* docs update and correction ([2408068](https://github.com/bmadcode/BMAD-METHOD/commit/240806888448bb3a42acfd2f209976d489157e21))
+
+## [4.19.1](https://github.com/bmadcode/BMAD-METHOD/compare/v4.19.0...v4.19.1) (2025-06-28)
+
+
+### Bug Fixes
+
+* discord link ([2ea806b](https://github.com/bmadcode/BMAD-METHOD/commit/2ea806b3af58ad37fcb695146883a9cd3003363d))
+
+# [4.19.0](https://github.com/bmadcode/BMAD-METHOD/compare/v4.18.0...v4.19.0) (2025-06-28)
+
+
+### Bug Fixes
+
+* expansion install config ([50d17ed](https://github.com/bmadcode/BMAD-METHOD/commit/50d17ed65d40f6688f3b6e62732fb2280b6b116e))
+
+
+### Features
+
+* install for ide now sets up rules also for expansion agents! ([b82978f](https://github.com/bmadcode/BMAD-METHOD/commit/b82978fd38ea789a799ccc1373cfb61a2001c1e0))
+
+# [4.18.0](https://github.com/bmadcode/BMAD-METHOD/compare/v4.17.0...v4.18.0) (2025-06-28)
+
+
+### Features
+
+* expansion teams can now include core agents and include their assets automatically ([c70f1a0](https://github.com/bmadcode/BMAD-METHOD/commit/c70f1a056b0f6e3c805096ee5d27f0a3640fb00c))
+* remove hardcoding from installer for agents, improve expansion pack installation to its own locations, common files moved to common folder ([95e833b](https://github.com/bmadcode/BMAD-METHOD/commit/95e833beebc3a60f73a7a1c67d534c8eb6bf48fd))
+
+# [4.17.0](https://github.com/bmadcode/BMAD-METHOD/compare/v4.16.1...v4.17.0) (2025-06-27)
+
+
+### Features
+
+* add GEMINI.md to agent context files ([#272](https://github.com/bmadcode/BMAD-METHOD/issues/272)) ([b557570](https://github.com/bmadcode/BMAD-METHOD/commit/b557570081149352e4efbef8046935650f6ecea1))
+
 ## [4.16.1](https://github.com/bmadcode/BMAD-METHOD/compare/v4.16.0...v4.16.1) (2025-06-26)
 
 

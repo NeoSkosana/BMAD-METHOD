@@ -2,7 +2,7 @@
 
 ## Automated Releases (Recommended)
 
-The easiest way to release new versions is through **automatic semantic releases**. Just commit with the right message format and push - everything else happens automatically!
+The easiest way to release new versions is through **automatic semantic releases**. Just commit with the right message format and push and everything else happens automatically.
 
 ### Commit Message Format
 
@@ -58,7 +58,7 @@ npm run release:test    # Safe to run locally - tests the config
 
 ## Manual Release Methods (Exceptions Only)
 
-**⚠️ Only use these methods if you need to bypass the automatic system**
+⚠️ Only use these methods if you need to bypass the automatic system
 
 ### Quick Manual Version Bump
 
@@ -75,11 +75,3 @@ git push && git push --tags
 ### Manual GitHub Actions Trigger
 
 You can also trigger releases manually through GitHub Actions workflow dispatch if needed.
-
----
-
-## Summary
-
-**For 99% of releases**: Just use `fix:` or `feat:` commit messages and push. Everything else is automatic!
-
-**Manual methods**: Only needed for special cases or if you want to bypass the automated system.

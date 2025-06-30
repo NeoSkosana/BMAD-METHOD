@@ -1,6 +1,6 @@
-# BMAD Method Guiding Principles
+# BMad Method Guiding Principles
 
-The BMAD Method is a natural language framework for AI-assisted software development. These principles ensure contributions maintain the method's effectiveness.
+The BMad Method is a natural language framework for AI-assisted software development. These principles ensure contributions maintain the method's effectiveness.
 
 ## Core Principles
 

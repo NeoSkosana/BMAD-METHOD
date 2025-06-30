@@ -8,7 +8,15 @@ A pull request (PR) is how you propose changes to a project on GitHub. Think of 
 
 ## Before You Start
 
-⚠️ **Important**: Please keep your contributions small and focused! We prefer many small, clear changes rather than one massive change. If you're planning something big, please [open an issue](https://github.com/bmadcode/bmad-method/issues) or start a [discussion](https://github.com/bmadcode/bmad-method/discussions) first.
+⚠️ **Important**: Please keep your contributions small and focused! We prefer many small, clear changes rather than one massive change.
+
+**Required before submitting PRs:**
+
+- **For bug fixes**: Create an issue using the [bug report template](https://github.com/bmadcode/bmad-method/issues/new?template=bug_report.md)
+- **For new features**:
+  1. Discuss in Discord [#general-dev channel](https://discord.gg/g6ypHytrCB)
+  2. Create an issue using the [feature request template](https://github.com/bmadcode/bmad-method/issues/new?template=feature_request.md)
+- **For large changes**: Always open an issue first to discuss alignment
 
 ## Step-by-Step Guide
 
@@ -82,9 +90,15 @@ git push origin fix/typo-in-readme
 
 1. Go to your fork on GitHub
 2. You'll see a green "Compare & pull request" button - click it
-3. Fill out the PR template:
-   - **Title**: Clear, descriptive title
-   - **Description**: Explain what you changed and why
+3. Select the correct target branch:
+   - **`next` branch** for most contributions (features, docs, enhancements)
+   - **`main` branch** only for critical fixes
+4. Fill out the PR description using the template in CONTRIBUTING.md:
+   - **What**: 1-2 sentences describing what changed
+   - **Why**: 1-2 sentences explaining why
+   - **How**: 2-3 bullets on implementation
+   - **Testing**: How you tested
+5. Reference the related issue number (e.g., "Fixes #123")
 
 ### 8. Wait for Review
 
@@ -117,9 +131,12 @@ git push origin fix/typo-in-readme
 
 ## Need Help?
 
-- 💬 Join our [Discord Community](https://discord.gg/g6ypHytrCB) for real-time help
-- 💬 Ask questions in [Discussions](https://github.com/bmadcode/bmad-method/discussions)
-- 🐛 Report bugs in [Issues](https://github.com/bmadcode/bmad-method/issues)
+- 💬 Join our [Discord Community](https://discord.gg/g6ypHytrCB) for real-time help:
+  - **#general-dev** - Technical questions and feature discussions
+  - **#bugs-issues** - Get help with bugs before filing issues
+- 💬 Ask questions in [GitHub Discussions](https://github.com/bmadcode/bmad-method/discussions)
+- 🐛 Report bugs using the [bug report template](https://github.com/bmadcode/bmad-method/issues/new?template=bug_report.md)
+- 💡 Suggest features using the [feature request template](https://github.com/bmadcode/bmad-method/issues/new?template=feature_request.md)
 - 📖 Read the full [Contributing Guidelines](../CONTRIBUTING.md)
 
 ## Example: Good vs Bad PRs

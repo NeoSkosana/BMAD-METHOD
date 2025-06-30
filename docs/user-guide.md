@@ -1,6 +1,6 @@
-# BMAD-METHOD User Guide
+# BMAD-METHOD Agentic Agile Driven Development User Guide
 
-This comprehensive guide will help you understand and effectively use the BMAD-METHOD framework for AI-assisted software development.
+This comprehensive guide will help you understand and effectively use the BMad Method framework for AI-assisted software development.
 
 ## Table of Contents
 
@@ -61,6 +61,19 @@ Best for: Cursor, Claude Code, Windsurf, VS Code users
 npx bmad-method install
 ```
 
+### CLI Commands
+
+```bash
+# List all available agents
+npx bmad-method list
+
+# Install or update (automatically detects existing installations)
+npx bmad-method install
+
+# Check installation status
+npx bmad-method status
+```
+
 ### First Steps
 
 1. **Choose Your Environment**: Web UI or IDE
@@ -68,20 +81,47 @@ npx bmad-method install
 3. **Initialize Project**: Run `/help` or `*help` to see capabilities
 4. **Start Development**: Begin with planning or jump into coding
 
+### Upgrading from V3 to V4
+
+If you have an existing BMAD-METHOD V3 project, simply run the installer in your project directory:
+
+```bash
+npx bmad-method install
+# The installer will automatically detect your V3 installation and offer to upgrade
+```
+
+The upgrade process will:
+
+1. Create a backup of your V3 files in `.bmad-v3-backup/`
+2. Install the new V4 `.bmad-core/` structure
+3. Migrate your documents (PRD, Architecture, Stories, Epics)
+4. Set up IDE integration for all V4 agents
+5. Create an install manifest for future updates
+
+After upgrading:
+
+1. Review your documents in the `docs/` folder - if you had a PRD or architecture in your old project, copy it from the backup to the docs folder if they are not there.
+2. Optionally run the `doc-migration-task` to align your documents with V4 templates - you can do this with your agent by saying something like: 'run {drag in task} against {drag prd or arch file from docs} to align with {drag the template from .bmad-core/templates/full-stack-architecture.md}'
+3. If you have separate front-end and backend architecture docs you can modify step 2 to merge both into a single full stack architecture or separate Front and Back end.
+
+The reason #2 and #3 are optional is because now BMAD V4 makes sharding optional for the SM. See [Core Configuration](#core-configuration-coreconfigyml)
+
+**Note**: The agents in `.bmad-core/` fully replace the items in `bmad-agent/` - you can remove the backup folder versions.
+
 ## Agent System
 
 ### Core Development Team
 
-| Agent       | Role               | Primary Functions                       | When to Use                            |
-| ----------- | ------------------ | --------------------------------------- | -------------------------------------- |
-| `analyst`   | Business Analyst   | Market research, requirements gathering | Project planning, competitive analysis |
-| `pm`        | Product Manager    | PRD creation, feature prioritization    | Strategic planning, roadmaps           |
-| `architect` | Solution Architect | System design, technical architecture   | Complex systems, scalability planning  |
-| `dev`       | Developer          | Code implementation, debugging          | All development tasks                  |
-| `qa`        | QA Specialist      | Test planning, quality assurance        | Testing strategies, bug validation     |
-| `ux-expert` | UX Designer        | UI/UX design, prototypes                | User experience, interface design      |
-| `po`        | Product Owner      | Backlog management, story validation    | Story refinement, acceptance criteria  |
-| `sm`        | Scrum Master       | Sprint planning, story creation         | Project management, workflow           |
+| Agent       | Role               | Primary Functions                              | When to Use                                       |
+| ----------- | ------------------ | ---------------------------------------------- | ------------------------------------------------- |
+| `analyst`   | Business Analyst   | Market research, requirements gathering        | Project planning, competitive analysis            |
+| `pm`        | Product Manager    | PRD creation, feature prioritization           | Strategic planning, roadmaps                      |
+| `architect` | Solution Architect | System design, technical architecture          | Complex systems, scalability planning             |
+| `dev`       | Developer          | Sequential task execution, testing, validation | Story implementation with test-driven development |
+| `qa`        | QA Specialist      | Code review, refactoring, test validation      | Senior developer review via `review-story` task   |
+| `ux-expert` | UX Designer        | UI/UX design, prototypes                       | User experience, interface design                 |
+| `po`        | Product Owner      | Backlog management, story validation           | Story refinement, acceptance criteria             |
+| `sm`        | Scrum Master       | Sprint planning, story creation                | Project management, workflow                      |
 
 ### Meta Agents
 
@@ -284,20 +324,29 @@ Once planning is complete and documents are sharded, BMAD follows a structured d
 
 ```mermaid
 graph TD
-    A["Start: Planning Artifacts Complete"] --> B["PO: Shard Epics"]
-    B --> C["PO: Shard Arch"]
-    C --> D["Development Phase"]
-    D --> E["Scrum Master: Drafts next story from sharded epic"]
-    E --> F{"User Approval"}
-    F -->|Approved| G["Dev: Implement Story"]
-    F -->|Needs Changes| E
-    G --> H["Dev: Complete story Tasks"]
-    H --> I{"User Verification"}
-    I -->|Verified Complete| J["Mark Story as Done"]
-    I -->|Needs Fixes| G
-    J --> E
+    A["Development Phase Start"] --> B["SM: Reviews Previous Story Dev/QA Notes"]
+    B --> B2["SM: Drafts Next Story from Sharded Epic + Architecture"]
+    B2 --> C{"User Approval"}
+    C -->|Approved| D["Dev: Sequential Task Execution"]
+    C -->|Needs Changes| B2
+    D --> E["Dev: Implement Tasks + Tests"]
+    E --> F["Dev: Run All Validations"]
+    F --> G["Dev: Mark Ready for Review + Add Notes"]
+    G --> H{"User Verification"}
+    H -->|Request QA Review| I["QA: Senior Dev Review + Active Refactoring"]
+    H -->|Approve Without QA| K["Mark Story as Done"]
+    I --> J["QA: Review, Refactor Code, Add Tests, Document Notes"]
+    J --> L{"QA Decision"}
+    L -->|Needs Dev Work| D
+    L -->|Approved| K
+    H -->|Needs Fixes| D
+    K --> B
 
-    style J fill:#34a853,color:#fff
+    style K fill:#34a853,color:#fff
+    style I fill:#f9ab00,color:#fff
+    style J fill:#ffd54f,color:#000
+    style E fill:#e3f2fd,color:#000
+    style B fill:#e8f5e9,color:#000
 ```
 
 ### Workflow Phases
@@ -319,15 +368,213 @@ graph TD
 
 - **SM**: Draft next story from sharded epic
 - **User**: Review and approve story
-- **Dev**: Implement all story tasks
+- **Dev**: Sequential task execution:
+  - Reads each task in the story
+  - Implements code for the task
+  - Writes tests alongside implementation
+  - Runs validations (linting, tests)
+  - Updates task checkbox [x] only if all validations pass
+  - Maintains Debug Log for temporary changes
+  - Updates File List with all created/modified files
+- **Dev**: After all tasks complete:
+  - Runs integration tests (if specified)
+  - Runs E2E tests (if specified)
+  - Validates Definition of Done checklist
+  - Marks story as "Ready for Review"
 - **User**: Verify implementation
+- **Optional QA Review**: User can request QA to run `review-story` task
 - **Repeat**: Until all stories complete
 
-#### 4. Quality Assurance
+#### Dev Agent Workflow Details
 
-- **QA**: Test planning and execution
-- **Dev**: Bug fixes and refinements
-- **PO**: Acceptance criteria validation
+The Dev agent follows a strict test-driven sequential workflow:
+
+**Key Behaviors:**
+
+- **Story-Centric**: Works only from the story file, never loads PRD/architecture unless specified in dev notes
+- **Sequential Execution**: Completes tasks one by one, marking [x] only after validations pass
+- **Test-Driven**: Writes tests alongside code for every task
+- **Quality Gates**: Never marks tasks complete if validations fail
+- **Debug Logging**: Tracks temporary changes in the story's Debug Log table
+- **File Tracking**: Maintains complete File List of all created/modified files
+
+**Blocking Conditions:**
+The Dev agent will stop and request help if:
+
+- Story is not approved
+- Requirements are ambiguous after checking the story
+- Validations fail 3 times for the same task
+- Critical configuration files are missing
+- Automated tests or linting fails
+
+#### 4. Quality Assurance Integration
+
+The QA agent plays a crucial role after development:
+
+- **When Dev marks "Ready for Review"**: Story is ready for user verification
+- **User Options**:
+  - **Direct Approval**: If satisfied, mark story as "Done"
+  - **Request Changes**: Send back to Dev with specific feedback
+  - **Request QA Review**: Ask QA to run the `review-story` task for senior developer review
+- **QA Review Process** (`/qa run review-story`):
+
+  - Reviews code as a senior developer with authority to refactor
+  - **Active Refactoring**: Makes improvements directly in the code
+  - **Comprehensive Review Focus**:
+    - Code architecture and design patterns
+    - Refactoring opportunities and code duplication
+    - Performance optimizations and security concerns
+    - Best practices and patterns
+  - **Standards Compliance**: Verifies adherence to:
+    - `docs/coding-standards.md`
+    - `docs/unified-project-structure.md`
+    - `docs/testing-strategy.md`
+  - **Test Coverage Review**: Can add missing tests if critical coverage is lacking
+  - **Documentation**: Adds comments for complex logic if missing
+  - **Results Documentation** in story's QA Results section:
+    - Code quality assessment
+    - Refactoring performed with WHY and HOW explanations
+    - Compliance check results
+    - Improvements checklist (completed vs. pending items)
+    - Security and performance findings
+    - Final approval status
+
+### Understanding the SM/Dev/QA Story Workflow
+
+The story file is the central artifact that enables seamless collaboration between the Scrum Master (SM), Developer (Dev), and Quality Assurance (QA) agents. Here's how they work together:
+
+#### Why We Have the Scrum Master
+
+The SM agent serves as a critical bridge between high-level planning and technical implementation:
+
+1. **Document Synthesis**: Reads sharded PRD epics and architecture documents to extract relevant technical details
+2. **Story Enrichment**: Creates self-contained stories with all technical context needed for implementation
+3. **Continuous Learning**: Uses notes from previous stories to improve future story preparation
+4. **Developer Efficiency**: Ensures developers have everything needed without searching multiple documents
+
+#### The Story Creation Process
+
+When the SM agent executes the `create-next-story` task:
+
+1. **Loads Configuration**: Reads `core-config.yml` to understand project structure
+2. **Identifies Next Story**: Sequentially processes stories from epics (1.1, 1.2, 2.1, etc.)
+3. **Gathers Architecture Context**: Reads relevant sharded architecture documents based on story type:
+
+   - Backend stories: data models, API specs, database schemas
+   - Frontend stories: component specs, UI patterns, workflows
+   - Full-stack: both backend and frontend documents
+
+4. **Reviews Previous Story**: Extracts Dev and QA notes to learn from past implementation
+
+#### The Story Template Structure
+
+The story template contains embedded LLM instructions for different agents:
+
+**SM Agent Instructions**:
+
+- Populate Dev Notes with specific technical details from architecture
+- Include source references for all technical guidance
+- Create detailed tasks based on architecture constraints
+- Add testing requirements from testing strategy
+
+**Dev Agent Instructions**:
+
+- Update Debug Log References during implementation
+- Document any deviations in Completion Notes
+- Maintain comprehensive File List of all changes
+- Track requirement changes in Change Log
+
+**QA Agent Instructions**:
+
+- Append review results in QA Results section
+- Document refactoring performed with explanations
+- Note security and performance considerations
+
+#### How Agents Pass Information
+
+##### SM → Dev Flow
+
+The SM prepares the story with:
+
+- **Dev Notes**: Specific technical guidance extracted from architecture
+- **Testing Requirements**: Unit, integration, and E2E test specifications
+- **Tasks/Subtasks**: Detailed implementation steps with AC mappings
+
+##### Dev → SM Flow
+
+The Dev agent provides feedback through:
+
+- **Completion Notes**: Deviations or discoveries that impact future stories
+- **Debug Log References**: Technical challenges and solutions
+- **File List**: Complete inventory of created/modified files
+- **Change Log**: Any requirement modifications during development
+
+##### QA → SM Flow
+
+The QA agent contributes:
+
+- **Code Quality Assessment**: Senior developer perspective on implementation quality
+- **Refactoring Performed**: Direct code improvements with:
+  - What was changed
+  - Why the change was made
+  - How it improves the code
+- **Compliance Results**: Verification against coding standards, project structure, and testing strategy
+- **Test Coverage**: Added tests for critical missing coverage
+- **Security Review**: Any security concerns found and whether addressed
+- **Performance Considerations**: Performance issues found and optimizations made
+- **Improvements Checklist**: Items completed (marked [x]) vs. items for Dev to address (marked [ ])
+- **Learning Opportunities**: Explanations for junior/mid-level developer growth
+
+#### Example: How Notes Flow Between Stories
+
+**Story 1.1 Completion**:
+
+```markdown
+### Completion Notes List
+
+- Discovered that user authentication requires additional session management not specified in architecture
+- Created new SessionManager service in services/auth/session-manager.ts
+- Recommend updating architecture to include session management patterns
+```
+
+**Story 1.2 Creation** (SM uses the above notes):
+
+```markdown
+## Dev Notes
+
+### Previous Story Insights
+
+- Story 1.1 created SessionManager service for auth (services/auth/session-manager.ts)
+- Consider using SessionManager for this story's user profile feature
+- Architecture update pending for session management patterns
+```
+
+This continuous feedback loop ensures each story benefits from lessons learned in previous implementations.
+
+#### QA Agent Key Principles
+
+When the QA agent performs the review-story task:
+
+- **Senior Developer Authority**: Reviews as a senior developer with authority to refactor directly
+- **Active Improvement**: Makes code improvements rather than just identifying issues
+- **Teaching Focus**: Explains all changes for developer learning and growth
+- **Pragmatic Balance**: Focuses on significant improvements, not nitpicks
+- **Quality Gates**: Can block story completion if critical issues exist
+
+**QA Blocking Conditions**:
+The QA will stop and request clarification if:
+
+- Story file is incomplete or missing critical sections
+- File List is empty or clearly incomplete
+- No tests exist when they were required
+- Code changes don't align with story requirements
+- Critical architectural issues require discussion
+
+- **Benefits of QA Review**:
+  - Code quality improvements and refactoring
+  - Knowledge transfer through documented explanations
+  - Catching edge cases and security issues
+  - Ensuring architectural consistency
 
 ### Workflow Types
 
@@ -528,7 +775,7 @@ Web UI agents focus on planning and documentation. Here's how to interact with e
 
 ### Dynamic Resource Loading
 
-BMAD's dependency system ensures agents only load necessary resources:
+BMad's dependency system ensures agents only load necessary resources:
 
 - **Templates**: Only relevant document templates
 - **Tasks**: Only required automation tasks
@@ -595,7 +842,7 @@ phases:
 
 Templates are self-contained documents that embed both output structure and processing instructions. Follow these patterns from existing templates:
 
-#### Template Structure
+#### Template Structure Example
 
 ```markdown
 # {{Project Name}} Document Title
@@ -1135,7 +1382,7 @@ Add specialized capabilities:
 - **Data Pack**: Analytics, ML integration
 - **Security Pack**: Security analysis, compliance
 
-## Troubleshooting
+## Troubleshooting Guide
 
 ### Common Issues
 
@@ -1178,7 +1425,7 @@ Add specialized capabilities:
 - **Documentation**: [Browse docs](https://github.com/bmadcode/bmad-method/tree/main/docs)
 - **YouTube**: [BMadCode Channel](https://www.youtube.com/@BMadCode)
 
-## Best Practices
+## Best Practices and Tips
 
 ### Project Organization
 
@@ -1201,7 +1448,7 @@ project/
 - Version control all BMAD-generated content
 - Regular backups of `.bmad-core/` customizations
 
-### Development Workflow
+### Recommended Development Flow
 
 #### Planning Phase
 
