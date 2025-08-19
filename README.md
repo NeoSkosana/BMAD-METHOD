@@ -1,4 +1,4 @@
-# BMAD-METHOD™: Universal AI Agent Framework
+# Neo's system: Universal AI Agent Framework
 
 [![Version](https://img.shields.io/npm/v/bmad-method?color=blue&label=version)](https://www.npmjs.com/package/bmad-method)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
